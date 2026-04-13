@@ -1,0 +1,30 @@
+{% extends 'base/base.html' %}
+{% block title %}Stock Management{% endblock %}
+{% block page_title %}Stock Management{% endblock %}
+{% block content %}
+<div class="card" style="max-width:500px;margin:auto;">
+    <div class="card-header py-3 px-4"><i class="fas fa-boxes me-2 text-success"></i>Update Stock — {{ medicine.name }}</div>
+    <div class="card-body p-4">
+        <div class="alert alert-info">Current Stock: <strong>{{ medicine.stock_quantity }}</strong> units</div>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Movement Type *</label>
+                <select name="movement_type" class="form-select" required>
+                    <option value="in">Stock In (Add)</option>
+                    <option value="out">Stock Out (Remove)</option>
+                    <option value="adjustment">Adjustment (Set to)</option>
+                    <option value="return">Return</option>
+                </select>
+            </div>
+            <div class="mb-3"><label class="form-label fw-semibold">Quantity *</label><input type="number" name="quantity" class="form-control" min="1" required></div>
+            <div class="mb-3"><label class="form-label fw-semibold">Reason</label><input type="text" name="reason" class="form-control" placeholder="Reason for stock movement..."></div>
+            <div class="mb-3"><label class="form-label fw-semibold">Performed By</label><input type="text" name="performed_by" class="form-control"></div>
+            <div class="d-flex gap-2 mt-4">
+                <button type="submit" class="btn btn-success"><i class="fas fa-save me-2"></i>Update Stock</button>
+                <a href="{% url 'medicine_detail' medicine.pk %}" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

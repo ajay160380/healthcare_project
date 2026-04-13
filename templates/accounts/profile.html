@@ -1,0 +1,76 @@
+{% extends 'base/base.html' %}
+
+{% block title %}My Profile{% endblock %}
+{% block page_title %}My Profile{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+
+    <!-- Profile Card -->
+    <div class="col-md-4">
+        <div class="card text-center p-4">
+            <div class="mb-3">
+                {% if user_profile.profile_picture %}
+                    <img src="{{ user_profile.profile_picture.url }}" 
+                         class="rounded-circle"
+                         width="100" height="100"
+                         style="object-fit: cover;">
+                {% else %}
+                    <div style="width:100px;height:100px;background:#e9ecef;
+                                border-radius:50%;display:flex;
+                                align-items:center;justify-content:center;
+                                margin:0 auto;">
+                        <i class="fas fa-user fa-3x text-secondary"></i>
+                    </div>
+                {% endif %}
+            </div>
+
+            <h5 class="fw-bold">
+                {{ user.get_full_name|default:user.username }}
+            </h5>
+            <p class="text-muted">{{ user.email }}</p>
+            <span class="badge bg-primary">
+                {{ user_profile.get_role_display }}
+            </span>
+        </div>
+    </div>
+
+    <!-- Edit Profile -->
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header py-3 px-4">
+                <i class="fas fa-edit me-2 text-primary"></i> Edit Profile
+            </div>
+
+            <div class="card-body p-4">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="row g-3">
+                        {% for field in form %}
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    {{ field.label }}
+                                </label>
+
+                                {{ field }}
+
+                                {% if field.errors %}
+                                    <div class="text-danger small">
+                                        {{ field.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary mt-3">
+                        <i class="fas fa-save me-2"></i> Save Changes
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends 'base/base.html' %}
+{% block title %}Medicines{% endblock %}
+{% block page_title %}Medicine Inventory{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="card-header py-3 px-4 d-flex justify-content-between align-items-center">
+        <span><i class="fas fa-capsules text-purple me-2"></i>All Medicines</span>
+        <div class="d-flex gap-2">
+            <a href="{% url 'medicine_create' %}" class="btn btn-primary btn-sm"><i class="fas fa-plus me-1"></i>Add Medicine</a>
+            <a href="{% url 'category_create' %}" class="btn btn-outline-secondary btn-sm"><i class="fas fa-tag me-1"></i>Add Category</a>
+        </div>
+    </div>
+    <div class="card-body">
+        <form method="get" class="mb-3 row g-2">
+            <div class="col-auto"><input type="text" name="q" class="form-control" placeholder="Search medicines..." value="{{ query }}"></div>
+            <div class="col-auto">
+                <div class="form-check form-check-inline mt-2">
+                    <input class="form-check-input" type="checkbox" name="low_stock" id="lowStock" {% if low_stock %}checked{% endif %} onchange="this.form.submit()">
+                    <label class="form-check-label" for="lowStock">Low Stock Only</label>
+                </div>
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-outline-primary" type="submit"><i class="fas fa-search me-1"></i>Search</button>
+                <a href="{% url 'medicine_list' %}" class="btn btn-outline-secondary">Clear</a>
+            </div>
+        </form>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead><tr><th>#</th><th>Medicine</th><th>Category</th><th>Form/Strength</th><th>Stock</th><th>Price</th><th>Expiry</th><th>Actions</th></tr></thead>
+                <tbody>
+                    {% for med in medicines %}
+                    <tr class="{% if med.is_expired %}expired{% elif med.is_low_stock %}low-stock{% endif %}">
+                        <td>{{ forloop.counter }}</td>
+                        <td>
+                            <a href="{% url 'medicine_detail' med.pk %}" class="text-decoration-none fw-semibold">{{ med.name }}</a>
+                            {% if med.generic_name %}<br><small class="text-muted">{{ med.generic_name }}</small>{% endif %}
+                        </td>
+                        <td><small>{{ med.category|default:"-" }}</small></td>
+                        <td><small>{{ med.dosage_form }} {{ med.strength }}</small></td>
+                        <td>
+                            {% if med.is_low_stock %}
+                                <span class="badge bg-warning text-dark"><i class="fas fa-exclamation-triangle me-1"></i>{{ med.stock_quantity }}</span>
+                            {% else %}<span class="badge bg-success">{{ med.stock_quantity }}</span>{% endif %}
+                        </td>
+                        <td>₹{{ med.unit_price }}</td>
+                        <td>
+                            {% if med.expiry_date %}
+                                {% if med.is_expired %}<span class="badge bg-danger">Expired {{ med.expiry_date }}</span>
+                                {% else %}<small>{{ med.expiry_date }}</small>{% endif %}
+                            {% else %}-{% endif %}
+                        </td>
+                        <td>
+                            <div class="d-flex gap-1">
+                                <a href="{% url 'medicine_detail' med.pk %}" class="btn btn-sm btn-outline-info" title="View"><i class="fas fa-eye"></i></a>
+                                <a href="{% url 'medicine_update' med.pk %}" class="btn btn-sm btn-outline-warning" title="Edit"><i class="fas fa-edit"></i></a>
+                                <a href="{% url 'add_stock' med.pk %}" class="btn btn-sm btn-outline-success" title="Add Stock"><i class="fas fa-plus"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="8" class="text-center text-muted py-5"><i class="fas fa-pills fa-3x mb-3 d-block opacity-25"></i>No medicines found.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

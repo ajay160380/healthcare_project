@@ -1,0 +1,34 @@
+{% extends 'base/base.html' %}
+{% block title %}Dispensing History{% endblock %}
+{% block page_title %}Dispensing History{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="card-header py-3 px-4 d-flex justify-content-between align-items-center">
+        <span><i class="fas fa-history me-2 text-primary"></i>All Dispensings</span>
+        <a href="{% url 'dispense_medicine' %}" class="btn btn-primary btn-sm"><i class="fas fa-plus me-1"></i>Dispense</a>
+    </div>
+    <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr><th>#</th><th>Medicine</th><th>Patient</th><th>Qty</th><th>Unit Price</th><th>Total</th><th>Dispensed By</th><th>Date</th></tr>
+            </thead>
+            <tbody>
+                {% for d in dispensings %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td class="fw-semibold">{{ d.medicine.name }}</td>
+                    <td>{{ d.patient_name }}</td>
+                    <td>{{ d.quantity }}</td>
+                    <td>₹{{ d.unit_price }}</td>
+                    <td class="fw-semibold text-success">₹{{ d.total_price }}</td>
+                    <td>{{ d.dispensed_by|default:"-" }}</td>
+                    <td><small>{{ d.dispensed_at|date:"d M Y, H:i" }}</small></td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="8" class="text-center text-muted py-5">No dispensings yet.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

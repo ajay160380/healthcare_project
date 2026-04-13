@@ -1,0 +1,26 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Delete Appointment{% endblock %}
+
+{% block page_title %}Delete Appointment{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width:500px;margin:auto;">
+    <div class="card-header bg-danger text-white py-3 px-4">
+        <i class="fas fa-exclamation-triangle me-2"></i>Confirm Delete
+    </div>
+    <div class="card-body p-4 text-center">
+        <i class="fas fa-calendar-times fa-4x text-danger mb-3"></i>
+        <h5>Delete this appointment?</h5>
+        <p class="text-muted">
+            <strong>{{ appointment.patient }}</strong> with <strong>{{ appointment.doctor }}</strong> 
+            on {{ appointment.appointment_date }}
+        </p>
+        <form method="post" class="d-flex justify-content-center gap-3 mt-3">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Yes, Delete</button>
+            <a href="{% url 'appointment_detail' appointment.pk %}" class="btn btn-outline-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

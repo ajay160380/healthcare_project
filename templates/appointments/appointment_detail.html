@@ -1,0 +1,169 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Appointment Detail{% endblock %}
+
+{% block page_title %}Appointment Detail{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+    <div class="col-md-5">
+        <div class="card mb-3">
+            <div class="card-header py-3 px-4">
+                <i class="fas fa-info-circle text-warning me-2"></i>Appointment Info
+            </div>
+            <div class="card-body p-4">
+                <div class="mb-3 d-flex justify-content-between">
+                    <span class="text-muted">Status</span>
+                    <span class="badge badge-status-{{ appointment.status }} fs-6">
+                        {{ appointment.get_status_display }}
+                    </span>
+                </div>
+                <div class="mb-2 d-flex justify-content-between">
+                    <span class="text-muted">Patient</span>
+                    <a href="{% url 'patient_detail' appointment.patient.pk %}" class="fw-semibold text-decoration-none">
+                        {{ appointment.patient }}
+                    </a>
+                </div>
+                <div class="mb-2 d-flex justify-content-between">
+                    <span class="text-muted">Doctor</span>
+                    <a href="{% url 'doctor_detail' appointment.doctor.pk %}" class="text-decoration-none">
+                        {{ appointment.doctor }}
+                    </a>
+                </div>
+                <div class="mb-2 d-flex justify-content-between">
+                    <span class="text-muted">Date</span>
+                    <span>{{ appointment.appointment_date }}</span>
+                </div>
+                <div class="mb-2 d-flex justify-content-between">
+                    <span class="text-muted">Time</span>
+                    <span>{{ appointment.appointment_time }}</span>
+                </div>
+                <div class="mb-2 d-flex justify-content-between">
+                    <span class="text-muted">Type</span>
+                    <span>{{ appointment.get_appointment_type_display }}</span>
+                </div>
+
+                {% if appointment.follow_up_date %}
+                <div class="mb-2 d-flex justify-content-between">
+                    <span class="text-muted">Follow-up</span>
+                    <span>{{ appointment.follow_up_date }}</span>
+                </div>
+                {% endif %}
+
+                {% if appointment.reason %}
+                <hr>
+                <strong>Reason:</strong>
+                <p class="text-muted small mt-1">{{ appointment.reason }}</p>
+                {% endif %}
+
+                {% if appointment.notes %}
+                <strong>Notes:</strong>
+                <p class="text-muted small mt-1">{{ appointment.notes }}</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header py-3 px-4">
+                <i class="fas fa-exchange-alt me-2"></i>Update Status
+            </div>
+            <div class="card-body">
+                <form method="post" action="{% url 'update_status' appointment.pk %}">
+                    {% csrf_token %}
+                    <div class="d-flex gap-2">
+                        <select name="status" class="form-select">
+                            {% for val, label in appointment.STATUS_CHOICES %}
+                            <option value="{{ val }}" {% if appointment.status == val %}selected{% endif %}>
+                                {{ label }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit" class="btn btn-warning text-dark">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-7">
+        {% if prescription %}
+        <div class="card mb-3">
+            <div class="card-header py-3 px-4 d-flex justify-content-between align-items-center">
+                <span><i class="fas fa-prescription text-success me-2"></i>Prescription</span>
+                <small class="text-muted">
+                    Issued: {{ prescription.issued_date }} 
+                    {% if prescription.valid_until %}| Valid till: {{ prescription.valid_until }}{% endif %}
+                </small>
+            </div>
+            <div class="card-body">
+                {% if prescription.notes %}
+                <p class="text-muted small"><strong>Notes:</strong> {{ prescription.notes }}</p>
+                {% endif %}
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Medicine</th>
+                                <th>Dosage</th>
+                                <th>Frequency</th>
+                                <th>Duration</th>
+                                <th>Instructions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in prescription.items.all %}
+                            <tr>
+                                <td class="fw-semibold">{{ item.medicine_name }}</td>
+                                <td>{{ item.dosage }}</td>
+                                <td>{{ item.frequency }}</td>
+                                <td>{{ item.duration }}</td>
+                                <td><small>{{ item.instructions|default:"-" }}</small></td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-muted text-center">No medicines listed.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="card">
+            <div class="card-body text-center py-5">
+                <i class="fas fa-prescription fa-3x text-muted mb-3"></i>
+                <h6>No prescription yet</h6>
+                <a href="{% url 'add_prescription' appointment.pk %}" class="btn btn-success mt-2">
+                    <i class="fas fa-plus me-2"></i>Add Prescription
+                </a>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="card mt-3">
+            <div class="card-header py-3 px-4">
+                <i class="fas fa-tools me-2"></i>Actions
+            </div>
+            <div class="card-body">
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="{% url 'appointment_update' appointment.pk %}" class="btn btn-outline-warning">
+                        <i class="fas fa-edit me-1"></i>Edit Appointment
+                    </a>
+                    {% if not prescription %}
+                    <a href="{% url 'add_prescription' appointment.pk %}" class="btn btn-outline-success">
+                        <i class="fas fa-prescription me-1"></i>Add Prescription
+                    </a>
+                    {% endif %}
+                    <a href="{% url 'appointment_list' %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-1"></i>Back to List
+                    </a>
+                    <a href="{% url 'appointment_delete' appointment.pk %}" class="btn btn-outline-danger">
+                        <i class="fas fa-trash me-1"></i>Delete
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

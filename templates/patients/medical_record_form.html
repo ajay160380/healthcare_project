@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>{{ title }}</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            {{ form.record_date.label_tag }}
+            {{ form.record_date }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.diagnosis.label_tag }}
+            {{ form.diagnosis }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.symptoms.label_tag }}
+            {{ form.symptoms }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.treatment.label_tag }}
+            {{ form.treatment }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.prescription.label_tag }}
+            {{ form.prescription }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.notes.label_tag }}
+            {{ form.notes }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.doctor_name.label_tag }}
+            {{ form.doctor_name }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a href="{% url 'patient_list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

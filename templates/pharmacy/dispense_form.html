@@ -1,0 +1,38 @@
+{% extends 'base/base.html' %}
+{% block title %}Dispense Medicine{% endblock %}
+{% block page_title %}Dispense Medicine{% endblock %}
+{% block content %}
+<div class="card" style="max-width:600px;margin:auto;">
+    <div class="card-header py-3 px-4"><i class="fas fa-prescription-bottle text-primary me-2"></i>Dispense Medicine</div>
+    <div class="card-body p-4">
+        <form method="post">
+            {% csrf_token %}
+            <div class="row g-3">
+                <div class="col-12">
+                    <label class="form-label fw-semibold">Medicine *</label>
+                    <select name="medicine" class="form-select" required>
+                        <option value="">Select Medicine</option>
+                        {% for med in form.fields.medicine.queryset %}
+                        <option value="{{ med.pk }}">{{ med }} — Stock: {{ med.stock_quantity }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-12"><label class="form-label fw-semibold">Patient Name *</label><input type="text" name="patient_name" class="form-control" required></div>
+                <div class="col-md-6"><label class="form-label fw-semibold">Quantity *</label><input type="number" name="quantity" class="form-control" min="1" required></div>
+                <div class="col-md-6"><label class="form-label fw-semibold">Dispensed By</label><input type="text" name="dispensed_by" class="form-control"></div>
+                <div class="col-12"><label class="form-label fw-semibold">Prescription Reference</label><input type="text" name="prescription_ref" class="form-control" placeholder="Optional reference number"></div>
+                <div class="col-12"><label class="form-label fw-semibold">Notes</label><textarea name="notes" class="form-control" rows="2"></textarea></div>
+            </div>
+            {% if form.errors %}
+                <div class="alert alert-danger mt-3">
+                    {% for f,e in form.errors.items %}{% for err in e %}<div>{{ f }}: {{ err }}</div>{% endfor %}{% endfor %}
+                </div>
+            {% endif %}
+            <div class="d-flex gap-2 mt-4">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-check me-2"></i>Dispense</button>
+                <a href="{% url 'pharmacy_dashboard' %}" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

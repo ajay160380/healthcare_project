@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - HealthCare Portal</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #0d6efd 0%, #084298 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 30px 0;
+        }
+
+        .reg-card {
+            border-radius: 20px;
+            border: none;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        .reg-header {
+            background: linear-gradient(135deg, #198754, #146c43);
+            border-radius: 20px 20px 0 0;
+            padding: 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .form-control, .form-select {
+            border-radius: 8px;
+            padding: 10px 14px;
+        }
+
+        .form-control:focus, .form-select:focus {
+            box-shadow: 0 0 0 3px rgba(13,110,253,0.15);
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="card reg-card">
+
+                <div class="reg-header">
+                    <i class="fas fa-user-plus fa-2x mb-2"></i>
+                    <h4 class="fw-bold mb-1">Create Account</h4>
+                    <p class="opacity-75 mb-0">Join the HealthCare Portal</p>
+                </div>
+
+                <div class="card-body p-4">
+
+                    {% if messages %}
+                        {% for m in messages %}
+                            <div class="alert alert-danger">{{ m }}</div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <div class="row g-3">
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">First Name</label>
+                                <input type="text" name="first_name" class="form-control" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Last Name</label>
+                                <input type="text" name="last_name" class="form-control" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Username</label>
+                                <input type="text" name="username" class="form-control" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Email</label>
+                                <input type="email" name="email" class="form-control" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Role</label>
+                                <select name="role" class="form-select">
+                                    <option value="patient">Patient</option>
+                                    <option value="doctor">Doctor</option>
+                                    <option value="staff">Staff</option>
+                                    <option value="admin">Admin</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Phone</label>
+                                <input type="text" name="phone" class="form-control">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Password</label>
+                                <input type="password" name="password1" class="form-control" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Confirm Password</label>
+                                <input type="password" name="password2" class="form-control" required>
+                            </div>
+
+                        </div>
+
+                        {% if form.errors %}
+                            <div class="alert alert-danger mt-3">
+                                {% for field, errors in form.errors.items %}
+                                    {% for error in errors %}
+                                        <div>{{ field }}: {{ error }}</div>
+                                    {% endfor %}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                        <button type="submit" class="btn btn-success w-100 mt-4 py-2 fw-semibold">
+                            <i class="fas fa-user-plus me-2"></i> Create Account
+                        </button>
+                    </form>
+
+                    <hr>
+
+                    <p class="text-center mb-0 text-muted">
+                        Already have an account?
+                        <a href="{% url 'login' %}" class="text-primary fw-semibold">Sign In</a>
+                    </p>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

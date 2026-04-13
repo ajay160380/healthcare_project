@@ -1,0 +1,99 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Add Prescription{% endblock %}
+{% block page_title %}Add Prescription{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header py-3 px-4">
+        <i class="fas fa-prescription text-success me-2"></i>
+        Add Prescription for <strong>{{ appointment.patient }}</strong>
+        <small class="text-muted ms-2">({{ appointment.appointment_date }} with {{ appointment.doctor }})</small>
+    </div>
+    <div class="card-body p-4">
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Valid Until</label>
+                    <input type="date" name="valid_until" class="form-control">
+                </div>
+                <div class="col-md-12">
+                    <label class="form-label fw-semibold">Prescription Notes</label>
+                    <textarea name="notes" class="form-control" rows="2" placeholder="General notes..."></textarea>
+                </div>
+            </div>
+
+            <h6 class="fw-bold mb-3"><i class="fas fa-pills me-2 text-primary"></i>Medicines</h6>
+            
+            <div id="medicines-container">
+                <div class="medicine-row card p-3 mb-3 bg-light border-0">
+                    <div class="row g-2">
+                        <div class="col-md-3">
+                            <label class="form-label small fw-semibold">Medicine Name *</label>
+                            <input type="text" name="medicine_name" class="form-control form-control-sm" placeholder="e.g. Paracetamol" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label small fw-semibold">Dosage</label>
+                            <input type="text" name="dosage" class="form-control form-control-sm" placeholder="e.g. 500mg">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label small fw-semibold">Frequency</label>
+                            <input type="text" name="frequency" class="form-control form-control-sm" placeholder="e.g. 1-0-1">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label small fw-semibold">Duration</label>
+                            <input type="text" name="duration" class="form-control form-control-sm" placeholder="e.g. 5 days">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label small fw-semibold">Instructions</label>
+                            <input type="text" name="instructions" class="form-control form-control-sm" placeholder="After meals">
+                        </div>
+                        <div class="col-md-1 d-flex align-items-end justify-content-center">
+                            <button type="button" class="btn btn-outline-danger btn-sm border-0" onclick="removeRow(this)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-outline-primary btn-sm mb-4" onclick="addMedicine()">
+                <i class="fas fa-plus me-1"></i>Add Another Medicine
+            </button>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-save me-2"></i>Save Prescription
+                </button>
+                <a href="{% url 'appointment_detail' appointment.pk %}" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function addMedicine() {
+    const container = document.getElementById('medicines-container');
+    const firstRow = container.querySelector('.medicine-row');
+    const newRow = firstRow.cloneNode(true);
+    
+    // Clear the input values in the cloned row
+    newRow.querySelectorAll('input').forEach(input => input.value = '');
+    
+    container.appendChild(newRow);
+}
+
+function removeRow(button) {
+    const container = document.getElementById('medicines-container');
+    if (container.children.length > 1) {
+        button.closest('.medicine-row').remove();
+    } else {
+        alert("Kam se kam ek medicine zaroori hai!");
+    }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,118 @@
+{% extends 'base/base.html' %}
+{% block title %}Doctors - HealthCare Portal{% endblock %}
+{% block page_title %}Doctor Management{% endblock %}
+
+{% block content %}
+<div class="card">
+
+    <div class="card-header py-3 px-4 d-flex justify-content-between align-items-center">
+        <span>
+            <i class="fas fa-user-md text-success me-2"></i>All Doctors
+        </span>
+
+        <a href="{% url 'doctor_create' %}" class="btn btn-success btn-sm">
+            <i class="fas fa-plus me-1"></i>Add Doctor
+        </a>
+    </div>
+
+    <div class="card-body">
+
+        <form method="get" class="mb-3">
+            <div class="input-group" style="max-width:400px">
+
+                <input type="text" name="q" class="form-control"
+                       placeholder="Search by name, specialization..."
+                       value="{{ query }}">
+
+                <button class="btn btn-outline-success" type="submit">
+                    <i class="fas fa-search"></i>
+                </button>
+
+                {% if query %}
+                <a href="{% url 'doctor_list' %}" class="btn btn-outline-secondary">
+                    Clear
+                </a>
+                {% endif %}
+
+            </div>
+        </form>
+
+        <div class="row g-4">
+
+            {% for doctor in doctors %}
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+
+                    <div class="card-body p-4">
+
+                        <div class="d-flex align-items-center mb-3">
+
+                            <div style="width:55px;height:55px;background:linear-gradient(135deg,#198754,#146c43);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <i class="fas fa-user-md text-white fa-lg"></i>
+                            </div>
+
+                            <div class="ms-3">
+                                <h6 class="fw-bold mb-0">{{ doctor.get_full_name }}</h6>
+                                <small class="text-muted">{{ doctor.specialization }}</small>
+                            </div>
+
+                        </div>
+
+                        <div class="mb-2">
+                            <i class="fas fa-graduation-cap text-muted me-2"></i>
+                            <small>{{ doctor.qualification }}</small>
+                        </div>
+
+                        <div class="mb-2">
+                            <i class="fas fa-phone text-muted me-2"></i>
+                            <small>{{ doctor.phone }}</small>
+                        </div>
+
+                        <div class="mb-2">
+                            <i class="fas fa-clock text-muted me-2"></i>
+                            <small>{{ doctor.available_days|default:"N/A" }}</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <i class="fas fa-rupee-sign text-muted me-2"></i>
+                            <small>₹{{ doctor.consultation_fee }} consultation fee</small>
+                        </div>
+
+                        <div class="d-flex gap-2">
+
+                            <a href="{% url 'doctor_detail' doctor.pk %}"
+                               class="btn btn-sm btn-outline-success flex-fill">
+                                View
+                            </a>
+
+                            <a href="{% url 'doctor_update' doctor.pk %}"
+                               class="btn btn-sm btn-outline-warning flex-fill">
+                                Edit
+                            </a>
+
+                            <a href="{% url 'appointment_create' %}?doctor={{ doctor.pk }}"
+                               class="btn btn-sm btn-outline-primary flex-fill">
+                                Book
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            {% empty %}
+            <div class="col-12 text-center text-muted py-5">
+                <i class="fas fa-user-md fa-3x mb-3 d-block opacity-25"></i>
+                No doctors found.
+                <a href="{% url 'doctor_create' %}">Add the first doctor</a>.
+            </div>
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

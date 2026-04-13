@@ -1,0 +1,128 @@
+{% extends 'base/base.html' %}
+{% block title %}{{ title }} - HealthCare Portal{% endblock %}
+{% block page_title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header py-3 px-4">
+        <i class="fas fa-user-md text-success me-2"></i>{{ title }}
+    </div>
+
+    <div class="card-body p-4">
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">First Name *</label>
+                    <input type="text" name="first_name" class="form-control"
+                           value="{{ form.first_name.value|default:'' }}" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Last Name *</label>
+                    <input type="text" name="last_name" class="form-control"
+                           value="{{ form.last_name.value|default:'' }}" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Specialization</label>
+                    <select name="specialization" class="form-select">
+                        <option value="">Select Specialization</option>
+                        {% for spec in form.fields.specialization.queryset %}
+                            <option value="{{ spec.pk }}" {% if form.specialization.value|stringformat:"s" == spec.pk|stringformat:"s" %}selected{% endif %}>
+                                {{ spec.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Qualification *</label>
+                    <input type="text" name="qualification" class="form-control"
+                           value="{{ form.qualification.value|default:'' }}" required>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Experience (Years)</label>
+                    <input type="number" name="experience_years" class="form-control"
+                           value="{{ form.experience_years.value|default:'0' }}" min="0">
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Phone *</label>
+                    <input type="text" name="phone" class="form-control"
+                           value="{{ form.phone.value|default:'' }}" required>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Email *</label>
+                    <input type="email" name="email" class="form-control"
+                           value="{{ form.email.value|default:'' }}" required>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">License Number *</label>
+                    <input type="text" name="license_number" class="form-control"
+                           value="{{ form.license_number.value|default:'' }}" required>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Consultation Fee (₹)</label>
+                    <input type="number" step="0.01" name="consultation_fee" class="form-control"
+                           value="{{ form.consultation_fee.value|default:'0' }}">
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Available Days</label>
+                    <input type="text" name="available_days" class="form-control"
+                           value="{{ form.available_days.value|default:'' }}"
+                           placeholder="Mon,Tue,Wed">
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label fw-semibold">Available From</label>
+                    <input type="time" name="available_time_start" class="form-control"
+                           value="{{ form.available_time_start.value|default:'' }}">
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label fw-semibold">Available To</label>
+                    <input type="time" name="available_time_end" class="form-control"
+                           value="{{ form.available_time_end.value|default:'' }}">
+                </div>
+
+                <div class="col-md-6 d-flex align-items-end">
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" name="is_active" id="is_active"
+                               {% if form.is_active.value != False %}checked{% endif %}>
+                        <label class="form-check-label fw-semibold" for="is_active">Active</label>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <label class="form-label fw-semibold">Bio</label>
+                    <textarea name="bio" class="form-control" rows="3">{{ form.bio.value|default:'' }}</textarea>
+                </div>
+            </div>
+
+            {% if form.errors %}
+                <div class="alert alert-danger mt-3">
+                    {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                            <div><strong>{{ field|title }}:</strong> {{ error }}</div>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="d-flex gap-2 mt-4">
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-save me-2"></i>Save Doctor
+                </button>
+                <a href="{% url 'doctor_list' %}" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

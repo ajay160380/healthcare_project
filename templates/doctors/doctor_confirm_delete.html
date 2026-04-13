@@ -1,0 +1,38 @@
+{% extends 'base/base.html' %}
+{% block title %}Deactivate Doctor{% endblock %}
+{% block page_title %}Deactivate Doctor{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width:500px;margin:auto;">
+    
+    <div class="card-header bg-warning text-dark py-3 px-4">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        Confirm Deactivation
+    </div>
+
+    <div class="card-body p-4 text-center">
+        <i class="fas fa-user-md fa-4x text-warning mb-3"></i>
+
+        <h5>
+            Deactivate <strong>{{ doctor }}</strong>?
+        </h5>
+
+        <p class="text-muted">
+            This doctor will be hidden from the active list but data will be preserved.
+        </p>
+
+        <form method="post" class="d-flex justify-content-center gap-3 mt-3">
+            {% csrf_token %}
+
+            <button type="submit" class="btn btn-warning">
+                Deactivate
+            </button>
+
+            <a href="{% url 'doctor_detail' doctor.pk %}" class="btn btn-outline-secondary">
+                Cancel
+            </a>
+        </form>
+    </div>
+
+</div>
+{% endblock %}

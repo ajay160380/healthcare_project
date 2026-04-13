@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HealthCare Portal - Your Health, Our Priority</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+<style>
+body { font-family: 'Segoe UI', sans-serif; }
+
+.hero {
+    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 50%, #084298 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
+.hero h1 { font-size: 3rem; font-weight: 800; }
+.hero p { font-size: 1.2rem; opacity: 0.9; }
+
+.feature-card {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    transition: transform 0.3s;
+    padding: 30px;
+}
+
+.feature-card:hover { transform: translateY(-5px); }
+
+.feature-icon {
+    font-size: 3rem;
+    margin-bottom: 15px;
+}
+
+.navbar-custom {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+}
+
+.stats-section {
+    background: #f0f4f8;
+    padding: 60px 0;
+}
+
+.stat-box {
+    text-align: center;
+    padding: 30px;
+}
+
+.stat-num {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #0d6efd;
+}
+
+.footer {
+    background: #1a2634;
+    color: #a8b5c0;
+    padding: 40px 0;
+}
+</style>
+</head>
+
+<body>
+
+<section class="hero">
+<div class="container">
+
+<nav class="navbar navbar-expand-lg navbar-custom mb-5 rounded-3 px-4">
+<a class="navbar-brand text-white fw-bold fs-4" href="#">
+    <i class="fas fa-heartbeat me-2"></i>HealthCare Portal
+</a>
+
+<div class="ms-auto d-flex gap-2">
+    <a href="{% url 'login' %}" class="btn btn-outline-light">Login</a>
+    <a href="{% url 'register' %}" class="btn btn-light text-primary fw-bold">Register</a>
+</div>
+</nav>
+
+<div class="row align-items-center">
+
+<div class="col-lg-6">
+<h1 class="mb-4">Your Health,<br>Our Priority</h1>
+
+<p class="mb-4">
+A comprehensive healthcare management system for patients, doctors, and staff.
+Manage appointments, medical records, prescriptions, and pharmacy — all in one place.
+</p>
+
+<div class="d-flex gap-3">
+<a href="{% url 'register' %}" class="btn btn-light text-primary fw-bold px-4 py-2">
+    Get Started <i class="fas fa-arrow-right ms-2"></i>
+</a>
+
+<a href="{% url 'login' %}" class="btn btn-outline-light px-4 py-2">
+    Sign In
+</a>
+</div>
+</div>
+
+<div class="col-lg-6 text-center d-none d-lg-block">
+<i class="fas fa-hospital-user" style="font-size:12rem;opacity:0.3;"></i>
+</div>
+
+</div>
+</div>
+</section>
+
+
+<section class="py-5">
+<div class="container">
+
+<h2 class="text-center fw-bold mb-2">Everything You Need</h2>
+<p class="text-center text-muted mb-5">Complete healthcare management in one platform</p>
+
+<div class="row g-4">
+
+<div class="col-md-3">
+<div class="feature-card text-center">
+<div class="feature-icon text-primary"><i class="fas fa-users"></i></div>
+<h5 class="fw-bold">Patient Management</h5>
+<p class="text-muted small">
+Manage patient records, medical history, vitals, and insurance information efficiently.
+</p>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="feature-card text-center">
+<div class="feature-icon text-success"><i class="fas fa-user-md"></i></div>
+<h5 class="fw-bold">Doctor Profiles</h5>
+<p class="text-muted small">
+Maintain doctor profiles with specializations, availability, and consultation fees.
+</p>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="feature-card text-center">
+<div class="feature-icon text-warning"><i class="fas fa-calendar-check"></i></div>
+<h5 class="fw-bold">Appointments</h5>
+<p class="text-muted small">
+Book, track and manage appointments with real-time status updates and prescriptions.
+</p>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="feature-card text-center">
+<div class="feature-icon text-danger"><i class="fas fa-pills"></i></div>
+<h5 class="fw-bold">Pharmacy</h5>
+<p class="text-muted small">
+Complete pharmacy management with stock tracking, dispensing, and expiry alerts.
+</p>
+</div>
+</div>
+
+</div>
+</div>
+</section>
+
+
+<section class="stats-section">
+<div class="container">
+
+<div class="row">
+
+<div class="col-md-3">
+<div class="stat-box">
+<div class="stat-num">500+</div>
+<div class="text-muted">Patients Managed</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="stat-box">
+<div class="stat-num">50+</div>
+<div class="text-muted">Specialist Doctors</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="stat-box">
+<div class="stat-num">1000+</div>
+<div class="text-muted">Appointments Handled</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="stat-box">
+<div class="stat-num">200+</div>
+<div class="text-muted">Medicines in Stock</div>
+</div>
+</div>
+
+</div>
+</div>
+</section>
+
+
+<footer class="footer">
+<div class="container text-center">
+<p>
+<i class="fas fa-heartbeat text-danger me-2"></i>
+HealthCare Portal &copy; 2026 — Built with Django-Bootstrap
+</p>
+</div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>x 
+/* This is the home page template for the healthcare dashboard. It features a hero section, feature highlights, and statistics. It extends the base template and provides a welcoming landing page for users. * /

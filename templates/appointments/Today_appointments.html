@@ -1,0 +1,68 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Today's Schedule{% endblock %}
+
+{% block page_title %}Today's Schedule{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header py-3 px-4 d-flex justify-content-between align-items-center">
+        <span><i class="fas fa-calendar-day text-info me-2"></i>Today's Appointments — {{ today }}</span>
+        <a href="{% url 'appointment_create' %}" class="btn btn-sm btn-warning text-dark">
+            <i class="fas fa-plus me-1"></i>Book New
+        </a>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Patient</th>
+                        <th>Doctor</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for appt in appointments %}
+                    <tr>
+                        <td><strong>{{ appt.appointment_time }}</strong></td>
+                        <td>
+                            <a href="{% url 'patient_detail' appt.patient.pk %}" class="text-decoration-none fw-semibold">
+                                {{ appt.patient }}
+                            </a>
+                        </td>
+                        <td>{{ appt.doctor }}</td>
+                        <td>{{ appt.get_appointment_type_display }}</td>
+                        <td>
+                            <span class="badge badge-status-{{ appt.status }}">
+                                {{ appt.get_status_display }}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="d-flex gap-1">
+                                <a href="{% url 'appointment_detail' appt.pk %}" class="btn btn-sm btn-outline-info">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="{% url 'appointment_update' appt.pk %}" class="btn btn-sm btn-outline-warning">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-5">
+                            <i class="fas fa-calendar-check fa-3x mb-3 d-block opacity-25"></i>
+                            No appointments scheduled for today.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

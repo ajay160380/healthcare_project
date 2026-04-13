@@ -1,0 +1,283 @@
+{% extends 'base/base.html' %}
+{% block title %}{{ patient }} - HealthCare Portal{% endblock %}
+{% block page_title %}Patient Detail{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+
+    <!-- Patient Info Card -->
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body text-center p-4">
+
+                <div style="width:80px;height:80px;background:linear-gradient(135deg,#0d6efd,#084298);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 15px;">
+                    <i class="fas fa-user fa-2x text-white"></i>
+                </div>
+
+                <h5 class="fw-bold">{{ patient }}</h5>
+                <p class="text-muted mb-1">{{ patient.email|default:"No email" }}</p>
+
+                <span class="badge bg-danger me-1">{{ patient.blood_group|default:"N/A" }}</span>
+                <span class="badge bg-primary">{{ patient.get_gender_display }}</span>
+
+                <hr>
+
+                <div class="text-start">
+                    <div class="mb-2"><i class="fas fa-birthday-cake text-muted me-2"></i><small>DOB: {{ patient.date_of_birth }}</small></div>
+                    <div class="mb-2"><i class="fas fa-user-clock text-muted me-2"></i><small>Age: {{ patient.age }} years</small></div>
+                    <div class="mb-2"><i class="fas fa-phone text-muted me-2"></i><small>{{ patient.phone }}</small></div>
+                    <div class="mb-2"><i class="fas fa-map-marker-alt text-muted me-2"></i><small>{{ patient.address|truncatechars:60 }}</small></div>
+
+                    {% if patient.insurance_provider %}
+                    <div class="mb-2">
+                        <i class="fas fa-shield-alt text-muted me-2"></i>
+                        <small>{{ patient.insurance_provider }} ({{ patient.insurance_id }})</small>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <hr>
+
+                <div class="d-grid gap-2">
+                    <a href="{% url 'patient_update' patient.pk %}" class="btn btn-outline-warning btn-sm">
+                        <i class="fas fa-edit me-1"></i>Edit Info
+                    </a>
+                    <a href="{% url 'appointment_create' %}?patient={{ patient.pk }}" class="btn btn-outline-success btn-sm">
+                        <i class="fas fa-calendar-plus me-1"></i>Book Appointment
+                    </a>
+                    <a href="{% url 'add_medical_record' patient.pk %}" class="btn btn-outline-info btn-sm">
+                        <i class="fas fa-notes-medical me-1"></i>Add Record
+                    </a>
+                    <a href="{% url 'add_vital_record' patient.pk %}" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-heartbeat me-1"></i>Record Vitals
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+        {% if patient.allergies %}
+        <div class="card mt-3 border-warning">
+            <div class="card-header bg-warning text-dark fw-bold py-2">
+                <i class="fas fa-exclamation-triangle me-2"></i>Allergies
+            </div>
+            <div class="card-body py-2">
+                <small>{{ patient.allergies }}</small>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if patient.chronic_conditions %}
+        <div class="card mt-3 border-danger">
+            <div class="card-header bg-danger text-white fw-bold py-2">
+                <i class="fas fa-diagnoses me-2"></i>Chronic Conditions
+            </div>
+            <div class="card-body py-2">
+                <small>{{ patient.chronic_conditions }}</small>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="col-md-8">
+
+        <!-- Vitals -->
+        <div class="card mb-4">
+            <div class="card-header py-3 px-4 d-flex justify-content-between align-items-center">
+                <span><i class="fas fa-heartbeat text-danger me-2"></i>Latest Vitals</span>
+                <a href="{% url 'add_vital_record' patient.pk %}" class="btn btn-sm btn-outline-danger">
+                    <i class="fas fa-plus me-1"></i>Record Vitals
+                </a>
+            </div>
+
+            <div class="card-body">
+                {% if vitals %}
+                {% with v=vitals.0 %}
+                <div class="row g-3">
+
+                    <div class="col-6 col-md-3">
+                        <div class="text-center p-3 bg-light rounded">
+                            <i class="fas fa-heart text-danger mb-1"></i>
+                            <div class="fw-bold">{{ v.heart_rate|default:"—" }}</div>
+                            <small class="text-muted">Heart Rate (BPM)</small>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-3">
+                        <div class="text-center p-3 bg-light rounded">
+                            <i class="fas fa-tint text-primary mb-1"></i>
+                            <div class="fw-bold">
+                                {% if v.blood_pressure_systolic %}
+                                    {{ v.blood_pressure_systolic }}/{{ v.blood_pressure_diastolic }}
+                                {% else %}—{% endif %}
+                            </div>
+                            <small class="text-muted">Blood Pressure</small>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-3">
+                        <div class="text-center p-3 bg-light rounded">
+                            <i class="fas fa-thermometer-half text-warning mb-1"></i>
+                            <div class="fw-bold">{{ v.temperature|default:"—" }}{% if v.temperature %}°C{% endif %}</div>
+                            <small class="text-muted">Temperature</small>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-3">
+                        <div class="text-center p-3 bg-light rounded">
+                            <i class="fas fa-weight text-success mb-1"></i>
+                            <div class="fw-bold">{{ v.weight|default:"—" }}{% if v.weight %}kg{% endif %}</div>
+                            <small class="text-muted">
+                                Weight {% if v.bmi %}(BMI: {{ v.bmi }}){% endif %}
+                            </small>
+                        </div>
+                    </div>
+
+                </div>
+
+                <small class="text-muted mt-2 d-block">
+                    Recorded: {{ v.recorded_at|date:"d M Y, H:i" }}
+                </small>
+                {% endwith %}
+                {% else %}
+                <p class="text-muted mb-0">No vitals recorded yet.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Medical Records -->
+        <div class="card mb-4">
+            <div class="card-header py-3 px-4 d-flex justify-content-between align-items-center">
+                <span><i class="fas fa-notes-medical text-info me-2"></i>Medical Records</span>
+                <a href="{% url 'add_medical_record' patient.pk %}" class="btn btn-sm btn-outline-info">
+                    <i class="fas fa-plus me-1"></i>Add Record
+                </a>
+            </div>
+
+            <div class="card-body p-0">
+                {% if medical_records %}
+                <div class="accordion" id="recordsAccordion">
+
+                    {% for record in medical_records %}
+                    <div class="accordion-item border-0 border-bottom">
+
+                        <h2 class="accordion-header">
+                            <button class="accordion-button {% if not forloop.first %}collapsed{% endif %} py-3"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#rec{{ record.pk }}">
+                                <strong>{{ record.record_date }}</strong>&nbsp;—
+                                {{ record.diagnosis|truncatechars:60 }}
+                            </button>
+                        </h2>
+
+                        <div id="rec{{ record.pk }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}">
+                            <div class="accordion-body">
+                                <div class="row g-2">
+
+                                    {% if record.symptoms %}
+                                    <div class="col-md-6">
+                                        <strong>Symptoms:</strong>
+                                        <p class="text-muted small">{{ record.symptoms }}</p>
+                                    </div>
+                                    {% endif %}
+
+                                    {% if record.treatment %}
+                                    <div class="col-md-6">
+                                        <strong>Treatment:</strong>
+                                        <p class="text-muted small">{{ record.treatment }}</p>
+                                    </div>
+                                    {% endif %}
+
+                                    {% if record.prescription %}
+                                    <div class="col-md-6">
+                                        <strong>Prescription:</strong>
+                                        <p class="text-muted small">{{ record.prescription }}</p>
+                                    </div>
+                                    {% endif %}
+
+                                    {% if record.doctor_name %}
+                                    <div class="col-md-6">
+                                        <strong>Doctor:</strong>
+                                        <p class="text-muted small">{{ record.doctor_name }}</p>
+                                    </div>
+                                    {% endif %}
+
+                                    {% if record.notes %}
+                                    <div class="col-md-12">
+                                        <strong>Notes:</strong>
+                                        <p class="text-muted small">{{ record.notes }}</p>
+                                    </div>
+                                    {% endif %}
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    {% endfor %}
+
+                </div>
+                {% else %}
+                <div class="p-4 text-center text-muted">No medical records yet.</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Appointments -->
+        <div class="card">
+            <div class="card-header py-3 px-4">
+                <i class="fas fa-calendar-alt text-success me-2"></i>Appointment History
+            </div>
+
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Doctor</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for appt in patient.appointments.all|slice:":10" %}
+                            <tr>
+                                <td>
+                                    {{ appt.appointment_date }}<br>
+                                    <small class="text-muted">{{ appt.appointment_time }}</small>
+                                </td>
+                                <td>{{ appt.doctor }}</td>
+                                <td>{{ appt.get_appointment_type_display }}</td>
+                                <td>
+                                    <span class="badge badge-status-{{ appt.status }}">
+                                        {{ appt.get_status_display }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="{% url 'appointment_detail' appt.pk %}" class="btn btn-sm btn-outline-info">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center text-muted py-3">
+                                    No appointments found.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

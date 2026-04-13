@@ -1,0 +1,156 @@
+{% extends 'base/base.html' %}
+{% block title %}{{ doctor }} - HealthCare Portal{% endblock %}
+{% block page_title %}Doctor Detail{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+
+    <div class="col-md-4">
+        <div class="card text-center p-4">
+
+            <div style="width:90px;height:90px;background:linear-gradient(135deg,#198754,#146c43);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 15px;">
+                <i class="fas fa-user-md fa-2x text-white"></i>
+            </div>
+
+            <h5 class="fw-bold">{{ doctor }}</h5>
+            <p class="text-muted mb-1">{{ doctor.specialization }}</p>
+
+            <span class="badge bg-success">
+                {{ doctor.experience_years }} yrs experience
+            </span>
+
+            <hr>
+
+            <div class="text-start">
+
+                <div class="mb-2">
+                    <i class="fas fa-graduation-cap text-muted me-2"></i>
+                    <small>{{ doctor.qualification }}</small>
+                </div>
+
+                <div class="mb-2">
+                    <i class="fas fa-id-badge text-muted me-2"></i>
+                    <small>License: {{ doctor.license_number }}</small>
+                </div>
+
+                <div class="mb-2">
+                    <i class="fas fa-phone text-muted me-2"></i>
+                    <small>{{ doctor.phone }}</small>
+                </div>
+
+                <div class="mb-2">
+                    <i class="fas fa-envelope text-muted me-2"></i>
+                    <small>{{ doctor.email }}</small>
+                </div>
+
+                <div class="mb-2">
+                    <i class="fas fa-rupee-sign text-muted me-2"></i>
+                    <small>₹{{ doctor.consultation_fee }} fee</small>
+                </div>
+
+                {% if doctor.available_days %}
+                <div class="mb-2">
+                    <i class="fas fa-calendar text-muted me-2"></i>
+                    <small>{{ doctor.available_days }}</small>
+                </div>
+                {% endif %}
+
+                {% if doctor.available_time_start %}
+                <div class="mb-2">
+                    <i class="fas fa-clock text-muted me-2"></i>
+                    <small>{{ doctor.available_time_start }} - {{ doctor.available_time_end }}</small>
+                </div>
+                {% endif %}
+
+            </div>
+
+            {% if doctor.bio %}
+            <hr>
+            <p class="text-muted small text-start">{{ doctor.bio }}</p>
+            {% endif %}
+
+            <hr>
+
+            <div class="d-grid gap-2">
+                <a href="{% url 'doctor_update' doctor.pk %}" class="btn btn-outline-warning btn-sm">
+                    <i class="fas fa-edit me-1"></i> Edit
+                </a>
+
+                <a href="{% url 'appointment_create' %}?doctor={{ doctor.pk }}" class="btn btn-outline-primary btn-sm">
+                    <i class="fas fa-calendar-plus me-1"></i> Book Appointment
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="col-md-8">
+        <div class="card">
+
+            <div class="card-header py-3 px-4">
+                <i class="fas fa-calendar-alt text-primary me-2"></i> Recent Appointments
+            </div>
+
+            <div class="card-body p-0">
+                <div class="table-responsive">
+
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Date & Time</th>
+                                <th>Patient</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for appt in appointments %}
+                            <tr>
+                                <td>
+                                    {{ appt.appointment_date }}<br>
+                                    <small class="text-muted">{{ appt.appointment_time }}</small>
+                                </td>
+
+                                <td>
+                                    <a href="{% url 'patient_detail' appt.patient.pk %}" class="text-decoration-none">
+                                        {{ appt.patient }}
+                                    </a>
+                                </td>
+
+                                <td>{{ appt.get_appointment_type_display }}</td>
+
+                                <td>
+                                    <span class="badge badge-status-{{ appt.status }}">
+                                        {{ appt.get_status_display }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <a href="{% url 'appointment_detail' appt.pk %}" class="btn btn-sm btn-outline-info">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center text-muted py-3">
+                                    No appointments yet.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}
