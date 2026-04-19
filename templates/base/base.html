@@ -17,46 +17,447 @@
     
     <style>
         :root {
-            --primary: #0d6efd;
-            --sidebar-bg: #1a2634;
-            --sidebar-width: 260px;
+            --primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --primary-light: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --sidebar-bg: linear-gradient(180deg, #1a2634 0%, #2d3748 50%, #1a2634 100%);
+            --sidebar-width: 280px;
+            --card-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            --border-radius: 16px;
         }
-        body { background: #f0f4f8; font-family: 'Segoe UI', sans-serif; }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
         .sidebar {
-            position: fixed; top: 0; left: 0; height: 100vh;
-            width: var(--sidebar-width); background: var(--sidebar-bg);
-            z-index: 1000; overflow-y: auto; transition: all 0.3s;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: var(--sidebar-width);
+            background: var(--sidebar-bg);
+            z-index: 1000;
+            overflow-y: auto;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 4px 0 20px rgba(0,0,0,0.15);
+            border-right: 1px solid rgba(255,255,255,0.1);
         }
+
+        .sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="sidebar-pattern" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="white" opacity="0.03"/></pattern></defs><rect width="100" height="100" fill="url(%23sidebar-pattern)"/></svg>');
+            pointer-events: none;
+        }
+
         .sidebar-brand {
-            padding: 20px; background: #0d6efd;
-            color: white; font-size: 1.2rem; font-weight: 700;
-            display: flex; align-items: center; gap: 10px;
+            padding: 24px 20px;
+            background: var(--primary);
+            color: white;
+            font-size: 1.4rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
         }
-        .nav-section { padding: 10px 15px 5px; font-size: 0.7rem; color: #6c7a8a; text-transform: uppercase; letter-spacing: 1px; margin-top: 15px; }
+
+        .sidebar-brand::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .sidebar:hover .sidebar-brand::before {
+            left: 100%;
+        }
+
+        .sidebar-brand i {
+            font-size: 1.6rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .nav-section {
+            padding: 16px 20px 8px;
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.6);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .nav-section::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            right: 20px;
+            top: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        }
+
         .sidebar .nav-link {
-            color: #a8b5c0; padding: 10px 20px; border-radius: 8px; margin: 2px 8px;
-            display: flex; align-items: center; gap: 10px; font-size: 0.9rem; transition: all 0.2s; text-decoration: none;
+            color: rgba(255,255,255,0.8);
+            padding: 12px 20px;
+            border-radius: 12px;
+            margin: 4px 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
         }
-        .sidebar .nav-link:hover, .sidebar .nav-link.active {
-            background: rgba(13,110,253,0.15); color: #fff;
+
+        .sidebar .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--primary);
+            transition: left 0.4s ease;
+            z-index: -1;
         }
-        .sidebar .nav-link i { width: 20px; text-align: center; }
-        
-        .main-content { min-height: 100vh; transition: margin-left 0.3s; }
-        .with-sidebar { margin-left: var(--sidebar-width); }
-        .no-sidebar { margin-left: 0; }
-        
+
+        .sidebar .nav-link:hover::before,
+        .sidebar .nav-link.active::before {
+            left: 0;
+        }
+
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active {
+            color: #ffffff;
+            transform: translateX(8px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .sidebar .nav-link i {
+            width: 20px;
+            text-align: center;
+            font-size: 1.1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar .nav-link:hover i {
+            transform: scale(1.1);
+        }
+
+        .sidebar .nav-link.text-danger {
+            color: #ff6b6b !important;
+        }
+
+        .sidebar .nav-link.text-danger:hover {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            color: white !important;
+        }
+
+        .main-content {
+            min-height: 100vh;
+            transition: margin-left 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .with-sidebar {
+            margin-left: var(--sidebar-width);
+        }
+
+        .no-sidebar {
+            margin-left: 0;
+        }
+
         .topbar {
-            background: #fff; padding: 12px 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-            display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 999;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 16px 32px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            backdrop-filter: blur(10px);
         }
-        .topbar-title { font-weight: 600; color: #1a2634; font-size: 1.1rem; }
-        .page-content { padding: 24px; }
-        .card { border: none; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
-        
+
+        .topbar-title {
+            font-weight: 700;
+            background: var(--primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.3rem;
+            letter-spacing: 0.5px;
+        }
+
+        .page-content {
+            padding: 32px;
+            background: transparent;
+        }
+
+        .card {
+            border: none;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        }
+
+        .alert {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        }
+
+        .btn {
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-outline-danger {
+            border-color: #ff6b6b;
+            color: #ff6b6b;
+        }
+
+        .btn-outline-danger:hover {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            border-color: #ff6b6b;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(255, 107, 107, 0.3);
+        }
+
+        /* Loading animation */
+        @keyframes shimmer {
+            0% { background-position: -200px 0; }
+            100% { background-position: calc(200px + 100%) 0; }
+        }
+
+        .loading {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200px 100%;
+            animation: shimmer 1.5s infinite;
+        }
+
+        /* Enhanced animations */
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .page-content {
+            animation: slideInRight 0.5s ease-out;
+        }
+
+        /* Enhanced focus states */
+        .sidebar .nav-link:focus,
+        .btn:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Better table styling */
+        .table {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+        }
+
+        .table thead th {
+            background: var(--primary);
+            color: white;
+            border: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.8rem;
+        }
+
+        .table tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        .table tbody tr:hover {
+            background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, transparent 100%);
+            transform: scale(1.01);
+        }
+
+        /* Form enhancements */
+        .form-control, .form-select {
+            border-radius: 8px;
+            border: 2px solid rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.8);
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: white;
+        }
+
+        /* Badge enhancements */
+        .badge {
+            border-radius: 20px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        /* Modal enhancements */
+        .modal-content {
+            border-radius: 16px;
+            border: none;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .modal-header {
+            background: var(--primary);
+            color: white;
+            border-radius: 16px 16px 0 0;
+            border: none;
+        }
+
+        /* Loading spinner */
+        .spinner-border {
+            color: #667eea;
+        }
+
+        /* Custom scrollbar for main content */
+        .main-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .main-content::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.05);
+        }
+
+        .main-content::-webkit-scrollbar-thumb {
+            background: rgba(0,0,0,0.2);
+            border-radius: 4px;
+        }
+
+        .main-content::-webkit-scrollbar-thumb:hover {
+            background: rgba(0,0,0,0.3);
+        }
+
         @media (max-width: 768px) {
-            .sidebar { transform: translateX(-100%); }
-            .main-content { margin-left: 0 !important; }
+            .sidebar {
+                transform: translateX(-100%);
+                box-shadow: 4px 0 20px rgba(0,0,0,0.2);
+            }
+
+            .main-content {
+                margin-left: 0 !important;
+            }
+
+            .topbar {
+                padding: 12px 20px;
+            }
+
+            .page-content {
+                padding: 20px 16px;
+            }
+
+            .topbar-title {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+                color: #ffffff;
+            }
+
+            .topbar {
+                background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+                border-bottom-color: rgba(255,255,255,0.1);
+            }
+
+            .card {
+                background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+                color: #ffffff;
+            }
+
+            .alert {
+                background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+                color: #ffffff;
+            }
         }
     </style>
     {% block extra_css %}{% endblock %}
@@ -67,7 +468,10 @@
     <div class="sidebar">
         <div class="sidebar-brand">
             <i class="fas fa-heartbeat"></i>
-            <span>HealthCare</span>
+            <span>HealthCare Portal</span>
+            <div style="margin-left: auto; font-size: 0.8rem; opacity: 0.8;">
+                <i class="fas fa-shield-alt"></i>
+            </div>
         </div>
         <nav class="mt-2">
             <div class="nav-section">Main</div>
@@ -130,14 +534,32 @@
 <div class="main-content {% if user.is_authenticated %}with-sidebar{% else %}no-sidebar{% endif %}">
     {% if user.is_authenticated %}
         <div class="topbar">
-            <span class="topbar-title">{% block page_title %}HealthCare Portal{% endblock %}</span>
             <div class="d-flex align-items-center gap-3">
-                <span class="text-muted small">
-                    <i class="fas fa-user me-1"></i>{{ user.username }}
-                </span>
-                <a href="{% url 'logout' %}" class="btn btn-sm btn-outline-danger" title="Logout">
-                    <i class="fas fa-sign-out-alt"></i>
-                </a>
+                <span class="topbar-title">{% block page_title %}HealthCare Portal{% endblock %}</span>
+                <div class="badge bg-primary text-white px-2 py-1" style="font-size: 0.7rem; border-radius: 20px;">
+                    <i class="fas fa-calendar-day me-1"></i>{{ "now"|date:"M j, Y" }}
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <div class="user-info d-flex align-items-center gap-2">
+                    <div class="user-avatar" style="width: 32px; height: 32px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
+                        {{ user.first_name|first|default:user.username|first|upper }}
+                    </div>
+                    <div class="user-details">
+                        <div class="fw-semibold text-dark" style="font-size: 0.9rem; line-height: 1;">{{ user.get_full_name|default:user.username }}</div>
+                        <div class="text-muted" style="font-size: 0.7rem;">{{ user.email|truncatechars:20 }}</div>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="{% url 'profile' %}"><i class="fas fa-user me-2"></i>Profile</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     {% endif %}
@@ -145,9 +567,22 @@
     <div class="page-content">
         {% if messages %}
             {% for message in messages %}
-                <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show mb-4 d-flex align-items-center gap-3" role="alert" style="border-radius: 12px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                    <div style="font-size: 1.2rem;">
+                        {% if message.tags == 'success' %}
+                            <i class="fas fa-check-circle text-success"></i>
+                        {% elif message.tags == 'error' %}
+                            <i class="fas fa-exclamation-triangle text-danger"></i>
+                        {% elif message.tags == 'warning' %}
+                            <i class="fas fa-exclamation-circle text-warning"></i>
+                        {% else %}
+                            <i class="fas fa-info-circle text-info"></i>
+                        {% endif %}
+                    </div>
+                    <div class="flex-grow-1">
+                        <strong>{% if message.tags == 'success' %}Success!{% elif message.tags == 'error' %}Error!{% elif message.tags == 'warning' %}Warning!{% else %}Info{% endif %}</strong> {{ message }}
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             {% endfor %}
         {% endif %}
