@@ -11,7 +11,6 @@
     <!-- Font Awesome Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
-    <!-- ✨ CUSTOM DASHBOARD CSS - यह add किया ✨ -->
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/custom.css' %}">
     
@@ -31,9 +30,7 @@
             --medical-gray-light: #f8fafc;
         }
 
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
             background:
@@ -51,10 +48,8 @@
         body::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background-image:
                 radial-gradient(circle at 25% 25%, rgba(102, 126, 234, 0.02) 0%, transparent 50%),
                 radial-gradient(circle at 75% 75%, rgba(240, 147, 251, 0.02) 0%, transparent 50%);
@@ -62,16 +57,10 @@
             z-index: -1;
         }
 
-        /* Subtle background particles */
         .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-            overflow: hidden;
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none; z-index: -1; overflow: hidden;
         }
 
         .particle {
@@ -82,28 +71,25 @@
             opacity: 0.3;
         }
 
-        .particle:nth-child(1) { width: 3px; height: 3px; left: 15%; animation-delay: 0s; }
-        .particle:nth-child(2) { width: 4px; height: 4px; left: 35%; animation-delay: 5s; }
-        .particle:nth-child(3) { width: 2px; height: 2px; left: 55%; animation-delay: 10s; }
-        .particle:nth-child(4) { width: 3px; height: 3px; left: 75%; animation-delay: 15s; }
-        .particle:nth-child(5) { width: 4px; height: 4px; left: 85%; animation-delay: 20s; }
+        .particle:nth-child(1)  { width: 3px; height: 3px; left: 15%; animation-delay: 0s; }
+        .particle:nth-child(2)  { width: 4px; height: 4px; left: 35%; animation-delay: 5s; }
+        .particle:nth-child(3)  { width: 2px; height: 2px; left: 55%; animation-delay: 10s; }
+        .particle:nth-child(4)  { width: 3px; height: 3px; left: 75%; animation-delay: 15s; }
+        .particle:nth-child(5)  { width: 4px; height: 4px; left: 85%; animation-delay: 20s; }
 
         @keyframes float {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
+            0%   { transform: translateY(100vh) rotate(0deg);   opacity: 0; }
+            10%  { opacity: 1; }
+            90%  { opacity: 1; }
             100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
         }
 
+        /* ===== SIDEBAR ===== */
         .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100vh;
-            width: var(--sidebar-width);
+            position: fixed; top: 0; left: 0;
+            height: 100vh; width: var(--sidebar-width);
             background: var(--sidebar-bg);
-            z-index: 1000;
-            overflow-y: auto;
+            z-index: 1000; overflow-y: auto;
             transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             box-shadow: 8px 0 32px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.05);
             backdrop-filter: blur(20px);
@@ -112,57 +98,30 @@
 
         .sidebar::before {
             content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
             background:
                 radial-gradient(circle at 30% 20%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 70% 80%, rgba(240, 147, 251, 0.1) 0%, transparent 50%),
-                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="sidebar-pattern" width="30" height="30" patternUnits="userSpaceOnUse"><circle cx="15" cy="15" r="1.5" fill="white" opacity="0.03"/><circle cx="45" cy="45" r="1" fill="white" opacity="0.02"/></pattern></defs><rect width="100" height="100" fill="url(%23sidebar-pattern)"/></svg>');
+                radial-gradient(circle at 70% 80%, rgba(240, 147, 251, 0.1) 0%, transparent 50%);
             pointer-events: none;
         }
 
         .sidebar-brand {
             padding: 28px 24px;
             background: var(--primary);
-            color: white;
-            font-size: 1.5rem;
-            font-weight: 900;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            position: relative;
-            overflow: hidden;
+            color: white; font-size: 1.5rem; font-weight: 900;
+            display: flex; align-items: center; gap: 14px;
+            position: relative; overflow: hidden;
             box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4);
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
         .sidebar-brand::before {
             content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
+            position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
             transition: left 0.8s ease;
         }
-
-        .sidebar:hover .sidebar-brand::before {
-            left: 100%;
-        }
-
-        .sidebar-brand::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-        }
+        .sidebar:hover .sidebar-brand::before { left: 100%; }
 
         .sidebar-brand i {
             font-size: 1.8rem;
@@ -172,1835 +131,618 @@
 
         @keyframes heartbeat {
             0%, 50%, 100% { transform: scale(1); }
-            25%, 75% { transform: scale(1.1); }
-        }
-
-        .nav-section {
-            padding: 20px 24px 12px;
-            font-size: 0.7rem;
-            color: rgba(255,255,255,0.5);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 800;
-            margin-top: 24px;
-            position: relative;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .nav-section::before {
-            content: '';
-            position: absolute;
-            left: 24px;
-            right: 24px;
-            top: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-        }
-
-        .nav-section::after {
-            content: '';
-            width: 6px;
-            height: 6px;
-            background: var(--primary);
-            border-radius: 50%;
-            box-shadow: 0 0 12px rgba(102, 126, 234, 0.6);
-        }
-
-        .sidebar .nav-link {
-            color: rgba(255,255,255,0.75);
-            padding: 14px 24px;
-            border-radius: 14px;
-            margin: 6px 16px;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            text-decoration: none;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid transparent;
-        }
-
-        .sidebar .nav-link::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: var(--primary);
-            transition: left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            z-index: -1;
-            border-radius: inherit;
-        }
-
-        .sidebar .nav-link::after {
-            content: '';
-            position: absolute;
-            right: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 0;
-            height: 2px;
-            background: rgba(255,255,255,0.6);
-            transition: width 0.3s ease;
-        }
-
-        .sidebar .nav-link:hover::before,
-        .sidebar .nav-link.active::before {
-            left: 0;
-        }
-
-        .sidebar .nav-link:hover::after,
-        .sidebar .nav-link.active::after {
-            width: 20px;
-        }
-
-        .sidebar .nav-link:hover,
-        .sidebar .nav-link.active {
-            color: #ffffff;
-            transform: translateX(12px) scale(1.02);
-            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
-            border-color: rgba(255,255,255,0.2);
-        }
-
-        .sidebar .nav-link i {
-            width: 22px;
-            text-align: center;
-            font-size: 1.2rem;
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            position: relative;
-        }
-
-        .sidebar .nav-link:hover i {
-            transform: scale(1.2) rotate(8deg);
-            filter: drop-shadow(0 0 8px rgba(255,255,255,0.4));
-        }
-
-        .sidebar .nav-link.text-danger {
-            color: #ff6b6b !important;
-        }
-
-        .sidebar .nav-link.text-danger:hover {
-            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
-            color: white !important;
-            box-shadow: 0 8px 24px rgba(255, 107, 107, 0.4);
+            25%, 75%      { transform: scale(1.1); }
         }
 
         .nav-section {
             padding: 16px 20px 8px;
-            font-size: 0.75rem;
-            color: rgba(255,255,255,0.6);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            font-weight: 700;
-            margin-top: 20px;
-            position: relative;
+            font-size: 0.75rem; color: rgba(255,255,255,0.6);
+            text-transform: uppercase; letter-spacing: 1.5px;
+            font-weight: 700; margin-top: 20px; position: relative;
         }
-
         .nav-section::before {
             content: '';
-            position: absolute;
-            left: 20px;
-            right: 20px;
-            top: 0;
-            height: 1px;
+            position: absolute; left: 20px; right: 20px; top: 0; height: 1px;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
         }
 
         .sidebar .nav-link {
             color: rgba(255,255,255,0.8);
-            padding: 12px 20px;
-            border-radius: 12px;
-            margin: 4px 12px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 0.95rem;
-            font-weight: 500;
+            padding: 12px 20px; border-radius: 12px; margin: 4px 12px;
+            display: flex; align-items: center; gap: 12px;
+            font-size: 0.95rem; font-weight: 500;
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            text-decoration: none;
-            position: relative;
-            overflow: hidden;
+            text-decoration: none; position: relative; overflow: hidden;
         }
-
         .sidebar .nav-link::before {
             content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: var(--primary);
-            transition: left 0.4s ease;
-            z-index: -1;
+            position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: var(--primary); transition: left 0.4s ease; z-index: -1;
         }
-
         .sidebar .nav-link:hover::before,
-        .sidebar .nav-link.active::before {
-            left: 0;
-        }
-
+        .sidebar .nav-link.active::before { left: 0; }
         .sidebar .nav-link:hover,
         .sidebar .nav-link.active {
-            color: #ffffff;
-            transform: translateX(8px);
+            color: #ffffff; transform: translateX(8px);
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
         }
-
         .sidebar .nav-link i {
-            width: 20px;
-            text-align: center;
-            font-size: 1.1rem;
+            width: 20px; text-align: center; font-size: 1.1rem;
             transition: transform 0.3s ease;
         }
-
-        .sidebar .nav-link:hover i {
-            transform: scale(1.1);
-        }
-
-        .sidebar .nav-link.text-danger {
-            color: #ff6b6b !important;
-        }
-
+        .sidebar .nav-link:hover i { transform: scale(1.1); }
+        .sidebar .nav-link.text-danger { color: #ff6b6b !important; }
         .sidebar .nav-link.text-danger:hover {
             background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
             color: white !important;
         }
 
+        /* ===== LAYOUT ===== */
         .main-content {
             min-height: 100vh;
             transition: margin-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             position: relative;
         }
+        .with-sidebar  { margin-left: var(--sidebar-width); }
+        .no-sidebar    { margin-left: 0; }
 
-        .with-sidebar {
-            margin-left: var(--sidebar-width);
-        }
-
-        .no-sidebar {
-            margin-left: 0;
-        }
-
+        /* ===== TOPBAR ===== */
         .topbar {
             background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(248,249,250,0.98) 100%);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             padding: 20px 36px;
             box-shadow: 0 4px 32px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.03);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 999;
+            display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 999;
             border-bottom: 1px solid rgba(0,0,0,0.04);
-            position: relative;
             overflow: hidden;
         }
-
         .topbar::before {
             content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
+            position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
             background: linear-gradient(90deg, transparent, rgba(37, 99, 235, 0.02), transparent);
             animation: shimmer 4s infinite;
         }
 
-        /* Emergency Button */
         .emergency-btn {
             background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 12px 24px;
-            font-weight: 800;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            color: white; border: none; border-radius: 50px;
+            padding: 12px 24px; font-weight: 800; font-size: 0.9rem;
+            text-transform: uppercase; letter-spacing: 1px;
             box-shadow: 0 8px 24px rgba(220, 38, 38, 0.4);
             animation: emergency-pulse 2s infinite;
-            position: relative;
-            overflow: hidden;
-            margin-right: 20px;
+            position: relative; overflow: hidden; margin-right: 20px; cursor: pointer;
         }
-
         .emergency-btn::before {
             content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
+            position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
             transition: left 0.5s ease;
         }
-
-        .emergency-btn:hover::before {
-            left: 100%;
-        }
-
+        .emergency-btn:hover::before { left: 100%; }
         .emergency-btn:hover {
             transform: translateY(-2px) scale(1.05);
             box-shadow: 0 12px 32px rgba(220, 38, 38, 0.6);
         }
-
-        .emergency-btn i {
-            animation: heartbeat 1.5s infinite;
-            margin-right: 8px;
-        }
+        .emergency-btn i { animation: heartbeat 1.5s infinite; margin-right: 8px; }
 
         @keyframes emergency-pulse {
-            0%, 100% {
-                box-shadow: 0 8px 24px rgba(220, 38, 38, 0.4), 0 0 0 0 rgba(220, 38, 38, 0.7);
-            }
-            50% {
-                box-shadow: 0 8px 24px rgba(220, 38, 38, 0.4), 0 0 0 8px rgba(220, 38, 38, 0);
-            }
-        }
-
-        @keyframes heartbeat {
-            0%, 50%, 100% { transform: scale(1); }
-            25%, 75% { transform: scale(1.2); }
+            0%, 100% { box-shadow: 0 8px 24px rgba(220, 38, 38, 0.4), 0 0 0 0 rgba(220, 38, 38, 0.7); }
+            50%       { box-shadow: 0 8px 24px rgba(220, 38, 38, 0.4), 0 0 0 8px rgba(220, 38, 38, 0); }
         }
 
         .topbar-title {
             font-weight: 800;
             background: var(--primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-size: 1.4rem;
-            letter-spacing: 0.5px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            position: relative;
-            z-index: 1;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            font-size: 1.4rem; letter-spacing: 0.5px; position: relative; z-index: 1;
         }
 
         .date-badge, .time-badge {
             background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1));
-            border: 1px solid rgba(102, 126, 234, 0.2);
-            border-radius: 50px;
-            padding: 6px 14px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: rgba(0,0,0,0.8);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
+            border: 1px solid rgba(102, 126, 234, 0.2); border-radius: 50px;
+            padding: 6px 14px; font-size: 0.8rem; font-weight: 600; color: rgba(0,0,0,0.8);
+            display: flex; align-items: center; gap: 6px;
+            backdrop-filter: blur(10px); transition: all 0.3s ease;
         }
-
         .date-badge:hover, .time-badge:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px); box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
         }
 
-        .topbar-left,
-        .topbar-right {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 14px;
+        .topbar-left, .topbar-right {
+            display: flex; align-items: center; flex-wrap: wrap; gap: 14px;
         }
 
-        .search-container {
-            position: relative;
-            width: 280px;
-            min-width: 220px;
-        }
-
+        .search-container { position: relative; width: 280px; min-width: 220px; }
         .search-input {
-            border-radius: 50px;
-            border: 1px solid rgba(0,0,0,0.12);
-            padding: 10px 16px 10px 44px;
-            font-size: 0.88rem;
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            transition: all 0.25s ease;
+            border-radius: 50px; border: 1px solid rgba(0,0,0,0.12);
+            padding: 10px 16px 10px 44px; font-size: 0.88rem;
+            background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); transition: all 0.25s ease;
+            width: 100%;
         }
-
         .search-input:focus {
-            border-color: #2563eb;
-            box-shadow: 0 0 0 0.18rem rgba(37, 99, 235, 0.15);
+            border-color: #667eea; box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+            background: rgba(255,255,255,0.95); transform: scale(1.02); outline: none;
+        }
+        .search-icon {
+            position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+            color: rgba(0,0,0,0.4); font-size: 0.9rem; transition: color 0.3s ease;
         }
 
         .health-status {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 14px;
-            border-radius: 50px;
-            background: rgba(34, 197, 94, 0.1);
-            border: 1px solid rgba(34, 197, 94, 0.2);
-            min-width: 170px;
+            display: flex; align-items: center; gap: 12px;
+            background: rgba(255,255,255,0.9); backdrop-filter: blur(10px);
+            border-radius: 50px; padding: 8px 16px;
+            border: 2px solid rgba(34, 197, 94, 0.2); transition: all 0.3s ease;
         }
+        .health-status:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2); }
 
         .status-indicator {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(34, 197, 94, 0.18);
-            color: #16a34a;
-            font-size: 0.9rem;
+            width: 32px; height: 32px; border-radius: 50%;
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            display: flex; align-items: center; justify-content: center;
+            color: white; animation: pulse-green 2s infinite;
+        }
+        .status-indicator i { font-size: 1rem; animation: heartbeat 2s infinite; }
+        .status-text { display: flex; flex-direction: column; align-items: flex-start; }
+        .status-label { font-size: 0.7rem; color: rgba(0,0,0,0.6); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .status-value { font-size: 0.85rem; font-weight: 700; color: #16a34a; }
+
+        @keyframes pulse-green {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4), 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            50%       { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4), 0 0 0 6px rgba(34, 197, 94, 0); }
         }
 
-        .status-text {
-            display: flex;
-            flex-direction: column;
-            line-height: 1.1;
-            white-space: nowrap;
-        }
-
-        .status-label {
-            font-size: 0.72rem;
-            color: rgba(0,0,0,0.55);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-        }
-
-        .status-value {
-            font-weight: 800;
-            color: #0f172a;
-            font-size: 0.88rem;
-        }
-
-        .assistant-toggle {
-            position: fixed;
-            right: 30px;
-            bottom: 30px;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: #0f172a;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 16px 40px rgba(15,23,42,0.18);
-            cursor: pointer;
-            z-index: 1003;
-            transition: transform 0.2s ease, opacity 0.2s ease;
-        }
-
-        .assistant-toggle:hover {
-            transform: translateY(-2px);
-            opacity: 0.95;
-        }
-
-        .assistant-widget.hide,
-        .health-tips-widget.hide {
-            display: none !important;
-        }
-
-        .search-input:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
-            background: rgba(255,255,255,0.95);
-            transform: scale(1.02);
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: rgba(0,0,0,0.4);
-            font-size: 0.9rem;
-            transition: color 0.3s ease;
-        }
-
-        .search-input:focus + .search-icon {
-            color: #667eea;
-        }
-
-        .notification-container, .user-profile-container {
-            position: relative;
-        }
+        .notification-container, .user-profile-container { position: relative; }
 
         .notification-btn, .user-profile-btn {
-            background: rgba(255,255,255,0.9);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 2px solid rgba(0,0,0,0.1);
-            border-radius: 50px;
-            padding: 8px 16px;
-            color: rgba(0,0,0,0.7);
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            position: relative;
+            background: rgba(255,255,255,0.9); backdrop-filter: blur(10px);
+            border: 2px solid rgba(0,0,0,0.1); border-radius: 50px;
+            padding: 8px 16px; color: rgba(0,0,0,0.7); font-weight: 600;
+            display: flex; align-items: center; gap: 8px; transition: all 0.3s ease; position: relative;
         }
-
         .notification-btn:hover, .user-profile-btn:hover {
-            border-color: #667eea;
-            background: rgba(255,255,255,0.95);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+            border-color: #667eea; background: rgba(255,255,255,0.95);
+            transform: translateY(-2px); box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
         }
 
         .notification-badge {
-            position: absolute;
-            top: -8px;
-            right: -8px;
+            position: absolute; top: -8px; right: -8px;
             background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.7rem;
-            font-weight: 800;
+            color: white; border-radius: 50%; width: 20px; height: 20px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.7rem; font-weight: 800;
             box-shadow: 0 2px 8px rgba(255, 107, 107, 0.4);
             animation: pulse-notification 2s infinite;
         }
-
         @keyframes pulse-notification {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+            50%       { transform: scale(1.1); }
         }
 
         .user-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 800;
-            font-size: 0.9rem;
+            width: 32px; height: 32px; border-radius: 50%;
+            background: var(--primary); display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: 800; font-size: 0.9rem;
             box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
         }
-
-        .user-info-mini {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            min-width: 0;
-        }
-
-        .user-name {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: rgba(0,0,0,0.9);
-            line-height: 1;
-        }
-
-        .user-role {
-            font-size: 0.7rem;
-            color: rgba(0,0,0,0.6);
-            font-weight: 500;
-        }
+        .user-info-mini { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
+        .user-name { font-size: 0.85rem; font-weight: 700; color: rgba(0,0,0,0.9); line-height: 1; }
+        .user-role { font-size: 0.7rem; color: rgba(0,0,0,0.6); font-weight: 500; }
 
         .notification-dropdown, .user-dropdown {
-            border-radius: var(--border-radius);
-            border: none;
+            border-radius: var(--border-radius); border: none;
             box-shadow: 0 12px 40px rgba(0,0,0,0.15);
             background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.2);
-            padding: 0;
-            min-width: 320px;
+            backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.2);
+            padding: 0; min-width: 320px;
         }
 
         .dropdown-header {
-            padding: 20px;
-            background: var(--primary);
-            color: white;
+            padding: 20px; background: var(--primary); color: white;
             border-radius: var(--border-radius) var(--border-radius) 0 0;
-            display: flex;
-            align-items: center;
-            gap: 14px;
+            display: flex; align-items: center; gap: 14px;
         }
-
-        .dropdown-header h6 {
-            margin: 0;
-            font-weight: 800;
-            font-size: 1rem;
-        }
+        .dropdown-header h6 { margin: 0; font-weight: 800; font-size: 1rem; }
 
         .user-avatar-large {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 800;
-            font-size: 1.2rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            width: 50px; height: 50px; border-radius: 50%;
+            background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: 800; font-size: 1.2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
-
-        .user-details-full {
-            flex: 1;
-        }
-
-        .user-name-full {
-            font-size: 1.1rem;
-            font-weight: 800;
-            margin-bottom: 2px;
-        }
-
-        .user-email {
-            font-size: 0.85rem;
-            opacity: 0.9;
-            margin-bottom: 4px;
-        }
-
+        .user-details-full { flex: 1; }
+        .user-name-full { font-size: 1.1rem; font-weight: 800; margin-bottom: 2px; }
+        .user-email { font-size: 0.85rem; opacity: 0.9; margin-bottom: 4px; }
         .user-role-badge {
-            display: inline-block;
-            background: rgba(255,255,255,0.2);
-            color: white;
-            padding: 2px 8px;
-            border-radius: 50px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            display: inline-block; background: rgba(255,255,255,0.2); color: white;
+            padding: 2px 8px; border-radius: 50px; font-size: 0.7rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.5px;
         }
 
         .notification-item {
-            padding: 16px 20px;
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            transition: all 0.3s ease;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding: 16px 20px; display: flex; align-items: flex-start; gap: 12px;
+            transition: all 0.3s ease; border-bottom: 1px solid rgba(0,0,0,0.05);
         }
-
-        .notification-item:last-child {
-            border-bottom: none;
-        }
-
-        .notification-item:hover {
-            background: rgba(102, 126, 234, 0.05);
-            transform: translateX(4px);
-        }
-
+        .notification-item:last-child { border-bottom: none; }
+        .notification-item:hover { background: rgba(102, 126, 234, 0.05); transform: translateX(4px); }
         .notification-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1rem;
-            flex-shrink: 0;
+            width: 40px; height: 40px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 1rem; flex-shrink: 0;
         }
+        .notification-content { flex: 1; }
+        .notification-title { font-weight: 700; font-size: 0.9rem; color: rgba(0,0,0,0.9); margin-bottom: 2px; }
+        .notification-text  { font-size: 0.8rem; color: rgba(0,0,0,0.7); margin-bottom: 4px; }
+        .notification-time  { font-size: 0.7rem; color: rgba(0,0,0,0.5); font-weight: 500; }
 
-        .notification-content {
-            flex: 1;
-        }
-
-        .notification-title {
-            font-weight: 700;
-            font-size: 0.9rem;
-            color: rgba(0,0,0,0.9);
-            margin-bottom: 2px;
-        }
-
-        .notification-text {
-            font-size: 0.8rem;
-            color: rgba(0,0,0,0.7);
-            margin-bottom: 4px;
-        }
-
-        .notification-time {
-            font-size: 0.7rem;
-            color: rgba(0,0,0,0.5);
-            font-weight: 500;
-        }
-
-        /* Health Status Indicator */
-        .health-status {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: rgba(255,255,255,0.9);
-            backdrop-filter: blur(10px);
-            border-radius: 50px;
-            padding: 8px 16px;
-            border: 2px solid rgba(34, 197, 94, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        .health-status:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
-        }
-
-        .status-indicator {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            animation: pulse-green 2s infinite;
-            box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
-        }
-
-        .status-indicator i {
-            font-size: 1rem;
-            animation: heartbeat 2s infinite;
-        }
-
-        .status-text {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        .status-label {
-            font-size: 0.7rem;
-            color: rgba(0,0,0,0.6);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .status-value {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: #16a34a;
-        }
-
-        @keyframes pulse-green {
-            0%, 100% {
-                box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4), 0 0 0 0 rgba(34, 197, 94, 0.7);
-            }
-            50% {
-                box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4), 0 0 0 6px rgba(34, 197, 94, 0);
-            }
-        }
-
+        /* ===== PAGE CONTENT ===== */
         .page-content {
-            padding: 36px;
-            background: transparent;
-            position: relative;
+            padding: 36px; background: transparent; position: relative;
             animation: fadeInUp 0.8s ease-out;
         }
-
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
+        /* ===== CARDS ===== */
         .card {
-            border: none;
-            border-radius: var(--border-radius);
-            box-shadow: var(--card-shadow);
+            border: none; border-radius: var(--border-radius); box-shadow: var(--card-shadow);
             transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            overflow: hidden;
-            position: relative;
+            backdrop-filter: blur(20px); overflow: hidden; position: relative;
             border: 1px solid rgba(255,255,255,0.2);
         }
-
         .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 6px;
-            background: var(--primary);
-            transform: scaleX(0);
-            transform-origin: left;
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px;
+            background: var(--primary); transform: scaleX(0); transform-origin: left;
             transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             border-radius: var(--border-radius) var(--border-radius) 0 0;
         }
-
-        .card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .card::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            padding: 2px;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1));
-            border-radius: inherit;
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask-composite: exclude;
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-
-        .card:hover::after {
-            opacity: 1;
-        }
-
+        .card:hover::before  { transform: scaleX(1); }
         .card:hover {
             transform: translateY(-8px) scale(1.01);
             box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 8px 20px rgba(0,0,0,0.1);
         }
 
         .alert {
-            border-radius: 16px;
-            border: none;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            border-radius: 16px; border: none; box-shadow: 0 8px 24px rgba(0,0,0,0.1);
             background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.2);
-            position: relative;
-            overflow: hidden;
+            backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.2);
+            position: relative; overflow: hidden;
         }
-
         .alert::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--primary);
-            border-radius: 16px 16px 0 0;
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            background: var(--primary); border-radius: 16px 16px 0 0;
         }
 
         .btn {
-            border-radius: 50px;
-            padding: 10px 24px;
-            font-weight: 700;
+            border-radius: 50px; padding: 10px 24px; font-weight: 700;
             transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            position: relative;
-            overflow: hidden;
-            border: none;
+            position: relative; overflow: hidden; border: none;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-size: 0.85rem;
+            text-transform: uppercase; letter-spacing: 0.5px; font-size: 0.85rem;
         }
-
         .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
             transition: left 0.6s ease;
         }
-
-        .btn:hover::before {
-            left: 100%;
-        }
-
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-        }
+        .btn:hover::before { left: 100%; }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
 
         .btn-outline-danger {
-            border: 2px solid #ff6b6b !important;
-            color: #ff6b6b;
-            background: transparent;
+            border: 2px solid #ff6b6b !important; color: #ff6b6b; background: transparent;
         }
-
         .btn-outline-danger:hover {
-            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
-            border-color: #ff6b6b;
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4);
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e); border-color: #ff6b6b;
+            color: white; transform: translateY(-3px); box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4);
         }
 
-        .form-control {
-            border-radius: 16px;
-            border: 2px solid rgba(0,0,0,0.1);
-            padding: 12px 20px;
-            font-size: 0.95rem;
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        .form-control, .form-select {
+            border-radius: 8px; border: 2px solid rgba(0,0,0,0.1); transition: all 0.3s ease;
             background: rgba(255,255,255,0.8);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
         }
-
-        .form-control:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
-            background: rgba(255,255,255,0.95);
-            transform: translateY(-2px);
-        }
-
-        .form-control::placeholder {
-            color: rgba(0,0,0,0.4);
-            font-weight: 500;
+        .form-control:focus, .form-select:focus {
+            border-color: #667eea; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); background: white;
         }
 
         .form-label {
-            font-weight: 700;
-            color: rgba(0,0,0,0.8);
-            margin-bottom: 8px;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            font-size: 0.8rem;
+            font-weight: 700; color: rgba(0,0,0,0.8); margin-bottom: 8px;
+            letter-spacing: 0.5px; text-transform: uppercase; font-size: 0.8rem;
         }
 
         .table {
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            box-shadow: var(--card-shadow);
+            border-radius: 12px; overflow: hidden; box-shadow: var(--card-shadow);
             background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.2);
         }
-
         .table thead th {
-            background: var(--primary);
-            color: white;
-            border: none;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.8rem;
-            padding: 16px;
-            position: relative;
+            background: var(--primary); color: white; border: none;
+            font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
+            font-size: 0.8rem; padding: 16px;
         }
-
-        .table thead th::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: rgba(255,255,255,0.3);
-        }
-
-        .table tbody tr {
-            transition: all 0.3s ease;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-        }
-
-        .table tbody tr:hover {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.02), rgba(240, 147, 251, 0.02));
-            transform: scale(1.01);
-        }
-
-        .table tbody td {
-            padding: 16px;
-            border: none;
-            vertical-align: middle;
-            font-weight: 500;
-        }
-
-        .badge {
-            border-radius: 50px;
-            padding: 6px 16px;
-            font-weight: 700;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border: none;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .dropdown-menu {
-            border-radius: var(--border-radius);
-            border: none;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
-            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.2);
-            padding: 8px;
-        }
-
-        .dropdown-item {
-            border-radius: 12px;
-            padding: 12px 20px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            margin: 2px 0;
-        }
-
-        .dropdown-item:hover {
-            background: var(--primary);
-            color: white;
-            transform: translateX(8px);
-        }
-
-        .modal-content {
-            border-radius: var(--border-radius);
-            border: none;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.2);
-            overflow: hidden;
-        }
-
-        .modal-header {
-            background: var(--primary);
-            color: white;
-            border-bottom: none;
-            padding: 24px 32px;
-            position: relative;
-        }
-
-        .modal-header::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: rgba(255,255,255,0.3);
-        }
-
-        .modal-body {
-            padding: 32px;
-        }
-
-        .modal-footer {
-            border-top: 1px solid rgba(0,0,0,0.1);
-            padding: 24px 32px;
-            background: rgba(248,249,250,0.5);
-        }
-
-        .progress {
-            border-radius: 50px;
-            height: 12px;
-            background: rgba(0,0,0,0.1);
-            overflow: hidden;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .progress-bar {
-            background: var(--primary);
-            border-radius: 50px;
-            transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .progress-bar::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            animation: progress-shine 2s infinite;
-        }
-
-        @keyframes progress-shine {
-            0% { left: -100%; }
-            100% { left: 100%; }
-        }
-
-        @keyframes shimmer {
-            0% { left: -100%; }
-            100% { left: 100%; }
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-
-            .with-sidebar {
-                margin-left: 0;
-            }
-
-            .sidebar.show {
-                transform: translateX(0);
-            }
-
-            .topbar {
-                padding: 16px 20px;
-            }
-
-            .page-content {
-                padding: 20px;
-            }
-
-            .sidebar-brand {
-                padding: 20px 16px;
-                font-size: 1.2rem;
-            }
-
-            .sidebar .nav-link {
-                padding: 12px 16px;
-                margin: 4px 8px;
-            }
-        }
-
-        /* Loading Animation */
-        .loading {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .loading::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            animation: loading 1.5s infinite;
-        }
-
-        @keyframes loading {
-            0% { left: -100%; }
-            100% { left: 100%; }
-        }
-
-        /* Scrollbar Styling */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: rgba(0,0,0,0.05);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--primary);
-            border-radius: 4px;
-            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.2);
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-        }
-
-        /* Loading animation */
-        @keyframes shimmer {
-            0% { background-position: -200px 0; }
-            100% { background-position: calc(200px + 100%) 0; }
-        }
-
-        .loading {
-            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-            background-size: 200px 100%;
-            animation: shimmer 1.5s infinite;
-        }
-
-        /* Enhanced animations */
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .page-content {
-            animation: slideInRight 0.5s ease-out;
-        }
-
-        /* Enhanced focus states */
-        .sidebar .nav-link:focus,
-        .btn:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
-        }
-
-        /* Better table styling */
-        .table {
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: var(--card-shadow);
-        }
-
-        .table thead th {
-            background: var(--primary);
-            color: white;
-            border: none;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-size: 0.8rem;
-        }
-
-        .table tbody tr {
-            transition: all 0.2s ease;
-        }
-
+        .table tbody tr { transition: all 0.2s ease; border-bottom: 1px solid rgba(0,0,0,0.05); }
         .table tbody tr:hover {
             background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, transparent 100%);
             transform: scale(1.01);
         }
+        .table tbody td { padding: 16px; border: none; vertical-align: middle; font-weight: 500; }
 
-        /* Form enhancements */
-        .form-control, .form-select {
-            border-radius: 8px;
-            border: 2px solid rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            background: rgba(255,255,255,0.8);
-        }
-
-        .form-control:focus, .form-select:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-            background: white;
-        }
-
-        /* Badge enhancements */
         .badge {
-            border-radius: 20px;
-            font-weight: 600;
-            letter-spacing: 0.3px;
+            border-radius: 20px; padding: 6px 16px; font-weight: 600;
+            font-size: 0.75rem; letter-spacing: 0.3px; border: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
-        /* Modal enhancements */
+        .dropdown-menu {
+            border-radius: var(--border-radius); border: none;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
+            backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.2); padding: 8px;
+        }
+        .dropdown-item {
+            border-radius: 12px; padding: 12px 20px; font-weight: 600;
+            transition: all 0.3s ease; margin: 2px 0;
+        }
+        .dropdown-item:hover { background: var(--primary); color: white; transform: translateX(8px); }
+
         .modal-content {
-            border-radius: 16px;
-            border: none;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border-radius: 16px; border: none; box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
+            backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.2); overflow: hidden;
         }
-
         .modal-header {
-            background: var(--primary);
-            color: white;
-            border-radius: 16px 16px 0 0;
-            border: none;
+            background: var(--primary); color: white;
+            border-radius: 16px 16px 0 0; border: none; padding: 24px 32px;
+        }
+        .modal-body   { padding: 32px; }
+        .modal-footer {
+            border-top: 1px solid rgba(0,0,0,0.1); padding: 24px 32px;
+            background: rgba(248,249,250,0.5);
         }
 
-        /* Loading spinner */
-        .spinner-border {
-            color: #667eea;
+        .progress {
+            border-radius: 50px; height: 12px; background: rgba(0,0,0,0.1);
+            overflow: hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
         }
-
-        /* Custom scrollbar for main content */
-        .main-content::-webkit-scrollbar {
-            width: 8px;
+        .progress-bar {
+            background: var(--primary); border-radius: 50px;
+            transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative; overflow: hidden;
         }
-
-        .main-content::-webkit-scrollbar-track {
-            background: rgba(0,0,0,0.05);
+        .progress-bar::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: progress-shine 2s infinite;
         }
+        @keyframes progress-shine { 0% { left: -100%; } 100% { left: 100%; } }
+        @keyframes shimmer        { 0% { left: -100%; } 100% { left: 100%; } }
 
-        .main-content::-webkit-scrollbar-thumb {
-            background: rgba(0,0,0,0.2);
-            border-radius: 4px;
-        }
-
-        .main-content::-webkit-scrollbar-thumb:hover {
-            background: rgba(0,0,0,0.3);
-        }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-                box-shadow: 4px 0 20px rgba(0,0,0,0.2);
-            }
-
-            .main-content {
-                margin-left: 0 !important;
-            }
-
-            .topbar {
-                padding: 12px 20px;
-            }
-
-            .page-content {
-                padding: 20px 16px;
-            }
-
-            .topbar-title {
-                font-size: 1.1rem;
-            }
-        }
-
-        /* Quick Actions */
+        /* ===== QUICK ACTIONS ===== */
         .quick-actions {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 1000;
-            display: none;
-            animation: slideUp 0.5s ease-out;
+            position: fixed; bottom: 30px; right: 30px;
+            z-index: 1000; display: none; animation: slideUp 0.5s ease-out;
         }
-
-        .quick-actions.show {
-            display: block;
-        }
+        .quick-actions.show { display: block; }
 
         .action-card {
             background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
-            backdrop-filter: blur(20px);
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 12px;
-            position: relative;
-            overflow: hidden;
+            backdrop-filter: blur(20px); border-radius: 16px; padding: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1); border: 1px solid rgba(255,255,255,0.2);
+            cursor: pointer; transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: flex; align-items: center; gap: 16px; margin-bottom: 12px;
+            position: relative; overflow: hidden;
         }
-
         .action-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--primary);
-            transform: scaleX(0);
-            transform-origin: left;
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            background: var(--primary); transform: scaleX(0); transform-origin: left;
             transition: transform 0.4s ease;
         }
+        .action-card:hover::before  { transform: scaleX(1); }
+        .action-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 16px 48px rgba(0,0,0,0.15); }
 
-        .action-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .action-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 16px 48px rgba(0,0,0,0.15);
-        }
-
-        .emergency-action {
-            border-left: 4px solid #dc2626;
-        }
-
-        .emergency-action:hover {
-            box-shadow: 0 16px 48px rgba(220, 38, 38, 0.2);
-        }
-
-        .appointment-action {
-            border-left: 4px solid #2563eb;
-        }
-
-        .appointment-action:hover {
-            box-shadow: 0 16px 48px rgba(37, 99, 235, 0.2);
-        }
-
-        .health-action {
-            border-left: 4px solid #16a34a;
-        }
-
-        .health-action:hover {
-            box-shadow: 0 16px 48px rgba(22, 163, 74, 0.2);
-        }
-
-        .pharmacy-action {
-            border-left: 4px solid #ca8a04;
-        }
-
-        .pharmacy-action:hover {
-            box-shadow: 0 16px 48px rgba(202, 138, 4, 0.2);
-        }
+        .emergency-action   { border-left: 4px solid #dc2626; }
+        .appointment-action { border-left: 4px solid #2563eb; }
+        .health-action      { border-left: 4px solid #16a34a; }
+        .pharmacy-action    { border-left: 4px solid #ca8a04; }
 
         .action-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            color: white;
-            position: relative;
+            width: 48px; height: 48px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; color: white; position: relative;
         }
+        .emergency-action .action-icon   { background: linear-gradient(135deg, #dc2626, #b91c1c); animation: emergency-pulse 2s infinite; }
+        .appointment-action .action-icon { background: linear-gradient(135deg, #2563eb, #1d4ed8); }
+        .health-action .action-icon      { background: linear-gradient(135deg, #16a34a, #15803d); animation: pulse-green 2s infinite; }
+        .pharmacy-action .action-icon    { background: linear-gradient(135deg, #ca8a04, #a16207); }
 
-        .emergency-action .action-icon {
-            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
-            animation: emergency-pulse 2s infinite;
-        }
-
-        .appointment-action .action-icon {
-            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-        }
-
-        .health-action .action-icon {
-            background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
-            animation: pulse-green 2s infinite;
-        }
-
-        .pharmacy-action .action-icon {
-            background: linear-gradient(135deg, #ca8a04 0%, #a16207 100%);
-        }
-
-        .action-content h6 {
-            margin: 0;
-            font-weight: 700;
-            font-size: 0.9rem;
-            color: rgba(0,0,0,0.9);
-        }
-
-        .action-content p {
-            margin: 4px 0 0 0;
-            font-size: 0.75rem;
-            color: rgba(0,0,0,0.6);
-            font-weight: 500;
-        }
+        .action-content h6 { margin: 0; font-weight: 700; font-size: 0.9rem; color: rgba(0,0,0,0.9); }
+        .action-content p  { margin: 4px 0 0 0; font-size: 0.75rem; color: rgba(0,0,0,0.6); font-weight: 500; }
 
         @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
-        /* Emergency Modal Styles */
-        .emergency-contact-card {
-            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
-            backdrop-filter: blur(20px);
-            border-radius: 16px;
-            padding: 24px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .emergency-contact-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
-        }
-
-        .contact-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 16px;
-            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
-        }
-
-        .contact-info h6 {
-            margin: 0 0 4px 0;
-            font-weight: 700;
-            color: rgba(0,0,0,0.9);
-            font-size: 1rem;
-        }
-
-        .phone-number {
-            margin: 0;
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: #dc2626;
-            letter-spacing: 1px;
-        }
-
-        .contact-info small {
-            color: rgba(0,0,0,0.6);
-            font-weight: 500;
-        }
-
-        .emergency-form {
-            background: rgba(248,249,250,0.5);
-            border-radius: 12px;
-            padding: 24px;
-            border: 1px solid rgba(0,0,0,0.1);
-        }
-
-        .emergency-form h6 {
-            color: rgba(0,0,0,0.8);
-            font-weight: 700;
-        }
-
-        /* Health Tips Widget */
+        /* ===== HEALTH TIPS WIDGET ===== */
         .health-tips-widget {
-            position: fixed;
-            bottom: 30px;
-            left: calc(var(--sidebar-width) + 30px);
-            width: 320px;
+            position: fixed; bottom: 30px; left: calc(var(--sidebar-width) + 30px); width: 320px;
             background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
-            backdrop-filter: blur(20px);
-            border-radius: 16px;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
-            border: 1px solid rgba(255,255,255,0.2);
-            overflow: hidden;
-            z-index: 1000;
-            animation: slideInLeft 0.5s ease-out;
+            backdrop-filter: blur(20px); border-radius: 16px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.2);
+            overflow: hidden; z-index: 1000; animation: slideInLeft 0.5s ease-out;
         }
-
-        .assistant-widget {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 320px;
-            max-width: calc(100vw - 40px);
-            background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(241,245,249,0.98) 100%);
-            backdrop-filter: blur(22px);
-            border-radius: 18px;
-            box-shadow: 0 16px 48px rgba(15,23,42,0.12);
-            border: 1px solid rgba(148,163,184,0.18);
-            overflow: hidden;
-            z-index: 1002;
-            display: flex;
-            flex-direction: column;
-            animation: slideInRight 0.5s ease-out;
-        }
-
-        .assistant-header {
-            background: #0f172a;
-            color: white;
-            padding: 16px 18px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-        }
-
-        .assistant-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 800;
-            font-size: 0.95rem;
-        }
-
-        .assistant-title i {
-            font-size: 1.1rem;
-            color: #38bdf8;
-        }
-
-        .assistant-close {
-            background: none;
-            border: none;
-            color: rgba(255,255,255,0.8);
-            cursor: pointer;
-            font-size: 1rem;
-            padding: 4px;
-            border-radius: 50%;
-        }
-
-        .assistant-body {
-            padding: 16px;
-            display: grid;
-            gap: 12px;
-        }
-
-        .assistant-message {
-            background: rgba(15,23,42,0.04);
-            border-radius: 14px;
-            padding: 14px 16px;
-            color: #0f172a;
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-
-        .assistant-input-group {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .assistant-input {
-            flex: 1;
-            border-radius: 999px;
-            border: 1px solid rgba(148,163,184,0.5);
-            padding: 10px 16px;
-            background: white;
-            font-size: 0.9rem;
-        }
-
-        .assistant-submit {
-            border-radius: 999px;
-            border: none;
-            background: var(--primary);
-            color: white;
-            padding: 10px 16px;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-
-        .assistant-submit:hover {
-            transform: translateY(-1px);
-        }
-
-        .assistant-response {
-            min-height: 50px;
-            border-radius: 16px;
-            border: 1px solid rgba(148,163,184,0.4);
-            padding: 14px 16px;
-            font-size: 0.88rem;
-            color: #334155;
-            background: rgba(255,255,255,0.9);
-        }
-
-        .search-suggestions {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: white;
-            border: 1px solid rgba(148,163,184,0.35);
-            border-radius: 14px;
-            box-shadow: 0 12px 32px rgba(15,23,42,0.08);
-            margin-top: 10px;
-            overflow: hidden;
-            display: none;
-            z-index: 1002;
-            font-size: 0.9rem;
-        }
-
-        .search-suggestions.active {
-            display: block;
-        }
-
-        .search-suggestion-item {
-            padding: 12px 16px;
-            cursor: pointer;
-            transition: background 0.2s ease;
-            color: #0f172a;
-        }
-
-        .search-suggestion-item:hover {
-            background: rgba(15,23,42,0.05);
-        }
-
-        .assistant-widget.hide,
-        .health-tips-widget.hide {
-            display: none !important;
-        }
-
-        .tips-close {
-            background: none;
-            border: none;
-            color: white;
-            cursor: pointer;
-            font-size: 0.95rem;
-            padding: 6px;
-            border-radius: 50%;
-            transition: background 0.2s ease;
-        }
-
-        .tips-close:hover {
-            background: rgba(255,255,255,0.15);
-        }
-
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @media (max-width: 992px) {
-            .health-tips-widget {
-                left: 30px;
-                width: calc(100vw - 60px);
-                max-width: 380px;
-            }
-
-            .assistant-widget {
-                right: 20px;
-                width: calc(100vw - 40px);
-                max-width: 380px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .search-container {
-                width: 220px;
-            }
-
-            .assistant-widget,
-            .health-tips-widget {
-                bottom: 20px;
-                width: calc(100vw - 40px);
-            }
-        }
-
         .tips-header {
-            background: var(--primary);
-            color: white;
-            padding: 16px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-weight: 700;
+            background: var(--primary); color: white; padding: 16px 20px;
+            display: flex; align-items: center; justify-content: space-between; font-weight: 700;
         }
-
-        .tips-header i {
-            font-size: 1.1rem;
-            margin-right: 8px;
-        }
-
         .tips-close {
-            background: none;
-            border: none;
-            color: rgba(255,255,255,0.8);
-            font-size: 0.9rem;
-            cursor: pointer;
-            padding: 4px;
-            border-radius: 50%;
+            background: none; border: none; color: rgba(255,255,255,0.8);
+            font-size: 0.9rem; cursor: pointer; padding: 4px; border-radius: 50%;
             transition: all 0.3s ease;
         }
-
-        .tips-close:hover {
-            background: rgba(255,255,255,0.2);
-            color: white;
-        }
-
-        .tips-content {
-            padding: 20px;
-            position: relative;
-            min-height: 120px;
-        }
-
-        .tip-item {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .tip-item.active {
-            display: flex;
-        }
-
+        .tips-close:hover { background: rgba(255,255,255,0.2); color: white; }
+        .tips-content { padding: 20px; position: relative; min-height: 120px; }
+        .tip-item { display: none; flex-direction: column; align-items: center; text-align: center; animation: fadeIn 0.5s ease; }
+        .tip-item.active { display: flex; }
         .tip-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
+            width: 60px; height: 60px; border-radius: 50%;
             background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-            margin-bottom: 16px;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 1.5rem; margin-bottom: 16px;
             box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
         }
-
-        .tip-text h6 {
-            margin: 0 0 8px 0;
-            font-weight: 700;
-            color: rgba(0,0,0,0.9);
-        }
-
-        .tip-text p {
-            margin: 0;
-            color: rgba(0,0,0,0.7);
-            font-size: 0.9rem;
-            line-height: 1.4;
-        }
-
+        .tip-text h6 { margin: 0 0 8px 0; font-weight: 700; color: rgba(0,0,0,0.9); }
+        .tip-text p  { margin: 0; color: rgba(0,0,0,0.7); font-size: 0.9rem; line-height: 1.4; }
         .tips-navigation {
-            padding: 16px 20px;
-            background: rgba(248,249,250,0.8);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            padding: 16px 20px; background: rgba(248,249,250,0.8);
+            display: flex; align-items: center; justify-content: space-between;
         }
-
         .tip-nav-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+            background: var(--primary); color: white; border: none;
+            width: 32px; height: 32px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+        }
+        .tip-nav-btn:hover { transform: scale(1.1); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4); }
+        .tip-indicators { display: flex; gap: 6px; }
+        .indicator { width: 8px; height: 8px; border-radius: 50%; background: rgba(0,0,0,0.2); transition: all 0.3s ease; }
+        .indicator.active { background: var(--primary); transform: scale(1.2); }
+
+        /* ===== ASSISTANT WIDGET ===== */
+        .assistant-widget {
+            position: fixed; bottom: 30px; right: 30px; width: 320px;
+            max-width: calc(100vw - 40px);
+            background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(241,245,249,0.98) 100%);
+            backdrop-filter: blur(22px); border-radius: 18px;
+            box-shadow: 0 16px 48px rgba(15,23,42,0.12); border: 1px solid rgba(148,163,184,0.18);
+            overflow: hidden; z-index: 1002; display: flex; flex-direction: column;
+            animation: slideInRight 0.5s ease-out;
+        }
+        .assistant-header {
+            background: #0f172a; color: white; padding: 16px 18px;
+            display: flex; align-items: center; justify-content: space-between; gap: 12px;
+        }
+        .assistant-title { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 0.95rem; }
+        .assistant-title i { font-size: 1.1rem; color: #38bdf8; }
+        .assistant-close {
+            background: none; border: none; color: rgba(255,255,255,0.8);
+            cursor: pointer; font-size: 1rem; padding: 4px; border-radius: 50%;
+        }
+        .assistant-body { padding: 16px; display: grid; gap: 12px; }
+        .assistant-message {
+            background: rgba(15,23,42,0.04); border-radius: 14px; padding: 14px 16px;
+            color: #0f172a; font-size: 0.9rem; line-height: 1.5;
+        }
+        .assistant-input-group { display: flex; gap: 10px; align-items: center; }
+        .assistant-input {
+            flex: 1; border-radius: 999px; border: 1px solid rgba(148,163,184,0.5);
+            padding: 10px 16px; background: white; font-size: 0.9rem;
+        }
+        .assistant-submit {
+            border-radius: 999px; border: none; background: var(--primary);
+            color: white; padding: 10px 16px; cursor: pointer; transition: transform 0.2s ease;
+        }
+        .assistant-submit:hover { transform: translateY(-1px); }
+
+        .assistant-toggle {
+            position: fixed; right: 30px; bottom: 30px;
+            width: 50px; height: 50px; border-radius: 50%;
+            background: #0f172a; color: white;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 16px 40px rgba(15,23,42,0.18);
+            cursor: pointer; z-index: 1003; transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+        .assistant-toggle:hover { transform: translateY(-2px); opacity: 0.95; }
+
+        .assistant-widget.hide, .health-tips-widget.hide { display: none !important; }
+
+        .search-suggestions {
+            position: absolute; top: 100%; left: 0; right: 0;
+            background: white; border: 1px solid rgba(148,163,184,0.35);
+            border-radius: 14px; box-shadow: 0 12px 32px rgba(15,23,42,0.08);
+            margin-top: 10px; overflow: hidden; display: none; z-index: 1002; font-size: 0.9rem;
+        }
+        .search-suggestions.active { display: block; }
+        .search-suggestion-item { padding: 12px 16px; cursor: pointer; transition: background 0.2s ease; color: #0f172a; }
+        .search-suggestion-item:hover { background: rgba(15,23,42,0.05); }
+
+        /* ===== EMERGENCY MODAL HOSPITAL CARDS ===== */
+        @keyframes emergencyShake {
+            0%,100% { transform: translateX(0); }
+            25% { transform: translateX(-3px) rotate(-5deg); }
+            75% { transform: translateX(3px) rotate(5deg); }
+        }
+        .hospital-card {
+            background: white; border-radius: 14px; padding: 14px 16px;
+            border: 2px solid transparent; transition: all 0.25s ease; cursor: pointer;
+            position: relative; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+        }
+        .hospital-card:hover { border-color: #2563eb; transform: translateY(-3px); box-shadow: 0 8px 24px rgba(37,99,235,0.15); }
+        .hospital-card.nearest-highlight { border-color: #dc2626; background: linear-gradient(135deg, #fff5f5, #fff); }
+        .nearest-badge {
+            position: absolute; top: 10px; right: 10px;
+            background: linear-gradient(135deg,#dc2626,#b91c1c); color: white;
+            font-size: 0.62rem; font-weight: 800; padding: 3px 8px; border-radius: 50px;
+            text-transform: uppercase; letter-spacing: 0.5px; animation: pulse-badge 1.5s infinite;
+        }
+        @keyframes pulse-badge {
+            0%,100% { box-shadow: 0 0 0 0 rgba(220,38,38,0.5); }
+            50%      { box-shadow: 0 0 0 5px rgba(220,38,38,0); }
+        }
+        .hosp-filter-btn { cursor: pointer; transition: all 0.2s; }
+        .hosp-filter-btn.active {
+            background: #2563eb !important; color: white !important; border-color: #2563eb !important;
+        }
+        .distance-badge {
+            display: inline-flex; align-items: center; gap: 4px;
+            background: rgba(37,99,235,0.1); color: #1d4ed8;
+            font-size: 0.7rem; font-weight: 700; padding: 3px 8px; border-radius: 50px; margin-top: 4px;
+        }
+        .govt-tag {
+            background: rgba(5,150,105,0.1); color: #047857;
+            font-size: 0.65rem; font-weight: 700; padding: 2px 8px; border-radius: 50px; display: inline-block;
+        }
+        .pvt-tag {
+            background: rgba(124,58,237,0.1); color: #6d28d9;
+            font-size: 0.65rem; font-weight: 700; padding: 2px 8px; border-radius: 50px; display: inline-block;
         }
 
-        .tip-nav-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
-        }
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: linear-gradient(135deg, #667eea, #764ba2); }
 
-        .tip-indicators {
-            display: flex;
-            gap: 6px;
+        /* ===== ANIMATIONS ===== */
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(20px); }
+            to   { opacity: 1; transform: translateX(0); }
         }
-
-        .indicator {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-        }
-
-        .indicator.active {
-            background: var(--primary);
-            transform: scale(1.2);
-        }
-
         @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+            from { opacity: 0; transform: translateX(-20px); }
+            to   { opacity: 1; transform: translateX(0); }
         }
-
         @keyframes fadeIn {
             from { opacity: 0; }
-            to { opacity: 1; }
+            to   { opacity: 1; }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); box-shadow: 4px 0 20px rgba(0,0,0,0.2); }
+            .sidebar.show { transform: translateX(0); }
+            .main-content { margin-left: 0 !important; }
+            .topbar { padding: 12px 20px; }
+            .page-content { padding: 20px 16px; }
+            .topbar-title { font-size: 1.1rem; }
+            .search-container { width: 220px; }
+            .assistant-widget, .health-tips-widget { bottom: 20px; width: calc(100vw - 40px); }
+        }
+        @media (max-width: 992px) {
+            .health-tips-widget { left: 30px; width: calc(100vw - 60px); max-width: 380px; }
+            .assistant-widget   { right: 20px; width: calc(100vw - 40px); max-width: 380px; }
         }
     </style>
     {% block extra_css %}{% endblock %}
@@ -2009,229 +751,205 @@
 
 <!-- Animated Background Particles -->
 <div class="particles">
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
+    <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+    <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+    <div class="particle"></div><div class="particle"></div><div class="particle"></div>
     <div class="particle"></div>
 </div>
 
 {% if user.is_authenticated %}
-    <div class="sidebar">
-        <div class="sidebar-brand">
-            <i class="fas fa-heartbeat"></i>
-            <span>HealthCare Portal</span>
-            <div style="margin-left: auto; font-size: 0.8rem; opacity: 0.8;">
-                <i class="fas fa-shield-alt"></i>
-            </div>
-        </div>
-        <nav class="mt-2">
-            <div class="nav-section">Main</div>
-            <a href="{% url 'dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
-                <i class="fas fa-tachometer-alt"></i> Dashboard
-            </a>
-
-            <div class="nav-section">Patients</div>
-            <a href="{% url 'patient_list' %}" class="nav-link {% if 'patient_list' in request.resolver_match.url_name %}active{% endif %}">
-                <i class="fas fa-users"></i> All Patients
-            </a>
-            <a href="{% url 'patient_create' %}" class="nav-link {% if 'patient_create' in request.resolver_match.url_name %}active{% endif %}">
-                <i class="fas fa-user-plus"></i> Add Patient
-            </a>
-
-            <div class="nav-section">Doctors</div>
-            <a href="{% url 'doctor_list' %}" class="nav-link {% if 'doctor_list' in request.resolver_match.url_name %}active{% endif %}">
-                <i class="fas fa-user-md"></i> All Doctors
-            </a>
-            <a href="{% url 'doctor_create' %}" class="nav-link {% if 'doctor_create' in request.resolver_match.url_name %}active{% endif %}">
-                <i class="fas fa-plus-circle"></i> Add Doctor
-            </a>
-            <a href="{% url 'specialization_list' %}" class="nav-link">
-                <i class="fas fa-stethoscope"></i> Specializations
-            </a>
-
-            <div class="nav-section">Appointments</div>
-            <a href="{% url 'appointment_list' %}" class="nav-link {% if 'appointment_list' in request.resolver_match.url_name %}active{% endif %}">
-                <i class="fas fa-calendar-alt"></i> All Appointments
-            </a>
-            <a href="{% url 'today_appointments' %}" class="nav-link">
-                <i class="fas fa-calendar-day"></i> Today's Schedule
-            </a>
-            <a href="{% url 'appointment_create' %}" class="nav-link">
-                <i class="fas fa-plus-circle"></i> Book Appointment
-            </a>
-
-            <div class="nav-section">Pharmacy</div>
-            <a href="{% url 'pharmacy_dashboard' %}" class="nav-link">
-                <i class="fas fa-pills"></i> Pharmacy
-            </a>
-            <a href="{% url 'medicine_list' %}" class="nav-link">
-                <i class="fas fa-capsules"></i> Medicines
-            </a>
-            <a href="{% url 'dispense_medicine' %}" class="nav-link">
-                <i class="fas fa-prescription-bottle"></i> Dispense
-            </a>
-
-            <div class="nav-section">Account</div>
-            <a href="{% url 'profile' %}" class="nav-link {% if 'profile' in request.resolver_match.url_name %}active{% endif %}">
-                <i class="fas fa-user-cog"></i> My Profile
-            </a>
-            <a href="{% url 'logout' %}" class="nav-link text-danger">
-                <i class="fas fa-sign-out-alt"></i> Logout
-            </a>
-        </nav>
+<div class="sidebar">
+    <div class="sidebar-brand">
+        <i class="fas fa-heartbeat"></i>
+        <span>HealthCare Portal</span>
+        <div style="margin-left:auto;font-size:0.8rem;opacity:0.8;"><i class="fas fa-shield-alt"></i></div>
     </div>
+    <nav class="mt-2">
+        <div class="nav-section">Main</div>
+        <a href="{% url 'dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+            <i class="fas fa-tachometer-alt"></i> Dashboard
+        </a>
+
+        <div class="nav-section">Patients</div>
+        <a href="{% url 'patient_list' %}" class="nav-link {% if 'patient_list' in request.resolver_match.url_name %}active{% endif %}">
+            <i class="fas fa-users"></i> All Patients
+        </a>
+        <a href="{% url 'patient_create' %}" class="nav-link {% if 'patient_create' in request.resolver_match.url_name %}active{% endif %}">
+            <i class="fas fa-user-plus"></i> Add Patient
+        </a>
+
+        <div class="nav-section">Doctors</div>
+        <a href="{% url 'doctor_list' %}" class="nav-link {% if 'doctor_list' in request.resolver_match.url_name %}active{% endif %}">
+            <i class="fas fa-user-md"></i> All Doctors
+        </a>
+        <a href="{% url 'doctor_create' %}" class="nav-link {% if 'doctor_create' in request.resolver_match.url_name %}active{% endif %}">
+            <i class="fas fa-plus-circle"></i> Add Doctor
+        </a>
+        <a href="{% url 'specialization_list' %}" class="nav-link">
+            <i class="fas fa-stethoscope"></i> Specializations
+        </a>
+
+        <div class="nav-section">Appointments</div>
+        <a href="{% url 'appointment_list' %}" class="nav-link {% if 'appointment_list' in request.resolver_match.url_name %}active{% endif %}">
+            <i class="fas fa-calendar-alt"></i> All Appointments
+        </a>
+        <a href="{% url 'today_appointments' %}" class="nav-link">
+            <i class="fas fa-calendar-day"></i> Today's Schedule
+        </a>
+        <a href="{% url 'appointment_create' %}" class="nav-link">
+            <i class="fas fa-plus-circle"></i> Book Appointment
+        </a>
+
+        <div class="nav-section">Pharmacy</div>
+        <a href="{% url 'pharmacy_dashboard' %}" class="nav-link">
+            <i class="fas fa-pills"></i> Pharmacy
+        </a>
+        <a href="{% url 'medicine_list' %}" class="nav-link">
+            <i class="fas fa-capsules"></i> Medicines
+        </a>
+        <a href="{% url 'dispense_medicine' %}" class="nav-link">
+            <i class="fas fa-prescription-bottle"></i> Dispense
+        </a>
+
+        <div class="nav-section">Account</div>
+        <a href="{% url 'profile' %}" class="nav-link {% if 'profile' in request.resolver_match.url_name %}active{% endif %}">
+            <i class="fas fa-user-cog"></i> My Profile
+        </a>
+        <a href="{% url 'logout' %}" class="nav-link text-danger">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+    </nav>
+</div>
 {% endif %}
 
 <div class="main-content {% if user.is_authenticated %}with-sidebar{% else %}no-sidebar{% endif %}">
     {% if user.is_authenticated %}
-        <div class="topbar">
-            <div class="topbar-left">
-                <span class="topbar-title">{% block page_title %}HealthCare Portal{% endblock %}</span>
-                <div class="date-badge">
-                    <i class="fas fa-calendar-day"></i>
-                    <span>{{ "now"|date:"M j, Y" }}</span>
-                </div>
-                <div class="time-badge">
-                    <i class="fas fa-clock"></i>
-                    <span id="current-time">{{ "now"|date:"H:i" }}</span>
-                </div>
+    <div class="topbar">
+        <div class="topbar-left">
+            <span class="topbar-title">{% block page_title %}HealthCare Portal{% endblock %}</span>
+            <div class="date-badge">
+                <i class="fas fa-calendar-day"></i>
+                <span>{{ "now"|date:"M j, Y" }}</span>
             </div>
-
-            <div class="topbar-right">
-                <!-- Emergency Button -->
-                <button class="emergency-btn" onclick="showEmergencyModal()">
-                    <i class="fas fa-ambulance"></i>
-                    Emergency
-                </button>
-
-                <!-- Health Status Indicator -->
-                <div class="health-status">
-                    <div class="status-indicator" id="health-pulse">
-                        <i class="fas fa-heartbeat"></i>
-                    </div>
-                    <div class="status-text">
-                        <span class="status-label">System Status</span>
-                        <span class="status-value">Online</span>
-                    </div>
-                </div>
-                <!-- Search Bar -->
-                <div class="search-container">
-                    <input type="text" class="form-control search-input" placeholder="Search patients, appointments..." id="global-search" autocomplete="off">
-                    <i class="fas fa-search search-icon"></i>
-                    <div class="search-suggestions" id="searchSuggestions"></div>
-                </div>
-
-                <!-- Notifications -->
-                <div class="notification-container">
-                    <button class="btn btn-sm notification-btn" type="button" data-bs-toggle="dropdown">
-                        <i class="fas fa-bell"></i>
-                        <span class="notification-badge">3</span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end notification-dropdown">
-                        <li class="dropdown-header">
-                            <h6 class="mb-0">Notifications</h6>
-                        </li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li>
-                            <a class="dropdown-item notification-item" href="#">
-                                <div class="notification-icon bg-primary">
-                                    <i class="fas fa-calendar-check"></i>
-                                </div>
-                                <div class="notification-content">
-                                    <div class="notification-title">Appointment Confirmed</div>
-                                    <div class="notification-text">Dr. Smith confirmed your appointment</div>
-                                    <div class="notification-time">2 min ago</div>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item notification-item" href="#">
-                                <div class="notification-icon bg-success">
-                                    <i class="fas fa-prescription"></i>
-                                </div>
-                                <div class="notification-content">
-                                    <div class="notification-title">Prescription Ready</div>
-                                    <div class="notification-text">Your prescription is ready for pickup</div>
-                                    <div class="notification-time">1 hour ago</div>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item notification-item" href="#">
-                                <div class="notification-icon bg-warning">
-                                    <i class="fas fa-exclamation-triangle"></i>
-                                </div>
-                                <div class="notification-content">
-                                    <div class="notification-title">Test Results</div>
-                                    <div class="notification-text">Your lab results are now available</div>
-                                    <div class="notification-time">3 hours ago</div>
-                                </div>
-                            </a>
-                        </li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item text-center" href="#">View All Notifications</a></li>
-                    </ul>
-                </div>
-
-                <!-- User Profile -->
-                <div class="user-profile-container">
-                    <button class="btn btn-sm user-profile-btn" type="button" data-bs-toggle="dropdown">
-                        <div class="user-avatar">
-                            {% with full_name=user.get_full_name|default:user.username %}
-                                <span class="avatar-text">{{ full_name|slice:":1"|upper }}{{ full_name|slice:"-1"|upper }}</span>
-                            {% endwith %}
-                        </div>
-                        <div class="user-info-mini">
-                            <div class="user-name">{{ user.get_full_name|default:user.username|truncatechars:15 }}</div>
-                            <div class="user-role">{{ user.groups.first.name|default:"User" }}</div>
-                        </div>
-                        <i class="fas fa-chevron-down"></i>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end user-dropdown">
-                        <li class="dropdown-header">
-                            <div class="user-avatar-large">
-                                {% with full_name=user.get_full_name|default:user.username %}
-                                    <span class="avatar-text-large">{{ full_name|slice:":1"|upper }}{{ full_name|slice:"-1"|upper }}</span>
-                                {% endwith %}
-                            </div>
-                            <div class="user-details-full">
-                                <div class="user-name-full">{{ user.get_full_name|default:user.username }}</div>
-                                <div class="user-email">{{ user.email }}</div>
-                                <div class="user-role-badge">{{ user.groups.first.name|default:"User" }}</div>
-                            </div>
-                        </li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="{% url 'profile' %}"><i class="fas fa-user me-2"></i>Profile Settings</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Preferences</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-moon me-2"></i>Dark Mode</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item text-danger" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
-                    </ul>
-                </div>
+            <div class="time-badge">
+                <i class="fas fa-clock"></i>
+                <span id="current-time">{{ "now"|date:"H:i" }}</span>
             </div>
         </div>
+
+        <div class="topbar-right">
+            <button class="emergency-btn" onclick="showEmergencyModal()">
+                <i class="fas fa-ambulance"></i> Emergency
+            </button>
+
+            <div class="health-status">
+                <div class="status-indicator" id="health-pulse">
+                    <i class="fas fa-heartbeat"></i>
+                </div>
+                <div class="status-text">
+                    <span class="status-label">System Status</span>
+                    <span class="status-value">Online</span>
+                </div>
+            </div>
+
+            <div class="search-container">
+                <input type="text" class="form-control search-input" placeholder="Search patients, appointments..." id="global-search" autocomplete="off">
+                <i class="fas fa-search search-icon"></i>
+                <div class="search-suggestions" id="searchSuggestions"></div>
+            </div>
+
+            <!-- Notifications -->
+            <div class="notification-container">
+                <button class="btn btn-sm notification-btn" type="button" data-bs-toggle="dropdown">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end notification-dropdown">
+                    <li class="dropdown-header"><h6 class="mb-0">Notifications</h6></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <a class="dropdown-item notification-item" href="#">
+                            <div class="notification-icon bg-primary"><i class="fas fa-calendar-check"></i></div>
+                            <div class="notification-content">
+                                <div class="notification-title">Appointment Confirmed</div>
+                                <div class="notification-text">Dr. Smith confirmed your appointment</div>
+                                <div class="notification-time">2 min ago</div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item notification-item" href="#">
+                            <div class="notification-icon bg-success"><i class="fas fa-prescription"></i></div>
+                            <div class="notification-content">
+                                <div class="notification-title">Prescription Ready</div>
+                                <div class="notification-text">Your prescription is ready for pickup</div>
+                                <div class="notification-time">1 hour ago</div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item notification-item" href="#">
+                            <div class="notification-icon bg-warning"><i class="fas fa-exclamation-triangle"></i></div>
+                            <div class="notification-content">
+                                <div class="notification-title">Test Results</div>
+                                <div class="notification-text">Your lab results are now available</div>
+                                <div class="notification-time">3 hours ago</div>
+                            </div>
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-center" href="#">View All Notifications</a></li>
+                </ul>
+            </div>
+
+            <!-- User Profile -->
+            <div class="user-profile-container">
+                <button class="btn btn-sm user-profile-btn" type="button" data-bs-toggle="dropdown">
+                    <div class="user-avatar">
+                        {% with full_name=user.get_full_name|default:user.username %}
+                            <span>{{ full_name|slice:":1"|upper }}{{ full_name|slice:"-1"|upper }}</span>
+                        {% endwith %}
+                    </div>
+                    <div class="user-info-mini">
+                        <div class="user-name">{{ user.get_full_name|default:user.username|truncatechars:15 }}</div>
+                        <div class="user-role">{{ user.groups.first.name|default:"User" }}</div>
+                    </div>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end user-dropdown">
+                    <li class="dropdown-header">
+                        <div class="user-avatar-large">
+                            {% with full_name=user.get_full_name|default:user.username %}
+                                <span>{{ full_name|slice:":1"|upper }}{{ full_name|slice:"-1"|upper }}</span>
+                            {% endwith %}
+                        </div>
+                        <div class="user-details-full">
+                            <div class="user-name-full">{{ user.get_full_name|default:user.username }}</div>
+                            <div class="user-email">{{ user.email }}</div>
+                            <div class="user-role-badge">{{ user.groups.first.name|default:"User" }}</div>
+                        </div>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="{% url 'profile' %}"><i class="fas fa-user me-2"></i>Profile Settings</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Preferences</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="fas fa-moon me-2"></i>Dark Mode</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
     {% endif %}
 
     <div class="page-content">
         {% if messages %}
             {% for message in messages %}
-                <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show mb-4 d-flex align-items-center gap-3" role="alert" style="border-radius: 12px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-                    <div style="font-size: 1.2rem;">
-                        {% if message.tags == 'success' %}
-                            <i class="fas fa-check-circle text-success"></i>
-                        {% elif message.tags == 'error' %}
-                            <i class="fas fa-exclamation-triangle text-danger"></i>
-                        {% elif message.tags == 'warning' %}
-                            <i class="fas fa-exclamation-circle text-warning"></i>
-                        {% else %}
-                            <i class="fas fa-info-circle text-info"></i>
-                        {% endif %}
+                <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show mb-4 d-flex align-items-center gap-3" role="alert" style="border-radius:12px;border:none;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+                    <div style="font-size:1.2rem;">
+                        {% if message.tags == 'success' %}<i class="fas fa-check-circle text-success"></i>
+                        {% elif message.tags == 'error' %}<i class="fas fa-exclamation-triangle text-danger"></i>
+                        {% elif message.tags == 'warning' %}<i class="fas fa-exclamation-circle text-warning"></i>
+                        {% else %}<i class="fas fa-info-circle text-info"></i>{% endif %}
                     </div>
                     <div class="flex-grow-1">
                         <strong>{% if message.tags == 'success' %}Success!{% elif message.tags == 'error' %}Error!{% elif message.tags == 'warning' %}Warning!{% else %}Info{% endif %}</strong> {{ message }}
@@ -2244,53 +962,32 @@
         {% block content %}{% endblock %}
         {% block public_content %}{% endblock %}
 
-        <!-- Quick Health Actions -->
         {% if user.is_authenticated %}
         <div class="quick-actions">
             <div class="container-fluid">
                 <div class="row g-3">
                     <div class="col-md-3">
                         <div class="action-card emergency-action" onclick="showEmergencyModal()">
-                            <div class="action-icon">
-                                <i class="fas fa-ambulance"></i>
-                            </div>
-                            <div class="action-content">
-                                <h6>Emergency</h6>
-                                <p>24/7 Emergency Care</p>
-                            </div>
+                            <div class="action-icon"><i class="fas fa-ambulance"></i></div>
+                            <div class="action-content"><h6>Emergency</h6><p>24/7 Emergency Care</p></div>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="action-card appointment-action" onclick="quickAppointment()">
-                            <div class="action-icon">
-                                <i class="fas fa-calendar-plus"></i>
-                            </div>
-                            <div class="action-content">
-                                <h6>Quick Booking</h6>
-                                <p>Book Appointment</p>
-                            </div>
+                            <div class="action-icon"><i class="fas fa-calendar-plus"></i></div>
+                            <div class="action-content"><h6>Quick Booking</h6><p>Book Appointment</p></div>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="action-card health-action" onclick="healthCheck()">
-                            <div class="action-icon">
-                                <i class="fas fa-heartbeat"></i>
-                            </div>
-                            <div class="action-content">
-                                <h6>Health Check</h6>
-                                <p>Quick Assessment</p>
-                            </div>
+                            <div class="action-icon"><i class="fas fa-heartbeat"></i></div>
+                            <div class="action-content"><h6>Health Check</h6><p>Quick Assessment</p></div>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="action-card pharmacy-action" onclick="pharmacyAccess()">
-                            <div class="action-icon">
-                                <i class="fas fa-pills"></i>
-                            </div>
-                            <div class="action-content">
-                                <h6>Pharmacy</h6>
-                                <p>Medicine Orders</p>
-                            </div>
+                            <div class="action-icon"><i class="fas fa-pills"></i></div>
+                            <div class="action-content"><h6>Pharmacy</h6><p>Medicine Orders</p></div>
                         </div>
                     </div>
                 </div>
@@ -2300,74 +997,124 @@
     </div>
 </div>
 
-<!-- Emergency Modal -->
+<!-- ========== EMERGENCY MODAL (UPDATED) ========== -->
 <div class="modal fade" id="emergencyModal" tabindex="-1" aria-labelledby="emergencyModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header bg-danger text-white">
-                <h5 class="modal-title" id="emergencyModalLabel">
-                    <i class="fas fa-ambulance me-2"></i>
-                    Emergency Services
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row g-4">
-                    <div class="col-md-6">
-                        <div class="emergency-contact-card">
-                            <div class="contact-icon">
-                                <i class="fas fa-phone-alt"></i>
-                            </div>
-                            <div class="contact-info">
-                                <h6>Emergency Hotline</h6>
-                                <p class="phone-number">108</p>
-                                <small>24/7 Available</small>
-                            </div>
-                        </div>
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content" style="border-radius:20px;overflow:hidden;">
+            <div class="modal-header" style="background:linear-gradient(135deg,#dc2626 0%,#991b1b 100%);border:none;padding:20px 28px;">
+                <div class="d-flex align-items-center gap-3">
+                    <div style="width:44px;height:44px;background:rgba(255,255,255,0.2);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;">
+                        <i class="fas fa-ambulance" style="animation:emergencyShake 0.6s infinite;"></i>
                     </div>
-                    <div class="col-md-6">
-                        <div class="emergency-contact-card">
-                            <div class="contact-icon">
-                                <i class="fas fa-hospital"></i>
-                            </div>
-                            <div class="contact-info">
-                                <h6>Nearest Hospital</h6>
-                                <p>City General Hospital</p>
-                                <small>2.3 km away</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="emergency-form">
-                            <h6 class="mb-3">Quick Emergency Report</h6>
-                            <form id="emergencyForm">
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <select class="form-select" required>
-                                            <option value="">Select Emergency Type</option>
-                                            <option value="medical">Medical Emergency</option>
-                                            <option value="accident">Accident</option>
-                                            <option value="fire">Fire</option>
-                                            <option value="police">Police</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="text" class="form-control" placeholder="Your Location" required>
-                                    </div>
-                                    <div class="col-12">
-                                        <textarea class="form-control" rows="3" placeholder="Describe the emergency situation..." required></textarea>
-                                    </div>
-                                    <div class="col-12">
-                                        <button type="submit" class="btn btn-danger w-100">
-                                            <i class="fas fa-paper-plane me-2"></i>
-                                            Send Emergency Alert
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
+                    <div>
+                        <h5 class="modal-title mb-0 fw-bold" id="emergencyModalLabel" style="font-size:1.2rem;">Emergency Services</h5>
+                        <small style="opacity:0.85;">Lucknow — Immediate Assistance</small>
                     </div>
                 </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body" style="padding:28px;background:#fafafa;">
+
+                <!-- Emergency Hotlines -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-4">
+                        <a href="tel:108" style="text-decoration:none;">
+                            <div style="background:linear-gradient(135deg,#dc2626,#b91c1c);color:white;border-radius:16px;padding:18px 20px;display:flex;align-items:center;gap:14px;box-shadow:0 8px 24px rgba(220,38,38,0.35);cursor:pointer;transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='none'">
+                                <div style="width:48px;height:48px;background:rgba(255,255,255,0.2);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;"><i class="fas fa-ambulance"></i></div>
+                                <div>
+                                    <div style="font-size:0.72rem;opacity:0.85;text-transform:uppercase;letter-spacing:1px;">Ambulance</div>
+                                    <div style="font-size:1.8rem;font-weight:900;line-height:1.1;">108</div>
+                                    <div style="font-size:0.72rem;opacity:0.8;">24/7 Free Service</div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="tel:112" style="text-decoration:none;">
+                            <div style="background:linear-gradient(135deg,#1d4ed8,#1e40af);color:white;border-radius:16px;padding:18px 20px;display:flex;align-items:center;gap:14px;box-shadow:0 8px 24px rgba(29,78,216,0.35);cursor:pointer;transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='none'">
+                                <div style="width:48px;height:48px;background:rgba(255,255,255,0.2);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;"><i class="fas fa-shield-alt"></i></div>
+                                <div>
+                                    <div style="font-size:0.72rem;opacity:0.85;text-transform:uppercase;letter-spacing:1px;">Police / All Emergency</div>
+                                    <div style="font-size:1.8rem;font-weight:900;line-height:1.1;">112</div>
+                                    <div style="font-size:0.72rem;opacity:0.8;">24/7 Helpline</div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="tel:102" style="text-decoration:none;">
+                            <div style="background:linear-gradient(135deg,#059669,#047857);color:white;border-radius:16px;padding:18px 20px;display:flex;align-items:center;gap:14px;box-shadow:0 8px 24px rgba(5,150,105,0.35);cursor:pointer;transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='none'">
+                                <div style="width:48px;height:48px;background:rgba(255,255,255,0.2);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;"><i class="fas fa-heartbeat"></i></div>
+                                <div>
+                                    <div style="font-size:0.72rem;opacity:0.85;text-transform:uppercase;letter-spacing:1px;">Medical Helpline</div>
+                                    <div style="font-size:1.8rem;font-weight:900;line-height:1.1;">102</div>
+                                    <div style="font-size:0.72rem;opacity:0.8;">Free Ambulance</div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Hospital Section -->
+                <div style="background:white;border-radius:18px;padding:22px;box-shadow:0 4px 20px rgba(0,0,0,0.07);margin-bottom:24px;">
+                    <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+                        <div>
+                            <h6 class="mb-0 fw-bold" style="font-size:1rem;"><i class="fas fa-hospital-alt me-2 text-danger"></i>Lucknow Hospitals</h6>
+                            <small class="text-muted">Government &amp; Private — Enable location to see the nearest hospitals</small>
+                        </div>
+                        <button id="locateBtn" onclick="findNearestHospitals()"
+                            style="background:linear-gradient(135deg,#2563eb,#1d4ed8);color:white;border:none;border-radius:50px;padding:8px 18px;font-weight:700;font-size:0.82rem;display:flex;align-items:center;gap:8px;cursor:pointer;transition:all 0.3s ease;">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span id="locateBtnText">Find Nearest Hospital</span>
+                        </button>
+                    </div>
+
+                    <div id="locationStatus" style="display:none;background:linear-gradient(135deg,rgba(37,99,235,0.08),rgba(29,78,216,0.05));border:1px solid rgba(37,99,235,0.15);border-radius:12px;padding:12px 16px;margin-bottom:16px;font-size:0.85rem;color:#1d4ed8;font-weight:600;">
+                        <i class="fas fa-spinner fa-spin me-2"></i> Getting your location...
+                    </div>
+
+                    <!-- Filter Tabs -->
+                    <div class="d-flex gap-2 mb-3 flex-wrap">
+                        <button class="hosp-filter-btn active" onclick="filterHospitals('all',this)" style="padding:6px 16px;border-radius:50px;border:2px solid #2563eb;background:#2563eb;color:white;font-size:0.78rem;font-weight:700;">All</button>
+                        <button class="hosp-filter-btn" onclick="filterHospitals('government',this)" style="padding:6px 16px;border-radius:50px;border:2px solid #64748b;background:transparent;color:#64748b;font-size:0.78rem;font-weight:700;">🏛️ Government</button>
+                        <button class="hosp-filter-btn" onclick="filterHospitals('private',this)" style="padding:6px 16px;border-radius:50px;border:2px solid #64748b;background:transparent;color:#64748b;font-size:0.78rem;font-weight:700;">🏥 Private</button>
+                    </div>
+
+                    <div id="hospitalsGrid" class="row g-2"></div>
+                </div>
+
+                <!-- Emergency Form -->
+                <div style="background:white;border-radius:18px;padding:22px;box-shadow:0 4px 20px rgba(0,0,0,0.07);">
+                    <h6 class="fw-bold mb-3" style="font-size:1rem;"><i class="fas fa-file-medical me-2 text-danger"></i>Quick Emergency Report</h6>
+                    <form id="emergencyForm">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <select class="form-select" name="emergency_type" required style="border-radius:12px;border:2px solid rgba(0,0,0,0.1);padding:11px 16px;font-size:0.9rem;">
+                                    <option value="">Select Emergency Type</option>
+                                    <option value="medical">🚑 Medical Emergency</option>
+                                    <option value="cardiac">❤️ Cardiac / Heart Attack</option>
+                                    <option value="accident">🚗 Accident / Trauma</option>
+                                    <option value="fire">🔥 Fire</option>
+                                    <option value="police">🚔 Police / Crime</option>
+                                    <option value="other">⚠️ Other</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" name="location" id="emrgLocation" placeholder="📍 Your Location / Address" required style="border-radius:12px;border:2px solid rgba(0,0,0,0.1);padding:11px 16px;font-size:0.9rem;">
+                            </div>
+                            <div class="col-12">
+                                <textarea class="form-control" name="description" rows="2" placeholder="Describe the situation briefly..." required style="border-radius:12px;border:2px solid rgba(0,0,0,0.1);padding:11px 16px;font-size:0.9rem;resize:none;"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-danger w-100" style="border-radius:12px;padding:13px;font-weight:800;font-size:0.95rem;background:linear-gradient(135deg,#dc2626,#b91c1c);border:none;box-shadow:0 6px 20px rgba(220,38,38,0.4);">
+                                    <i class="fas fa-paper-plane me-2"></i> Send Emergency Alert
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
             </div>
         </div>
     </div>
@@ -2377,63 +1124,39 @@
 {% if user.is_authenticated %}
 <div class="health-tips-widget">
     <div class="tips-header">
-        <i class="fas fa-lightbulb"></i>
-        <span>Health Tips</span>
-        <button class="tips-close" onclick="closeHealthTips()">
-            <i class="fas fa-times"></i>
-        </button>
+        <div><i class="fas fa-lightbulb me-2"></i><span>Health Tips</span></div>
+        <button class="tips-close" onclick="closeHealthTips()"><i class="fas fa-times"></i></button>
     </div>
     <div class="tips-content">
         <div class="tip-item active">
-            <div class="tip-icon">
-                <i class="fas fa-glass-water"></i>
-            </div>
-            <div class="tip-text">
-                <h6>Stay Hydrated</h6>
-                <p>Drink at least 8 glasses of water daily for optimal health.</p>
-            </div>
+            <div class="tip-icon"><i class="fas fa-glass-water"></i></div>
+            <div class="tip-text"><h6>Stay Hydrated</h6><p>Drink at least 8 glasses of water daily for optimal health.</p></div>
         </div>
         <div class="tip-item">
-            <div class="tip-icon">
-                <i class="fas fa-walking"></i>
-            </div>
-            <div class="tip-text">
-                <h6>Daily Exercise</h6>
-                <p>30 minutes of moderate exercise can improve your overall well-being.</p>
-            </div>
+            <div class="tip-icon"><i class="fas fa-walking"></i></div>
+            <div class="tip-text"><h6>Daily Exercise</h6><p>30 minutes of moderate exercise can improve your overall well-being.</p></div>
         </div>
         <div class="tip-item">
-            <div class="tip-icon">
-                <i class="fas fa-apple-alt"></i>
-            </div>
-            <div class="tip-text">
-                <h6>Healthy Eating</h6>
-                <p>Include more fruits and vegetables in your daily diet.</p>
-            </div>
+            <div class="tip-icon"><i class="fas fa-apple-alt"></i></div>
+            <div class="tip-text"><h6>Healthy Eating</h6><p>Include more fruits and vegetables in your daily diet.</p></div>
         </div>
     </div>
     <div class="tips-navigation">
-        <button class="tip-nav-btn" onclick="previousTip()">
-            <i class="fas fa-chevron-left"></i>
-        </button>
+        <button class="tip-nav-btn" onclick="previousTip()"><i class="fas fa-chevron-left"></i></button>
         <div class="tip-indicators">
             <span class="indicator active"></span>
             <span class="indicator"></span>
             <span class="indicator"></span>
         </div>
-        <button class="tip-nav-btn" onclick="nextTip()">
-            <i class="fas fa-chevron-right"></i>
-        </button>
+        <button class="tip-nav-btn" onclick="nextTip()"><i class="fas fa-chevron-right"></i></button>
     </div>
 </div>
 {% endif %}
 
+<!-- Assistant Widget -->
 <div class="assistant-widget" id="assistantWidget">
     <div class="assistant-header">
-        <div class="assistant-title">
-            <i class="fas fa-headset"></i>
-            <span>Health Assistant</span>
-        </div>
+        <div class="assistant-title"><i class="fas fa-headset"></i><span>Health Assistant</span></div>
         <button class="assistant-close" onclick="toggleAssistant(false)"><i class="fas fa-times"></i></button>
     </div>
     <div class="assistant-body">
@@ -2446,478 +1169,325 @@
 </div>
 
 <div class="assistant-toggle" id="assistantToggle" onclick="toggleAssistant(true)" title="Open Health Assistant">
-<div class="assistant-toggle" id="assistantToggle" onclick="toggleAssistant(true)" title="Open Health Assistant">
     <i class="fas fa-headset fa-lg"></i>
 </div>
 
 <script>
-    // Live clock update
-    function updateTime() {
-        const now = new Date();
-        const timeElement = document.getElementById('current-time');
-        if (timeElement) {
-            timeElement.textContent = now.toLocaleTimeString('en-US', {
-                hour12: false,
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-        }
+// ===== HOSPITAL DATA =====
+const lucknowHospitals = [
+    { id:1,  name:"SGPGI",            fullName:"Sanjay Gandhi Postgraduate Institute of Medical Sciences", area:"Raebareli Road",            type:"government", specialty:"Super Speciality • Post-Graduate",   icon:"🏛️", iconColor:"#059669", phone:"0522-2668700", lat:26.8388, lng:80.9845, mapUrl:"https://maps.google.com/?q=SGPGI+Lucknow",                          rating:"⭐ Top Ranked N. India" },
+    { id:2,  name:"KGMU",             fullName:"King George's Medical University",                         area:"Chowk",                     type:"government", specialty:"General & Super Speciality",         icon:"🏛️", iconColor:"#059669", phone:"0522-2257543", lat:26.8586, lng:80.9309, mapUrl:"https://maps.google.com/?q=KGMU+Lucknow",                           rating:"⭐ Oldest & Largest" },
+    { id:3,  name:"RMLIMS",           fullName:"Dr. Ram Manohar Lohia Institute of Medical Sciences",     area:"Gomti Nagar",                type:"government", specialty:"Super Speciality",                  icon:"🏛️", iconColor:"#059669", phone:"0522-4918500", lat:26.8621, lng:80.9957, mapUrl:"https://maps.google.com/?q=RMLIMS+Lucknow",                         rating:"⭐ Major Govt Hospital" },
+    { id:4,  name:"Balrampur Hospital",fullName:"Balrampur Hospital",                                     area:"Golaganj",                  type:"government", specialty:"General Medicine & Emergency",       icon:"🏥", iconColor:"#0284c7", phone:"0522-2623601", lat:26.8626, lng:80.9213, mapUrl:"https://maps.google.com/?q=Balrampur+Hospital+Lucknow",           rating:"⭐ 24/7 Emergency" },
+    { id:5,  name:"Civil Hospital",   fullName:"Dr. Shyama Prasad Mukherjee Civil Hospital",             area:"Hazratganj, Park Road",      type:"government", specialty:"General Medicine & Emergency",       icon:"🏥", iconColor:"#0284c7", phone:"0522-2614154", lat:26.8544, lng:80.9381, mapUrl:"https://maps.google.com/?q=Civil+Hospital+Hazratganj+Lucknow",  rating:"⭐ Central Location" },
+    { id:6,  name:"Medanta Hospital", fullName:"Medanta — The Medicity",                                  area:"Sushant Golf City, Amar Shaheed Path", type:"private", specialty:"Multi Super Speciality",     icon:"🏨", iconColor:"#7c3aed", phone:"0522-4508888", lat:26.8023, lng:81.0074, mapUrl:"https://maps.google.com/?q=Medanta+Hospital+Lucknow",            rating:"⭐ World-Class Facilities" },
+    { id:7,  name:"Apollomedics",     fullName:"Apollomedics Super Speciality Hospital",                  area:"Kanpur Road, Bargawan",     type:"private",    specialty:"Super Speciality • Apollo Group",    icon:"🏨", iconColor:"#7c3aed", phone:"0522-6718000", lat:26.8415, lng:80.8756, mapUrl:"https://maps.google.com/?q=Apollomedics+Hospital+Lucknow",       rating:"⭐ Advanced Surgeries" },
+    { id:8,  name:"Sahara Hospital",  fullName:"Sahara Hospital",                                         area:"Gomti Nagar",               type:"private",    specialty:"Multi Speciality Premium",           icon:"🏨", iconColor:"#7c3aed", phone:"0522-6780001", lat:26.8584, lng:80.9892, mapUrl:"https://maps.google.com/?q=Sahara+Hospital+Lucknow",            rating:"⭐ Premium Healthcare" },
+    { id:9,  name:"Chandan Hospital", fullName:"Chandan Hospital",                                        area:"Gomti Nagar (Faizabad Rd)", type:"private",    specialty:"Multi Speciality • Modern",          icon:"🏥", iconColor:"#ea580c", phone:"0522-4043000", lat:26.8638, lng:80.9875, mapUrl:"https://maps.google.com/?q=Chandan+Hospital+Lucknow",           rating:"⭐ Multi-Speciality" },
+    { id:10, name:"Divine Heart",     fullName:"Divine Heart & Multispecialty Hospital",                  area:"Gomti Nagar",               type:"private",    specialty:"Cardiac & Multi Speciality",         icon:"❤️", iconColor:"#dc2626", phone:"0522-4042222", lat:26.8612, lng:80.9901, mapUrl:"https://maps.google.com/?q=Divine+Heart+Hospital+Lucknow",      rating:"⭐ Best Cardiac Care" },
+    { id:11, name:"Vivekananda",      fullName:"Vivekananda Polyclinic & Institute of Medical Sciences", area:"Nirala Nagar",              type:"private",    specialty:"General & Speciality • Affordable",  icon:"🏥", iconColor:"#0369a1", phone:"0522-2782648", lat:26.8706, lng:80.9456, mapUrl:"https://maps.google.com/?q=Vivekananda+Polyclinic+Lucknow",    rating:"⭐ Affordable Trust-Run" },
+    { id:12, name:"Mayo Hospital",    fullName:"Mayo Institute of Medical Sciences",                      area:"Gomti Nagar / Faizabad Rd", type:"private",    specialty:"General & Specialized Care",         icon:"🏥", iconColor:"#d97706", phone:"0522-4009000", lat:26.8650, lng:80.9950, mapUrl:"https://maps.google.com/?q=Mayo+Hospital+Lucknow",              rating:"⭐ General & Speciality" }
+];
+
+let userLat = null, userLng = null, currentFilter = 'all';
+
+function getDistanceKm(lat1, lng1, lat2, lng2) {
+    const R = 6371, dLat = (lat2-lat1)*Math.PI/180, dLng = (lng2-lng1)*Math.PI/180;
+    const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)**2;
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+function getFilteredSorted() {
+    let list = [...lucknowHospitals];
+    if (userLat !== null) {
+        list = list.map(h => ({...h, distance: getDistanceKm(userLat, userLng, h.lat, h.lng)}))
+                   .sort((a,b) => a.distance - b.distance);
+    }
+    if (currentFilter !== 'all') list = list.filter(h => h.type === currentFilter);
+    return list;
+}
+
+function renderHospitals(hospitals) {
+    const grid = document.getElementById('hospitalsGrid');
+    if (!grid) return;
+    if (!hospitals.length) {
+        grid.innerHTML = '<div class="col-12 text-center text-muted py-3">No hospitals found.</div>';
+        return;
+    }
+    grid.innerHTML = hospitals.map((h, idx) => {
+        const isNearest = idx === 0 && userLat !== null;
+        const distBadge = h.distance !== undefined
+            ? `<span class="distance-badge"><i class="fas fa-map-marker-alt"></i> ${h.distance.toFixed(1)} km away</span>` : '';
+        const typeBadge = h.type === 'government' ? `<span class="govt-tag">Govt</span>` : `<span class="pvt-tag">Private</span>`;
+        return `
+        <div class="col-md-6 col-12 hospital-item" data-type="${h.type}">
+            <div class="hospital-card ${isNearest ? 'nearest-highlight' : ''}">
+                ${isNearest ? '<span class="nearest-badge">📍 Nearest</span>' : ''}
+                <div class="d-flex align-items-start gap-3">
+                    <div style="width:42px;height:42px;background:${h.iconColor}18;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex-shrink:0;">${h.icon}</div>
+                    <div class="flex-grow-1" style="min-width:0;">
+                        <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <span style="font-weight:800;font-size:0.92rem;color:#0f172a;">${h.name}</span>${typeBadge}
+                        </div>
+                        <div style="font-size:0.75rem;color:#64748b;margin:2px 0;">${h.fullName}</div>
+                        <div style="font-size:0.72rem;color:#94a3b8;"><i class="fas fa-map-marker-alt me-1"></i>${h.area}</div>
+                        <div style="font-size:0.7rem;color:#94a3b8;">${h.specialty}</div>
+                        <div style="font-size:0.7rem;color:#64748b;margin-top:2px;">${h.rating}</div>
+                        ${distBadge}
+                    </div>
+                </div>
+                <div class="d-flex gap-2 mt-3">
+                    <a href="tel:${h.phone}" class="btn btn-sm flex-fill"
+                        style="background:linear-gradient(135deg,#dc2626,#b91c1c);color:white;border:none;border-radius:8px;padding:7px;font-size:0.75rem;font-weight:700;text-decoration:none;text-align:center;">
+                        <i class="fas fa-phone me-1"></i>${h.phone}
+                    </a>
+                    <a href="${h.mapUrl}" target="_blank" class="btn btn-sm"
+                        style="background:linear-gradient(135deg,#2563eb,#1d4ed8);color:white;border:none;border-radius:8px;padding:7px 14px;font-size:0.75rem;font-weight:700;text-decoration:none;">
+                        <i class="fas fa-directions"></i>
+                    </a>
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function filterHospitals(type, btn) {
+    currentFilter = type;
+    document.querySelectorAll('.hosp-filter-btn').forEach(b => {
+        b.classList.remove('active');
+        b.style.background = 'transparent'; b.style.color = '#64748b'; b.style.borderColor = '#64748b';
+    });
+    if (btn) {
+        btn.classList.add('active');
+        btn.style.background = '#2563eb'; btn.style.color = 'white'; btn.style.borderColor = '#2563eb';
+    }
+    renderHospitals(getFilteredSorted());
+}
+
+function findNearestHospitals() {
+    const statusEl   = document.getElementById('locationStatus');
+    const btnText    = document.getElementById('locateBtnText');
+    const locBtn     = document.getElementById('locateBtn');
+    if (!navigator.geolocation) {
+        if (statusEl) { statusEl.style.display = 'block'; statusEl.style.color = '#dc2626'; statusEl.innerHTML = '<i class="fas fa-exclamation-triangle me-2"></i> Browser location support nahi hai.'; }
+        return;
+    }
+    if (statusEl) statusEl.style.display = 'block';
+    if (btnText)  btnText.textContent = 'Getting Location...';
+    if (locBtn)   locBtn.disabled = true;
+
+    navigator.geolocation.getCurrentPosition(
+        pos => {
+            userLat = pos.coords.latitude; userLng = pos.coords.longitude;
+            if (statusEl) {
+                statusEl.innerHTML = '<i class="fas fa-check-circle me-2"></i> Location detected! Hospitals have been sorted by distance.';
+                statusEl.style.background = 'linear-gradient(135deg,rgba(5,150,105,0.08),rgba(4,120,87,0.05))';
+                statusEl.style.color = '#047857'; statusEl.style.borderColor = 'rgba(5,150,105,0.2)';
+            }
+            if (btnText) btnText.textContent = '✓ Location Active';
+            if (locBtn)  { locBtn.style.background = 'linear-gradient(135deg,#059669,#047857)'; locBtn.disabled = false; }
+            const locField = document.getElementById('emrgLocation');
+            if (locField && !locField.value) locField.value = `Lat: ${userLat.toFixed(4)}, Lng: ${userLng.toFixed(4)}`;
+            renderHospitals(getFilteredSorted());
+        },
+        err => {
+            let msg = 'Location unavailable.';
+            if (err.code === 1) msg = 'Location permission denied. Browser settings mein allow karein.';
+            else if (err.code === 3) msg = 'Location request timeout. Dobara try karein.';
+            if (statusEl) {
+                statusEl.innerHTML = `<i class="fas fa-exclamation-triangle me-2"></i> ${msg}`;
+                statusEl.style.background = 'linear-gradient(135deg,rgba(220,38,38,0.08),rgba(185,28,28,0.05))';
+                statusEl.style.color = '#dc2626';
+            }
+            if (btnText) btnText.textContent = 'Try Again';
+            if (locBtn)  locBtn.disabled = false;
+        },
+        { timeout: 10000, enableHighAccuracy: true }
+    );
+}
+
+// ===== GENERAL FUNCTIONS =====
+function updateTime() {
+    const el = document.getElementById('current-time');
+    if (el) el.textContent = new Date().toLocaleTimeString('en-US', { hour12:false, hour:'2-digit', minute:'2-digit' });
+}
+setInterval(updateTime, 1000); updateTime();
+
+function showEmergencyModal() {
+    const modal = new bootstrap.Modal(document.getElementById('emergencyModal'));
+    modal.show();
+    try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator(), gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.frequency.setValueAtTime(800, ctx.currentTime);
+        osc.frequency.setValueAtTime(600, ctx.currentTime + 0.1);
+        osc.frequency.setValueAtTime(800, ctx.currentTime + 0.2);
+        gain.gain.setValueAtTime(0.1, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.3);
+    } catch(e) {}
+}
+
+function quickAppointment() { window.location.href = "{% url 'appointment_create' %}"; }
+function healthCheck()       { alert('Health Check feature coming soon!'); }
+function pharmacyAccess()    { window.location.href = "{% url 'pharmacy_dashboard' %}"; }
+
+let currentTipIndex = 0, tipItems = [], indicators = [];
+function updateTips() {
+    tipItems.forEach((t,i) => t.classList.toggle('active', i === currentTipIndex));
+    indicators.forEach((d,i) => d.classList.toggle('active', i === currentTipIndex));
+}
+function nextTip()     { if (tipItems.length) { currentTipIndex = (currentTipIndex+1) % tipItems.length; updateTips(); } }
+function previousTip() { if (tipItems.length) { currentTipIndex = (currentTipIndex-1+tipItems.length) % tipItems.length; updateTips(); } }
+function closeHealthTips() {
+    const w = document.querySelector('.health-tips-widget');
+    if (w) { w.style.animation = 'slideOutLeft 0.3s ease-in forwards'; setTimeout(() => w.classList.add('hide'), 300); }
+}
+
+function toggleAssistant(show = true) {
+    const widget = document.getElementById('assistantWidget');
+    const toggle = document.getElementById('assistantToggle');
+    if (!widget || !toggle) return;
+    if (show) {
+        widget.classList.remove('hide'); widget.style.display = 'flex'; toggle.style.display = 'none';
+    } else {
+        widget.style.animation = 'slideOutRight 0.2s ease-in forwards';
+        setTimeout(() => { widget.classList.add('hide'); widget.style.display = 'none'; }, 220);
+        toggle.style.display = 'flex';
+    }
+}
+
+function submitAssistantQuestion() {
+    const input = document.getElementById('assistantInput');
+    const box   = document.getElementById('assistantResponse');
+    if (!input || !box) return;
+    const q = input.value.trim();
+    if (!q) { box.textContent = 'Please type a question.'; return; }
+    box.textContent = 'Searching health resources...';
+    setTimeout(() => { box.textContent = `I found some options for "${q}". Check your dashboard or contact support.`; }, 800);
+    input.value = '';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+
+    // Emergency modal: render hospitals on open
+    const eModal = document.getElementById('emergencyModal');
+    if (eModal) {
+        eModal.addEventListener('show.bs.modal', () => renderHospitals(getFilteredSorted()));
     }
 
-    // Update time every second
-    setInterval(updateTime, 1000);
-    updateTime(); // Initial call
-
-    // Enhanced search functionality
-    const searchInput = document.getElementById('global-search');
-    if (searchInput) {
-        let searchTimeout;
-        searchInput.addEventListener('input', function() {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(() => {
-                const query = this.value.trim();
-                if (query.length > 2) {
-                    // Add search logic here
-                    console.log('Searching for:', query);
-                }
-            }, 300);
-        });
-    }
-
-    // Notification badge animation
-    const notificationBadge = document.querySelector('.notification-badge');
-    if (notificationBadge) {
-        setInterval(() => {
-            notificationBadge.style.transform = 'scale(1.1)';
-            setTimeout(() => {
-                notificationBadge.style.transform = 'scale(1)';
-            }, 200);
-        }, 5000);
-    }
-
-    // Smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
+    // Emergency form
+    const emergencyForm = document.getElementById('emergencyForm');
+    if (emergencyForm) {
+        emergencyForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
+            const btn = this.querySelector('button[type="submit"]');
+            const orig = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending Alert...';
+            btn.disabled = true;
+            setTimeout(() => {
+                alert('✅ Emergency alert sent! Help is on the way.\n\n📞 Also dial 108 for immediate ambulance.');
+                btn.innerHTML = orig; btn.disabled = false;
+                const m = bootstrap.Modal.getInstance(document.getElementById('emergencyModal'));
+                if (m) m.hide();
+                this.reset();
+            }, 2000);
         });
-    });
-
-    // Enhanced dropdown animations
-    const dropdowns = document.querySelectorAll('.dropdown');
-    dropdowns.forEach(dropdown => {
-        const toggle = dropdown.querySelector('[data-bs-toggle="dropdown"]');
-        const menu = dropdown.querySelector('.dropdown-menu');
-
-        if (toggle && menu) {
-            toggle.addEventListener('shown.bs.dropdown', function() {
-                menu.style.animation = 'slideDown 0.3s ease-out';
-            });
-
-            toggle.addEventListener('hidden.bs.dropdown', function() {
-                menu.style.animation = '';
-            });
-        }
-    });
-
-    // Add slideDown animation
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .dropdown-menu {
-            animation-fill-mode: both;
-        }
-    `;
-    document.head.appendChild(style);
-
-    // Sidebar toggle for mobile
-    const sidebar = document.querySelector('.sidebar');
-    if (window.innerWidth <= 768) {
-        document.body.classList.remove('with-sidebar');
-        document.body.classList.add('no-sidebar');
     }
 
-    // Auto-hide alerts after 5 seconds
-    const alerts = document.querySelectorAll('.alert');
-    alerts.forEach(alert => {
+    // Quick actions show
+    setTimeout(() => { const qa = document.querySelector('.quick-actions'); if (qa) qa.classList.add('show'); }, 1000);
+
+    // Health pulse
+    setInterval(() => {
+        const hp = document.getElementById('health-pulse');
+        if (hp) { hp.style.transform = 'scale(1.1)'; setTimeout(() => hp.style.transform = 'scale(1)', 200); }
+    }, 3000);
+
+    // Search suggestions
+    const searchInput = document.getElementById('global-search');
+    const suggestionsBox = document.getElementById('searchSuggestions');
+    const suggestions = ['Search patients','Search appointments','Search doctors','Search medicines','Search prescriptions'];
+    if (searchInput && suggestionsBox) {
+        const populate = (list) => {
+            suggestionsBox.innerHTML = list.map(i => `<div class="search-suggestion-item">${i}</div>`).join('');
+            suggestionsBox.querySelectorAll('.search-suggestion-item').forEach(item => {
+                item.addEventListener('click', () => { searchInput.value = item.textContent; suggestionsBox.classList.remove('active'); });
+            });
+        };
+        searchInput.addEventListener('focus', () => { suggestionsBox.classList.add('active'); populate(suggestions); });
+        searchInput.addEventListener('blur',  () => setTimeout(() => suggestionsBox.classList.remove('active'), 200));
+        searchInput.addEventListener('input', () => {
+            const v = searchInput.value.trim().toLowerCase();
+            const filtered = v ? suggestions.filter(s => s.toLowerCase().includes(v)) : suggestions;
+            populate(filtered.length ? filtered : ['No results found']);
+        });
+    }
+
+    // Notification badge
+    const nb = document.querySelector('.notification-badge');
+    if (nb) setInterval(() => { nb.style.transform='scale(1.1)'; setTimeout(()=>nb.style.transform='scale(1)',200); }, 5000);
+
+    // Health tips
+    tipItems   = document.querySelectorAll('.tip-item');
+    indicators = document.querySelectorAll('.indicator');
+    updateTips();
+    setInterval(nextTip, 10000);
+
+    // Dropdown animations
+    document.querySelectorAll('.dropdown').forEach(dd => {
+        const toggle = dd.querySelector('[data-bs-toggle="dropdown"]');
+        const menu   = dd.querySelector('.dropdown-menu');
+        if (toggle && menu) {
+            toggle.addEventListener('shown.bs.dropdown',  () => menu.style.animation = 'slideDown 0.3s ease-out');
+            toggle.addEventListener('hidden.bs.dropdown', () => menu.style.animation = '');
+        }
+    });
+
+    // Auto-hide alerts
+    document.querySelectorAll('.alert').forEach(alert => {
         if (!alert.querySelector('.btn-close')) {
             setTimeout(() => {
-                alert.style.transition = 'all 0.5s ease';
-                alert.style.opacity = '0';
-                alert.style.transform = 'translateY(-20px)';
+                alert.style.transition = 'all 0.5s ease'; alert.style.opacity = '0'; alert.style.transform = 'translateY(-20px)';
                 setTimeout(() => alert.remove(), 500);
             }, 5000);
         }
     });
 
-    // Add loading states for buttons
-    const buttons = document.querySelectorAll('.btn');
-    buttons.forEach(button => {
-        button.addEventListener('click', function() {
-            if (this.form || this.closest('form')) {
-                this.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Loading...';
-                this.disabled = true;
-            }
-        });
+    // Particles
+    document.querySelectorAll('.particle').forEach(p => {
+        p.style.left = Math.random()*100+'%';
+        p.style.animationDelay = Math.random()*20+'s';
+        p.style.animationDuration = (Math.random()*10+10)+'s';
     });
 
-    // Enhanced form validation
-    const forms = document.querySelectorAll('form');
-    forms.forEach(form => {
-        form.addEventListener('submit', function(e) {
-            const requiredFields = form.querySelectorAll('[required]');
-            let isValid = true;
+    // Slideout animations style inject
+    const so = document.createElement('style');
+    so.textContent = `
+        @keyframes slideDown { from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes slideOutLeft  { from{opacity:1;transform:translateX(0)} to{opacity:0;transform:translateX(-20px)} }
+        @keyframes slideOutRight { from{opacity:1;transform:translateX(0)} to{opacity:0;transform:translateX(20px)} }
+        @keyframes ripple { to { transform:scale(4); opacity:0; } }
+    `;
+    document.head.appendChild(so);
 
-            requiredFields.forEach(field => {
-                if (!field.value.trim()) {
-                    field.style.borderColor = '#ff6b6b';
-                    field.style.boxShadow = '0 0 0 0.2rem rgba(255, 107, 107, 0.25)';
-                    isValid = false;
-                } else {
-                    field.style.borderColor = '#28a745';
-                    field.style.boxShadow = '0 0 0 0.2rem rgba(40, 167, 69, 0.25)';
-                }
-            });
-
-            if (!isValid) {
-                e.preventDefault();
-                // Show validation message
-                const validationAlert = document.createElement('div');
-                validationAlert.className = 'alert alert-danger alert-dismissible fade show position-fixed';
-                validationAlert.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
-                validationAlert.innerHTML = `
-                    <i class="fas fa-exclamation-triangle me-2"></i>
-                    Please fill in all required fields.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                `;
-                document.body.appendChild(validationAlert);
-
-                setTimeout(() => {
-                    validationAlert.remove();
-                }, 5000);
-            }
-        });
-    });
-
-    // Particle animation enhancement
-    const particles = document.querySelectorAll('.particle');
-    particles.forEach((particle, index) => {
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.animationDelay = Math.random() * 20 + 's';
-        particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
-    });
-
-    // Add ripple effect to buttons
-    buttons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            const ripple = document.createElement('span');
-            ripple.style.cssText = `
-                position: absolute;
-                border-radius: 50%;
-                background: rgba(255,255,255,0.6);
-                transform: scale(0);
-                animation: ripple 0.6s linear;
-                pointer-events: none;
-            `;
-
+    // Ripple on buttons
+    document.querySelectorAll('.btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            const r = document.createElement('span');
             const rect = this.getBoundingClientRect();
             const size = Math.max(rect.width, rect.height);
-            const x = e.clientX - rect.left - size / 2;
-            const y = e.clientY - rect.top - size / 2;
-
-            ripple.style.width = ripple.style.height = size + 'px';
-            ripple.style.left = x + 'px';
-            ripple.style.top = y + 'px';
-
-            this.style.position = 'relative';
-            this.style.overflow = 'hidden';
-            this.appendChild(ripple);
-
-            setTimeout(() => ripple.remove(), 600);
+            r.style.cssText = `position:absolute;border-radius:50%;background:rgba(255,255,255,0.6);transform:scale(0);animation:ripple 0.6s linear;pointer-events:none;width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px;`;
+            this.style.position='relative'; this.style.overflow='hidden';
+            this.appendChild(r); setTimeout(()=>r.remove(),600);
         });
     });
 
-    // Add ripple animation
-    const rippleStyle = document.createElement('style');
-    rippleStyle.textContent = `
-        @keyframes ripple {
-            to {
-                transform: scale(4);
-                opacity: 0;
-            }
-        }
-    `;
-    document.head.appendChild(rippleStyle);
-
-    // Emergency Modal Functions
-    function showEmergencyModal() {
-        const modal = new bootstrap.Modal(document.getElementById('emergencyModal'));
-        modal.show();
-
-        // Add emergency sound effect (optional)
-        playEmergencySound();
-    }
-
-    function playEmergencySound() {
-        // Create audio context for emergency alert sound
-        try {
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-
-            oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-            oscillator.frequency.setValueAtTime(600, audioContext.currentTime + 0.1);
-            oscillator.frequency.setValueAtTime(800, audioContext.currentTime + 0.2);
-
-            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
-
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.3);
-        } catch (e) {
-            // Fallback for browsers that don't support Web Audio API
-            console.log('Emergency alert triggered');
-        }
-    }
-
-    // Quick Action Functions
-    function quickAppointment() {
-        // Redirect to appointment booking page
-        window.location.href = "{% url 'appointment_create' %}";
-    }
-
-    function healthCheck() {
-        // Show health check modal or redirect
-        alert('Health Check feature coming soon! This will include vital signs monitoring and quick health assessment.');
-    }
-
-    function pharmacyAccess() {
-        // Redirect to pharmacy page
-        window.location.href = "{% url 'pharmacy_dashboard' %}";
-    }
-
-    let currentTipIndex = 0;
-    let tipItems = [];
-    let indicators = [];
-
-    function updateTips() {
-        if (!tipItems.length || !indicators.length) return;
-        tipItems.forEach((item, index) => {
-            item.classList.toggle('active', index === currentTipIndex);
-        });
-        indicators.forEach((indicator, index) => {
-            indicator.classList.toggle('active', index === currentTipIndex);
-        });
-    }
-
-    function nextTip() {
-        if (!tipItems.length) return;
-        currentTipIndex = (currentTipIndex + 1) % tipItems.length;
-        updateTips();
-    }
-
-    function previousTip() {
-        if (!tipItems.length) return;
-        currentTipIndex = (currentTipIndex - 1 + tipItems.length) % tipItems.length;
-        updateTips();
-    }
-
-    function closeHealthTips() {
-        const widget = document.querySelector('.health-tips-widget');
-        if (widget) {
-            widget.style.animation = 'slideOutLeft 0.3s ease-in forwards';
-            setTimeout(() => {
-                widget.classList.add('hide');
-            }, 300);
-        }
-    }
-
-    function toggleAssistant(show = true) {
-        const assistantWidget = document.getElementById('assistantWidget');
-        const assistantToggle = document.getElementById('assistantToggle');
-        if (!assistantWidget || !assistantToggle) return;
-
-        if (show) {
-            assistantWidget.classList.remove('hide');
-            assistantWidget.style.display = 'flex';
-            assistantToggle.style.display = 'none';
-        } else {
-            assistantWidget.style.animation = 'slideOutRight 0.2s ease-in forwards';
-            setTimeout(() => {
-                assistantWidget.classList.add('hide');
-                assistantWidget.style.display = 'none';
-            }, 220);
-            assistantToggle.style.display = 'flex';
-        }
-    }
-
-    function submitAssistantQuestion() {
-        const input = document.getElementById('assistantInput');
-        const responseBox = document.getElementById('assistantResponse');
-        if (!input || !responseBox) return;
-
-        const query = input.value.trim();
-        if (!query) {
-            responseBox.textContent = 'Please type a question so I can assist you.';
-            return;
-        }
-
-        responseBox.textContent = 'Searching health resources...';
-        setTimeout(() => {
-            responseBox.textContent = `I found some options for "${query}". Check your dashboard links or contact support for immediate medical help.`;
-        }, 800);
-        input.value = '';
-    }
-
-    // Emergency Form Handler
-    document.addEventListener('DOMContentLoaded', function() {
-        const emergencyForm = document.getElementById('emergencyForm');
-        if (emergencyForm) {
-            emergencyForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-
-                const formData = new FormData(this);
-                const emergencyData = {
-                    type: formData.get('select'),
-                    location: formData.get('input'),
-                    description: formData.get('textarea')
-                };
-
-                // Show loading state
-                const submitBtn = this.querySelector('button[type="submit"]');
-                const originalText = submitBtn.innerHTML;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending Alert...';
-                submitBtn.disabled = true;
-
-                // Simulate API call
-                setTimeout(() => {
-                    alert('Emergency alert sent successfully! Help is on the way.');
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-
-                    // Close modal
-                    const modal = bootstrap.Modal.getInstance(document.getElementById('emergencyModal'));
-                    modal.hide();
-
-                    // Reset form
-                    this.reset();
-                }, 2000);
-            });
-        }
-
-        // Show quick actions after page load
-        setTimeout(() => {
-            const quickActions = document.querySelector('.quick-actions');
-            if (quickActions) {
-                quickActions.classList.add('show');
-            }
-        }, 1000);
-
-        // Health status pulse animation
-        setInterval(() => {
-            const healthIndicator = document.getElementById('health-pulse');
-            if (healthIndicator) {
-                healthIndicator.style.transform = 'scale(1.1)';
-                setTimeout(() => {
-                    healthIndicator.style.transform = 'scale(1)';
-                }, 200);
-            }
-        }, 3000);
-
-        // Search suggestions logic
-        const suggestions = [
-            'Search patients',
-            'Search appointments',
-            'Search doctors',
-            'Search medicines',
-            'Search prescriptions'
-        ];
-        const suggestionsBox = document.getElementById('searchSuggestions');
-        if (searchInput && suggestionsBox) {
-            searchInput.addEventListener('focus', () => {
-                suggestionsBox.classList.add('active');
-                suggestionsBox.innerHTML = suggestions.map(item => `<div class="search-suggestion-item">${item}</div>`).join('');
-                suggestionsBox.querySelectorAll('.search-suggestion-item').forEach(item => {
-                    item.addEventListener('click', () => {
-                        searchInput.value = item.textContent;
-                        suggestionsBox.classList.remove('active');
-                    });
-                });
-            });
-
-            searchInput.addEventListener('blur', () => {
-                setTimeout(() => suggestionsBox.classList.remove('active'), 200);
-            });
-
-            searchInput.addEventListener('input', () => {
-                const value = searchInput.value.trim().toLowerCase();
-                if (!value) {
-                    suggestionsBox.innerHTML = suggestions.map(item => `<div class="search-suggestion-item">${item}</div>`).join('');
-                    return;
-                }
-                const filtered = suggestions.filter(item => item.toLowerCase().includes(value));
-                suggestionsBox.innerHTML = filtered.length
-                    ? filtered.map(item => `<div class="search-suggestion-item">${item}</div>`).join('')
-                    : '<div class="search-suggestion-item">No results found</div>';
-                suggestionsBox.querySelectorAll('.search-suggestion-item').forEach(item => {
-                    item.addEventListener('click', () => {
-                        searchInput.value = item.textContent;
-                        suggestionsBox.classList.remove('active');
-                    });
-                });
-            });
-        }
-
-        // Health Tips Widget Functions
-        tipItems = document.querySelectorAll('.tip-item');
-        indicators = document.querySelectorAll('.indicator');
-
-        function initHealthTips() {
-            updateTips();
-            setInterval(nextTip, 10000);
-        }
-
-        initHealthTips();
-
-        // Add slideOut animations
-        const slideOutStyle = document.createElement('style');
-        slideOutStyle.textContent = `
-            @keyframes slideOutLeft {
-                from { opacity: 1; transform: translateX(0); }
-                to { opacity: 0; transform: translateX(-20px); }
-            }
-            @keyframes slideOutRight {
-                from { opacity: 1; transform: translateX(0); }
-                to { opacity: 0; transform: translateX(20px); }
-            }
-        `;
-        document.head.appendChild(slideOutStyle);
-
-        // Initialize assistant toggle
-        const assistantToggle = document.getElementById('assistantToggle');
-        if (assistantToggle && document.getElementById('assistantWidget')) {
-            assistantToggle.style.display = 'flex';
-        }
-    });
+    // Assistant toggle init
+    const at = document.getElementById('assistantToggle');
+    if (at) at.style.display = 'flex';
+});
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
