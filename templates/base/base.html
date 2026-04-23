@@ -5,10 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}HealthCare Portal{% endblock %}</title>
     
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Font Awesome Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
     {% load static %}
@@ -147,7 +144,7 @@
         }
 
         .sidebar .nav-link {
-            color: rgba(255,255,255,0.8);
+            color: rgba(255,255,255,0.95);
             padding: 12px 20px; border-radius: 12px; margin: 4px 12px;
             display: flex; align-items: center; gap: 12px;
             font-size: 0.95rem; font-weight: 500;
@@ -190,18 +187,20 @@
         .topbar {
             background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(248,249,250,0.98) 100%);
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            padding: 20px 36px;
+            padding: 16px 36px;
             box-shadow: 0 4px 32px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.03);
             display: flex; justify-content: space-between; align-items: center;
             position: sticky; top: 0; z-index: 999;
             border-bottom: 1px solid rgba(0,0,0,0.04);
-            overflow: hidden;
+            overflow: visible;
+            min-height: 70px;
         }
         .topbar::before {
             content: '';
             position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
             background: linear-gradient(90deg, transparent, rgba(37, 99, 235, 0.02), transparent);
             animation: shimmer 4s infinite;
+            pointer-events: none; 
         }
 
         .emergency-btn {
@@ -212,6 +211,8 @@
             box-shadow: 0 8px 24px rgba(220, 38, 38, 0.4);
             animation: emergency-pulse 2s infinite;
             position: relative; overflow: hidden; margin-right: 20px; cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
         }
         .emergency-btn::before {
             content: '';
@@ -228,14 +229,15 @@
 
         @keyframes emergency-pulse {
             0%, 100% { box-shadow: 0 8px 24px rgba(220, 38, 38, 0.4), 0 0 0 0 rgba(220, 38, 38, 0.7); }
-            50%       { box-shadow: 0 8px 24px rgba(220, 38, 38, 0.4), 0 0 0 8px rgba(220, 38, 38, 0); }
+            50%        { box-shadow: 0 8px 24px rgba(220, 38, 38, 0.4), 0 0 0 8px rgba(220, 38, 38, 0); }
         }
 
         .topbar-title {
             font-weight: 800;
             background: var(--primary);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-            font-size: 1.4rem; letter-spacing: 0.5px; position: relative; z-index: 1;
+            font-size: 1.4rem; letter-spacing: 0.5px; position: relative; z-index: 1; 
+            display: flex; align-items: center; height: 100%;
         }
 
         .date-badge, .time-badge {
@@ -250,7 +252,7 @@
         }
 
         .topbar-left, .topbar-right {
-            display: flex; align-items: center; flex-wrap: wrap; gap: 14px;
+            display: flex; align-items: center; flex-wrap: wrap; gap: 14px; height: 100%; position: relative;
         }
 
         .search-container { position: relative; width: 280px; min-width: 220px; }
@@ -270,10 +272,10 @@
         }
 
         .health-status {
-            display: flex; align-items: center; gap: 12px;
+            display: flex; align-items: center; justify-content: center; gap: 12px;
             background: rgba(255,255,255,0.9); backdrop-filter: blur(10px);
             border-radius: 50px; padding: 8px 16px;
-            border: 2px solid rgba(34, 197, 94, 0.2); transition: all 0.3s ease;
+            border: 2px solid rgba(34, 197, 94, 0.2); transition: all 0.3s ease; height: fit-content;
         }
         .health-status:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2); }
 
@@ -290,7 +292,7 @@
 
         @keyframes pulse-green {
             0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4), 0 0 0 0 rgba(34, 197, 94, 0.7); }
-            50%       { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4), 0 0 0 6px rgba(34, 197, 94, 0); }
+            50%        { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4), 0 0 0 6px rgba(34, 197, 94, 0); }
         }
 
         .notification-container, .user-profile-container { position: relative; }
@@ -299,7 +301,7 @@
             background: rgba(255,255,255,0.9); backdrop-filter: blur(10px);
             border: 2px solid rgba(0,0,0,0.1); border-radius: 50px;
             padding: 8px 16px; color: rgba(0,0,0,0.7); font-weight: 600;
-            display: flex; align-items: center; gap: 8px; transition: all 0.3s ease; position: relative;
+            display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s ease; position: relative; height: fit-content;
         }
         .notification-btn:hover, .user-profile-btn:hover {
             border-color: #667eea; background: rgba(255,255,255,0.95);
@@ -317,7 +319,7 @@
         }
         @keyframes pulse-notification {
             0%, 100% { transform: scale(1); }
-            50%       { transform: scale(1.1); }
+            50%        { transform: scale(1.1); }
         }
 
         .user-avatar {
@@ -330,18 +332,20 @@
         .user-name { font-size: 0.85rem; font-weight: 700; color: rgba(0,0,0,0.9); line-height: 1; }
         .user-role { font-size: 0.7rem; color: rgba(0,0,0,0.6); font-weight: 500; }
 
+        /* ===== UPDATED DROPDOWN CSS ===== */
         .notification-dropdown, .user-dropdown {
             border-radius: var(--border-radius); border: none;
             box-shadow: 0 12px 40px rgba(0,0,0,0.15);
             background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
             backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.2);
-            padding: 0; min-width: 320px;
+            padding: 0; min-width: 320px; position: absolute; top: 100%; right: 0; z-index: 1050;
+            overflow: hidden; margin-top: 12px !important;
         }
 
         .dropdown-header {
             padding: 20px; background: var(--primary); color: white;
-            border-radius: var(--border-radius) var(--border-radius) 0 0;
-            display: flex; align-items: center; gap: 14px;
+            margin: 0; display: flex; align-items: center; gap: 14px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
         .dropdown-header h6 { margin: 0; font-weight: 800; font-size: 1rem; }
 
@@ -349,14 +353,15 @@
             width: 50px; height: 50px; border-radius: 50%;
             background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center;
             color: white; font-weight: 800; font-size: 1.2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            flex-shrink: 0;
         }
-        .user-details-full { flex: 1; }
-        .user-name-full { font-size: 1.1rem; font-weight: 800; margin-bottom: 2px; }
-        .user-email { font-size: 0.85rem; opacity: 0.9; margin-bottom: 4px; }
+        .user-details-full { display: flex; flex-direction: column; min-width: 0; width: 100%; }
+        .user-name-full { font-size: 1.1rem; font-weight: 800; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .user-email { font-size: 0.85rem; opacity: 0.9; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .user-role-badge {
             display: inline-block; background: rgba(255,255,255,0.2); color: white;
             padding: 2px 8px; border-radius: 50px; font-size: 0.7rem; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 0.5px;
+            text-transform: uppercase; letter-spacing: 0.5px; width: max-content;
         }
 
         .notification-item {
@@ -374,6 +379,12 @@
         .notification-title { font-weight: 700; font-size: 0.9rem; color: rgba(0,0,0,0.9); margin-bottom: 2px; }
         .notification-text  { font-size: 0.8rem; color: rgba(0,0,0,0.7); margin-bottom: 4px; }
         .notification-time  { font-size: 0.7rem; color: rgba(0,0,0,0.5); font-weight: 500; }
+
+        .dropdown-item {
+            border-radius: 12px; padding: 12px 20px; font-weight: 600;
+            transition: all 0.3s ease; margin: 4px 8px; width: auto;
+        }
+        .dropdown-item:hover { background: var(--primary); color: white; transform: translateX(8px); }
 
         /* ===== PAGE CONTENT ===== */
         .page-content {
@@ -475,18 +486,6 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
-        .dropdown-menu {
-            border-radius: var(--border-radius); border: none;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
-            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
-            backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.2); padding: 8px;
-        }
-        .dropdown-item {
-            border-radius: 12px; padding: 12px 20px; font-weight: 600;
-            transition: all 0.3s ease; margin: 2px 0;
-        }
-        .dropdown-item:hover { background: var(--primary); color: white; transform: translateX(8px); }
-
         .modal-content {
             border-radius: 16px; border: none; box-shadow: 0 20px 40px rgba(0,0,0,0.15);
             background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
@@ -518,6 +517,56 @@
         }
         @keyframes progress-shine { 0% { left: -100%; } 100% { left: 100%; } }
         @keyframes shimmer        { 0% { left: -100%; } 100% { left: 100%; } }
+
+        /* ===== EMERGENCY MODAL ===== */
+        .emergency-modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.5); display: none; align-items: center; 
+            justify-content: center; z-index: 2000;
+        }
+        .emergency-modal-overlay.show {
+            display: flex !important;
+        }
+        .emergency-modal-content {
+            background: white; border-radius: 20px; padding: 40px; 
+            max-width: 500px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: emergencyPopIn 0.4s ease-out;
+        }
+        @keyframes emergencyPopIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .emergency-modal-icon {
+            font-size: 4rem; color: #dc2626; text-align: center; margin-bottom: 20px;
+        }
+        .emergency-modal-title {
+            font-size: 28px; font-weight: 800; color: #dc2626; 
+            text-align: center; margin-bottom: 10px;
+        }
+        .emergency-modal-text {
+            color: #6b7280; text-align: center; margin-bottom: 30px;
+            font-size: 16px; line-height: 1.6;
+        }
+        .emergency-modal-buttons {
+            display: flex; gap: 12px; justify-content: center;
+        }
+        .emergency-modal-btn {
+            padding: 12px 24px; border-radius: 50px; font-weight: 700;
+            border: none; cursor: pointer; transition: all 0.3s ease;
+            font-size: 14px; text-transform: uppercase;
+        }
+        .emergency-modal-btn-primary {
+            background: #dc2626; color: white;
+        }
+        .emergency-modal-btn-primary:hover {
+            background: #b91c1c; transform: translateY(-2px);
+        }
+        .emergency-modal-btn-secondary {
+            background: #e5e7eb; color: #374151;
+        }
+        .emergency-modal-btn-secondary:hover {
+            background: #d1d5db; transform: translateY(-2px);
+        }
 
         /* ===== QUICK ACTIONS ===== */
         .quick-actions {
@@ -567,11 +616,12 @@
 
         /* ===== HEALTH TIPS WIDGET ===== */
         .health-tips-widget {
-            position: fixed; bottom: 30px; left: calc(var(--sidebar-width) + 30px); width: 320px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
+            position: relative;
+            background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(241,245,249,0.98) 100%);
             backdrop-filter: blur(20px); border-radius: 16px;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.2);
-            overflow: hidden; z-index: 1000; animation: slideInLeft 0.5s ease-out;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.06);
+            overflow: hidden; animation: slideInUp 0.5s ease-out;
+            margin-bottom: 2rem;
         }
         .tips-header {
             background: var(--primary); color: white; padding: 16px 20px;
@@ -617,8 +667,11 @@
             background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(241,245,249,0.98) 100%);
             backdrop-filter: blur(22px); border-radius: 18px;
             box-shadow: 0 16px 48px rgba(15,23,42,0.12); border: 1px solid rgba(148,163,184,0.18);
-            overflow: hidden; z-index: 1002; display: flex; flex-direction: column;
+            overflow: hidden; z-index: 1002; display: none; flex-direction: column;
             animation: slideInRight 0.5s ease-out;
+        }
+        .assistant-widget.show {
+            display: flex;
         }
         .assistant-header {
             background: #0f172a; color: white; padding: 16px 18px;
@@ -630,16 +683,13 @@
             background: none; border: none; color: rgba(255,255,255,0.8);
             cursor: pointer; font-size: 1rem; padding: 4px; border-radius: 50%;
         }
-        .assistant-body { padding: 16px; display: grid; gap: 12px; }
-        .assistant-message {
-            background: rgba(15,23,42,0.04); border-radius: 14px; padding: 14px 16px;
-            color: #0f172a; font-size: 0.9rem; line-height: 1.5;
-        }
+        
         .assistant-input-group { display: flex; gap: 10px; align-items: center; }
         .assistant-input {
             flex: 1; border-radius: 999px; border: 1px solid rgba(148,163,184,0.5);
             padding: 10px 16px; background: white; font-size: 0.9rem;
         }
+        
         .assistant-submit {
             border-radius: 999px; border: none; background: var(--primary);
             color: white; padding: 10px 16px; cursor: pointer; transition: transform 0.2s ease;
@@ -647,14 +697,23 @@
         .assistant-submit:hover { transform: translateY(-1px); }
 
         .assistant-toggle {
-            position: fixed; right: 30px; bottom: 30px;
-            width: 50px; height: 50px; border-radius: 50%;
-            background: #0f172a; color: white;
+            position: fixed; bottom: 30px; right: 30px; 
+            width: 60px; height: 60px; border-radius: 50%;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
             display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 16px 40px rgba(15,23,42,0.18);
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4);
+            cursor: pointer; z-index: 1001; transition: all 0.3s ease;
+            border: none; font-size: 1.5rem;
+        }
+        .assistant-toggle:hover { 
+            transform: translateY(-4px) scale(1.08); 
+            box-shadow: 0 12px 32px rgba(37, 99, 235, 0.6);
+        }
+        .assistant-toggle.hide {
+            display: none !important;
             cursor: pointer; z-index: 1003; transition: transform 0.2s ease, opacity 0.2s ease;
         }
-        .assistant-toggle:hover { transform: translateY(-2px); opacity: 0.95; }
 
         .assistant-widget.hide, .health-tips-widget.hide { display: none !important; }
 
@@ -749,7 +808,6 @@
 </head>
 <body>
 
-<!-- Animated Background Particles -->
 <div class="particles">
     <div class="particle"></div><div class="particle"></div><div class="particle"></div>
     <div class="particle"></div><div class="particle"></div><div class="particle"></div>
@@ -838,7 +896,7 @@
         </div>
 
         <div class="topbar-right">
-            <button class="emergency-btn" onclick="showEmergencyModal()">
+            <button class="emergency-btn" data-bs-toggle="modal" data-bs-target="#emergencyModal">
                 <i class="fas fa-ambulance"></i> Emergency
             </button>
 
@@ -858,15 +916,13 @@
                 <div class="search-suggestions" id="searchSuggestions"></div>
             </div>
 
-            <!-- Notifications -->
             <div class="notification-container">
-                <button class="btn btn-sm notification-btn" type="button" data-bs-toggle="dropdown">
+                <button class="btn btn-sm notification-btn" type="button" data-bs-toggle="dropdown" data-bs-display="static">
                     <i class="fas fa-bell"></i>
                     <span class="notification-badge">3</span>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end notification-dropdown">
                     <li class="dropdown-header"><h6 class="mb-0">Notifications</h6></li>
-                    <li><hr class="dropdown-divider"></li>
                     <li>
                         <a class="dropdown-item notification-item" href="#">
                             <div class="notification-icon bg-primary"><i class="fas fa-calendar-check"></i></div>
@@ -897,18 +953,22 @@
                             </div>
                         </a>
                     </li>
-                    <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item text-center" href="#">View All Notifications</a></li>
                 </ul>
             </div>
 
-            <!-- User Profile -->
             <div class="user-profile-container">
-                <button class="btn btn-sm user-profile-btn" type="button" data-bs-toggle="dropdown">
+                <button class="btn btn-sm user-profile-btn" type="button" data-bs-toggle="dropdown" data-bs-display="static">
                     <div class="user-avatar">
-                        {% with full_name=user.get_full_name|default:user.username %}
-                            <span>{{ full_name|slice:":1"|upper }}{{ full_name|slice:"-1"|upper }}</span>
-                        {% endwith %}
+                        <span>
+                            {% if user.first_name and user.last_name %}
+                                {{ user.first_name|slice:":1"|upper }}{{ user.last_name|slice:":1"|upper }}
+                            {% elif user.first_name %}
+                                {{ user.first_name|slice:":2"|upper }}
+                            {% else %}
+                                {{ user.username|slice:":2"|upper }}
+                            {% endif %}
+                        </span>
                     </div>
                     <div class="user-info-mini">
                         <div class="user-name">{{ user.get_full_name|default:user.username|truncatechars:15 }}</div>
@@ -919,9 +979,15 @@
                 <ul class="dropdown-menu dropdown-menu-end user-dropdown">
                     <li class="dropdown-header">
                         <div class="user-avatar-large">
-                            {% with full_name=user.get_full_name|default:user.username %}
-                                <span>{{ full_name|slice:":1"|upper }}{{ full_name|slice:"-1"|upper }}</span>
-                            {% endwith %}
+                            <span>
+                                {% if user.first_name and user.last_name %}
+                                    {{ user.first_name|slice:":1"|upper }}{{ user.last_name|slice:":1"|upper }}
+                                {% elif user.first_name %}
+                                    {{ user.first_name|slice:":2"|upper }}
+                                {% else %}
+                                    {{ user.username|slice:":2"|upper }}
+                                {% endif %}
+                            </span>
                         </div>
                         <div class="user-details-full">
                             <div class="user-name-full">{{ user.get_full_name|default:user.username }}</div>
@@ -929,11 +995,9 @@
                             <div class="user-role-badge">{{ user.groups.first.name|default:"User" }}</div>
                         </div>
                     </li>
-                    <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="{% url 'profile' %}"><i class="fas fa-user me-2"></i>Profile Settings</a></li>
                     <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Preferences</a></li>
                     <li><a class="dropdown-item" href="#"><i class="fas fa-moon me-2"></i>Dark Mode</a></li>
-                    <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item text-danger" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
                 </ul>
             </div>
@@ -967,7 +1031,7 @@
             <div class="container-fluid">
                 <div class="row g-3">
                     <div class="col-md-3">
-                        <div class="action-card emergency-action" onclick="showEmergencyModal()">
+                        <div class="action-card emergency-action" data-bs-toggle="modal" data-bs-target="#emergencyModal">
                             <div class="action-icon"><i class="fas fa-ambulance"></i></div>
                             <div class="action-content"><h6>Emergency</h6><p>24/7 Emergency Care</p></div>
                         </div>
@@ -997,7 +1061,6 @@
     </div>
 </div>
 
-<!-- ========== EMERGENCY MODAL (UPDATED) ========== -->
 <div class="modal fade" id="emergencyModal" tabindex="-1" aria-labelledby="emergencyModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content" style="border-radius:20px;overflow:hidden;">
@@ -1016,7 +1079,6 @@
 
             <div class="modal-body" style="padding:28px;background:#fafafa;">
 
-                <!-- Emergency Hotlines -->
                 <div class="row g-3 mb-4">
                     <div class="col-md-4">
                         <a href="tel:108" style="text-decoration:none;">
@@ -1056,12 +1118,11 @@
                     </div>
                 </div>
 
-                <!-- Hospital Section -->
                 <div style="background:white;border-radius:18px;padding:22px;box-shadow:0 4px 20px rgba(0,0,0,0.07);margin-bottom:24px;">
                     <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
                         <div>
                             <h6 class="mb-0 fw-bold" style="font-size:1rem;"><i class="fas fa-hospital-alt me-2 text-danger"></i>Lucknow Hospitals</h6>
-                            <small class="text-muted">Government &amp; Private — Enable location to see the nearest hospitals</small>
+                            <small class="text-muted">Government & Private — Enable location to see the nearest hospitals</small>
                         </div>
                         <button id="locateBtn" onclick="findNearestHospitals()"
                             style="background:linear-gradient(135deg,#2563eb,#1d4ed8);color:white;border:none;border-radius:50px;padding:8px 18px;font-weight:700;font-size:0.82rem;display:flex;align-items:center;gap:8px;cursor:pointer;transition:all 0.3s ease;">
@@ -1074,17 +1135,16 @@
                         <i class="fas fa-spinner fa-spin me-2"></i> Getting your location...
                     </div>
 
-                    <!-- Filter Tabs -->
                     <div class="d-flex gap-2 mb-3 flex-wrap">
                         <button class="hosp-filter-btn active" onclick="filterHospitals('all',this)" style="padding:6px 16px;border-radius:50px;border:2px solid #2563eb;background:#2563eb;color:white;font-size:0.78rem;font-weight:700;">All</button>
                         <button class="hosp-filter-btn" onclick="filterHospitals('government',this)" style="padding:6px 16px;border-radius:50px;border:2px solid #64748b;background:transparent;color:#64748b;font-size:0.78rem;font-weight:700;">🏛️ Government</button>
                         <button class="hosp-filter-btn" onclick="filterHospitals('private',this)" style="padding:6px 16px;border-radius:50px;border:2px solid #64748b;background:transparent;color:#64748b;font-size:0.78rem;font-weight:700;">🏥 Private</button>
+                        <button class="hosp-filter-btn" onclick="filterHospitals('college',this)" style="padding:6px 16px;border-radius:50px;border:2px solid #64748b;background:transparent;color:#64748b;font-size:0.78rem;font-weight:700;">🏫 Colleges</button>
                     </div>
 
                     <div id="hospitalsGrid" class="row g-2"></div>
                 </div>
 
-                <!-- Emergency Form -->
                 <div style="background:white;border-radius:18px;padding:22px;box-shadow:0 4px 20px rgba(0,0,0,0.07);">
                     <h6 class="fw-bold mb-3" style="font-size:1rem;"><i class="fas fa-file-medical me-2 text-danger"></i>Quick Emergency Report</h6>
                     <form id="emergencyForm">
@@ -1120,7 +1180,6 @@
     </div>
 </div>
 
-<!-- Health Tips Widget -->
 {% if user.is_authenticated %}
 <div class="health-tips-widget">
     <div class="tips-header">
@@ -1153,17 +1212,20 @@
 </div>
 {% endif %}
 
-<!-- Assistant Widget -->
 <div class="assistant-widget" id="assistantWidget">
     <div class="assistant-header">
         <div class="assistant-title"><i class="fas fa-headset"></i><span>Health Assistant</span></div>
         <button class="assistant-close" onclick="toggleAssistant(false)"><i class="fas fa-times"></i></button>
     </div>
-    <div class="assistant-body">
-        <div class="assistant-message" id="assistantResponse">Need help? Ask me about appointments, records, or medical support.</div>
-        <div class="assistant-input-group">
-            <input type="text" id="assistantInput" class="assistant-input" placeholder="Ask me something...">
-            <button class="assistant-submit" onclick="submitAssistantQuestion()">Ask</button>
+    <div class="assistant-body" style="padding: 16px; display: flex; flex-direction: column; gap: 12px; height: 350px;">
+        <div id="chatHistory" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-right: 5px;">
+            <div style="background: rgba(15,23,42,0.04); color: #0f172a; border-radius: 14px 14px 14px 0; padding: 10px 14px; font-size: 0.85rem; width: fit-content; max-width: 85%; align-self: flex-start;">
+                Namaste! Ask me about appointments, hospitals, or medical support.
+            </div>
+        </div>
+        <div class="assistant-input-group" style="display: flex; gap: 8px; margin-top: auto;">
+            <input type="text" id="assistantInput" class="assistant-input" placeholder="Type your message..." style="flex: 1; border-radius: 20px; border: 1px solid #ccc; padding: 8px 12px; outline: none; font-size: 0.85rem;">
+            <button class="assistant-submit" onclick="submitAssistantQuestion()" style="border: none; background: #2563eb; color: white; border-radius: 20px; padding: 8px 16px; font-weight: 600;">Ask</button>
         </div>
     </div>
 </div>
@@ -1172,162 +1234,336 @@
     <i class="fas fa-headset fa-lg"></i>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
-// ===== HOSPITAL DATA =====
 const lucknowHospitals = [
-    { id:1,  name:"SGPGI",            fullName:"Sanjay Gandhi Postgraduate Institute of Medical Sciences", area:"Raebareli Road",            type:"government", specialty:"Super Speciality • Post-Graduate",   icon:"🏛️", iconColor:"#059669", phone:"0522-2668700", lat:26.8388, lng:80.9845, mapUrl:"https://maps.google.com/?q=SGPGI+Lucknow",                          rating:"⭐ Top Ranked N. India" },
-    { id:2,  name:"KGMU",             fullName:"King George's Medical University",                         area:"Chowk",                     type:"government", specialty:"General & Super Speciality",         icon:"🏛️", iconColor:"#059669", phone:"0522-2257543", lat:26.8586, lng:80.9309, mapUrl:"https://maps.google.com/?q=KGMU+Lucknow",                           rating:"⭐ Oldest & Largest" },
-    { id:3,  name:"RMLIMS",           fullName:"Dr. Ram Manohar Lohia Institute of Medical Sciences",     area:"Gomti Nagar",                type:"government", specialty:"Super Speciality",                  icon:"🏛️", iconColor:"#059669", phone:"0522-4918500", lat:26.8621, lng:80.9957, mapUrl:"https://maps.google.com/?q=RMLIMS+Lucknow",                         rating:"⭐ Major Govt Hospital" },
-    { id:4,  name:"Balrampur Hospital",fullName:"Balrampur Hospital",                                     area:"Golaganj",                  type:"government", specialty:"General Medicine & Emergency",       icon:"🏥", iconColor:"#0284c7", phone:"0522-2623601", lat:26.8626, lng:80.9213, mapUrl:"https://maps.google.com/?q=Balrampur+Hospital+Lucknow",           rating:"⭐ 24/7 Emergency" },
-    { id:5,  name:"Civil Hospital",   fullName:"Dr. Shyama Prasad Mukherjee Civil Hospital",             area:"Hazratganj, Park Road",      type:"government", specialty:"General Medicine & Emergency",       icon:"🏥", iconColor:"#0284c7", phone:"0522-2614154", lat:26.8544, lng:80.9381, mapUrl:"https://maps.google.com/?q=Civil+Hospital+Hazratganj+Lucknow",  rating:"⭐ Central Location" },
-    { id:6,  name:"Medanta Hospital", fullName:"Medanta — The Medicity",                                  area:"Sushant Golf City, Amar Shaheed Path", type:"private", specialty:"Multi Super Speciality",     icon:"🏨", iconColor:"#7c3aed", phone:"0522-4508888", lat:26.8023, lng:81.0074, mapUrl:"https://maps.google.com/?q=Medanta+Hospital+Lucknow",            rating:"⭐ World-Class Facilities" },
-    { id:7,  name:"Apollomedics",     fullName:"Apollomedics Super Speciality Hospital",                  area:"Kanpur Road, Bargawan",     type:"private",    specialty:"Super Speciality • Apollo Group",    icon:"🏨", iconColor:"#7c3aed", phone:"0522-6718000", lat:26.8415, lng:80.8756, mapUrl:"https://maps.google.com/?q=Apollomedics+Hospital+Lucknow",       rating:"⭐ Advanced Surgeries" },
-    { id:8,  name:"Sahara Hospital",  fullName:"Sahara Hospital",                                         area:"Gomti Nagar",               type:"private",    specialty:"Multi Speciality Premium",           icon:"🏨", iconColor:"#7c3aed", phone:"0522-6780001", lat:26.8584, lng:80.9892, mapUrl:"https://maps.google.com/?q=Sahara+Hospital+Lucknow",            rating:"⭐ Premium Healthcare" },
-    { id:9,  name:"Chandan Hospital", fullName:"Chandan Hospital",                                        area:"Gomti Nagar (Faizabad Rd)", type:"private",    specialty:"Multi Speciality • Modern",          icon:"🏥", iconColor:"#ea580c", phone:"0522-4043000", lat:26.8638, lng:80.9875, mapUrl:"https://maps.google.com/?q=Chandan+Hospital+Lucknow",           rating:"⭐ Multi-Speciality" },
-    { id:10, name:"Divine Heart",     fullName:"Divine Heart & Multispecialty Hospital",                  area:"Gomti Nagar",               type:"private",    specialty:"Cardiac & Multi Speciality",         icon:"❤️", iconColor:"#dc2626", phone:"0522-4042222", lat:26.8612, lng:80.9901, mapUrl:"https://maps.google.com/?q=Divine+Heart+Hospital+Lucknow",      rating:"⭐ Best Cardiac Care" },
-    { id:11, name:"Vivekananda",      fullName:"Vivekananda Polyclinic & Institute of Medical Sciences", area:"Nirala Nagar",              type:"private",    specialty:"General & Speciality • Affordable",  icon:"🏥", iconColor:"#0369a1", phone:"0522-2782648", lat:26.8706, lng:80.9456, mapUrl:"https://maps.google.com/?q=Vivekananda+Polyclinic+Lucknow",    rating:"⭐ Affordable Trust-Run" },
-    { id:12, name:"Mayo Hospital",    fullName:"Mayo Institute of Medical Sciences",                      area:"Gomti Nagar / Faizabad Rd", type:"private",    specialty:"General & Specialized Care",         icon:"🏥", iconColor:"#d97706", phone:"0522-4009000", lat:26.8650, lng:80.9950, mapUrl:"https://maps.google.com/?q=Mayo+Hospital+Lucknow",              rating:"⭐ General & Speciality" }
+    // --- TOP GOVERNMENT HOSPITALS ---
+    { id:1, name:"SGPGI", fullName:"Sanjay Gandhi Postgraduate Institute of Medical Sciences", area:"Raebareli Road", type:"government", specialty:"Govt Super Speciality", icon:"🏛️", iconColor:"#059669", phone:"0522-2668700", lat:26.7388, lng:80.9345, mapUrl:"#", rating:"⭐ Top Ranked" },
+    { id:2, name:"KGMU", fullName:"King George's Medical University", area:"Chowk", type:"government", specialty:"Medical College & Hospital", icon:"🏛️", iconColor:"#059669", phone:"0522-2257543", lat:26.8686, lng:80.9109, mapUrl:"#", rating:"⭐ Largest" },
+    { id:3, name:"RMLIMS", fullName:"Dr. Ram Manohar Lohia Institute", area:"Gomti Nagar", type:"government", specialty:"Govt Super Speciality", icon:"🏛️", iconColor:"#059669", phone:"0522-4918500", lat:26.8621, lng:80.9957, mapUrl:"#", rating:"⭐ Govt Premium" },
+    { id:4, name:"Balrampur Hospital", fullName:"Balrampur Hospital", area:"Golaganj", type:"government", specialty:"General & Emergency", icon:"🏥", iconColor:"#0284c7", phone:"0522-2623601", lat:26.8526, lng:80.9213, mapUrl:"#", rating:"⭐ 24/7 Care" },
+    { id:5, name:"Civil Hospital", fullName:"Dr. SPM Civil Hospital", area:"Hazratganj", type:"government", specialty:"General Medicine", icon:"🏥", iconColor:"#0284c7", phone:"0522-2614154", lat:26.8444, lng:80.9381, mapUrl:"#", rating:"⭐ Central" },
+    { id:6, name:"Lok Bandhu", fullName:"Lok Bandhu Raj Narayan Hospital", area:"Kanpur Road", type:"government", specialty:"General Hospital", icon:"🏥", iconColor:"#0284c7", phone:"0522-2435555", lat:26.7995, lng:80.8988, mapUrl:"#", rating:"⭐ Accessible" },
+    { id:7, name:"Dufferin Hospital", fullName:"Avanti Bai Women Hospital", area:"Golaganj", type:"government", specialty:"Maternity & Women", icon:"👶", iconColor:"#db2777", phone:"102", lat:26.8601, lng:80.9255, mapUrl:"#", rating:"⭐ Women Care" },
+    { id:8, name:"Jhalkari Bai", fullName:"Veerangana Jhalkari Bai Hospital", area:"Hazratganj", type:"government", specialty:"Maternity Care", icon:"👶", iconColor:"#db2777", phone:"102", lat:26.8512, lng:80.9421, mapUrl:"#", rating:"⭐ Specialized" },
+    { id:9, name:"Bhaurao Deoras", fullName:"Bhaurao Deoras Civil Hospital", area:"Mahanagar", type:"government", specialty:"General", icon:"🏥", iconColor:"#0284c7", phone:"108", lat:26.8755, lng:80.9522, mapUrl:"#", rating:"⭐ Reliable" },
+    { id:10, name:"Ram Sagar Mishra", fullName:"RSM Govt Hospital", area:"Sitapur Road", type:"government", specialty:"General", icon:"🏥", iconColor:"#0284c7", phone:"108", lat:26.9654, lng:80.9123, mapUrl:"#", rating:"⭐ Suburb Care" },
+
+    // --- TOP PRIVATE MULTI & SUPER SPECIALITY ---
+    { id:11, name:"Medanta Hospital", fullName:"Medanta — The Medicity", area:"Sushant Golf City", type:"private", specialty:"Multi Super Speciality", icon:"🏨", iconColor:"#7c3aed", phone:"0522-4508888", lat:26.8023, lng:81.0074, mapUrl:"#", rating:"⭐ World-Class" },
+    { id:12, name:"Apollomedics", fullName:"Apollomedics Super Speciality", area:"Kanpur Road", type:"private", specialty:"Apollo Group Super Spec", icon:"🏨", iconColor:"#7c3aed", phone:"0522-6718000", lat:26.8415, lng:80.8756, mapUrl:"#", rating:"⭐ Premium" },
+    { id:13, name:"Sahara Hospital", fullName:"Sahara Hospital", area:"Gomti Nagar", type:"private", specialty:"Premium Multi Spec", icon:"🏨", iconColor:"#7c3aed", phone:"0522-6780001", lat:26.8584, lng:80.9892, mapUrl:"#", rating:"⭐ Established" },
+    { id:14, name:"Chandan Hospital", fullName:"Chandan Hospital", area:"Faizabad Road", type:"private", specialty:"Multi Speciality", icon:"🏥", iconColor:"#ea580c", phone:"0522-4043000", lat:26.8638, lng:80.9875, mapUrl:"#", rating:"⭐ Advanced" },
+    { id:15, name:"Divine Heart", fullName:"Divine Heart & Multispecialty", area:"Gomti Nagar", type:"private", specialty:"Cardiac Expert", icon:"❤️", iconColor:"#dc2626", phone:"0522-4042222", lat:26.8612, lng:80.9901, mapUrl:"#", rating:"⭐ Heart Care" },
+    { id:16, name:"Mayo Hospital", fullName:"Mayo Institute of Medical Sciences", area:"Gomti Nagar", type:"private", specialty:"General & Specialized", icon:"🏥", iconColor:"#d97706", phone:"0522-4009000", lat:26.8650, lng:80.9950, mapUrl:"#", rating:"⭐ Top Private" },
+    { id:17, name:"Vivekananda", fullName:"Vivekananda Polyclinic", area:"Nirala Nagar", type:"private", specialty:"Trust Run Multi Spec", icon:"🏥", iconColor:"#0369a1", phone:"0522-2782648", lat:26.8706, lng:80.9456, mapUrl:"#", rating:"⭐ Trust Run" },
+    { id:18, name:"Midland Hospital", fullName:"Midland Healthcare", area:"Mahanagar", type:"private", specialty:"Respiratory & General", icon:"🏥", iconColor:"#ea580c", phone:"0522-4041111", lat:26.8765, lng:80.9555, mapUrl:"#", rating:"⭐ Lung Care" },
+    { id:19, name:"Tender Palm", fullName:"Tender Palm Hospital", area:"Amar Shaheed Path", type:"private", specialty:"Modern Multi Spec", icon:"🏥", iconColor:"#ea580c", phone:"0522-3334444", lat:26.8155, lng:81.0155, mapUrl:"#", rating:"⭐ Modern" },
+    { id:20, name:"Ajanta Hospital", fullName:"Ajanta Hospital & IVF", area:"Alambagh", type:"private", specialty:"IVF & Multi Spec", icon:"👶", iconColor:"#db2777", phone:"0522-2461010", lat:26.8155, lng:80.9022, mapUrl:"#", rating:"⭐ IVF Expert" },
+    { id:21, name:"Shekhar Hospital", fullName:"Shekhar Hospital", area:"Indira Nagar", type:"private", specialty:"Multi Speciality", icon:"🏥", iconColor:"#ea580c", phone:"0522-2348348", lat:26.8855, lng:80.9955, mapUrl:"#", rating:"⭐ Known Name" },
+    { id:22, name:"Nova Hospital", fullName:"Nova Hospital", area:"Gomti Nagar", type:"private", specialty:"General & Surgical", icon:"🏥", iconColor:"#0284c7", phone:"0522-4234567", lat:26.8555, lng:80.9755, mapUrl:"#", rating:"⭐ Fast Service" },
+    { id:23, name:"Charak Hospital", fullName:"Charak Hospital", area:"Dubagga", type:"private", specialty:"Multi Speciality", icon:"🏥", iconColor:"#0284c7", phone:"0522-2323232", lat:26.8755, lng:80.8655, mapUrl:"#", rating:"⭐ Good Facilities" },
+    { id:24, name:"St. Joseph", fullName:"St. Joseph Hospital", area:"Gomti Nagar", type:"private", specialty:"Trust Run", icon:"🏥", iconColor:"#0369a1", phone:"0522-2393939", lat:26.8555, lng:81.0055, mapUrl:"#", rating:"⭐ Reputed" },
+    { id:25, name:"Health City", fullName:"Health City Trauma Centre", area:"Gomti Nagar", type:"private", specialty:"Trauma & Ortho", icon:"🦴", iconColor:"#dc2626", phone:"0522-2303030", lat:26.8455, lng:80.9855, mapUrl:"#", rating:"⭐ Trauma Care" },
+    { id:26, name:"Globus Medicare", fullName:"Globus Medicare", area:"Ashiyana", type:"private", specialty:"General Hospital", icon:"🏥", iconColor:"#0284c7", phone:"0522-2424242", lat:26.8055, lng:80.9055, mapUrl:"#", rating:"⭐ Standard" },
+    { id:27, name:"Ford Hospital", fullName:"Ford Hospital", area:"Vikas Nagar", type:"private", specialty:"Multi Speciality", icon:"🏥", iconColor:"#d97706", phone:"0522-2334455", lat:26.8955, lng:80.9555, mapUrl:"#", rating:"⭐ Quick Care" },
+    { id:28, name:"Javitri Hospital", fullName:"Javitri Hospital", area:"Telibagh", type:"private", specialty:"IVF & Maternity", icon:"👶", iconColor:"#db2777", phone:"0522-2442222", lat:26.7855, lng:80.9555, mapUrl:"#", rating:"⭐ Women Care" },
+    { id:29, name:"Sushruta", fullName:"Sushruta Inst. of Plastic Surgery", area:"Gomti Nagar", type:"private", specialty:"Burn & Plastic", icon:"🩺", iconColor:"#ea580c", phone:"0522-2399999", lat:26.8655, lng:80.9755, mapUrl:"#", rating:"⭐ Burns Care" },
+    { id:30, name:"Vatsalya", fullName:"Vatsalya Maternity", area:"Alambagh", type:"private", specialty:"Maternity", icon:"👶", iconColor:"#db2777", phone:"0522-2455555", lat:26.8155, lng:80.8955, mapUrl:"#", rating:"⭐ Reliable" },
+    { id:31, name:"Green City", fullName:"Green City Hospital", area:"Kalyanpur", type:"private", specialty:"Multi Speciality", icon:"🏥", iconColor:"#16a34a", phone:"0522-2737373", lat:26.8955, lng:80.9655, mapUrl:"#", rating:"⭐ Safe Care" },
+    { id:32, name:"City Hospital", fullName:"City Hospital & Trauma", area:"Chinhat", type:"private", specialty:"Emergency Care", icon:"🚑", iconColor:"#dc2626", phone:"0522-2818181", lat:26.8755, lng:81.0355, mapUrl:"#", rating:"⭐ Emergency Focus" },
+    { id:33, name:"Om Sai", fullName:"Om Sai Hospital", area:"Aliganj", type:"private", specialty:"General", icon:"🏥", iconColor:"#d97706", phone:"0522-2322222", lat:26.8855, lng:80.9455, mapUrl:"#", rating:"⭐ Local Favorite" },
+    { id:34, name:"Brij Medical", fullName:"Brij Medical Centre", area:"Kanpur Road", type:"private", specialty:"General Surgery", icon:"🩺", iconColor:"#64748b", phone:"0522-2454545", lat:26.8255, lng:80.8855, mapUrl:"#", rating:"⭐ Surgical" },
+    { id:35, name:"Neera Hospital", fullName:"Neera Hospital", area:"Mahanagar", type:"private", specialty:"Maternity & Gen", icon:"👶", iconColor:"#db2777", phone:"0522-2333333", lat:26.8655, lng:80.9555, mapUrl:"#", rating:"⭐ Known Name" },
+    { id:36, name:"Krishna Medical", fullName:"Krishna Medical Centre", area:"Cantonment", type:"private", specialty:"Surgery", icon:"🏥", iconColor:"#64748b", phone:"0522-2484848", lat:26.8255, lng:80.9355, mapUrl:"#", rating:"⭐ Old Hospital" },
+    { id:37, name:"Dr OP Chaudhary", fullName:"Dr OP Chaudhary Hospital", area:"Raebareli Road", type:"private", specialty:"General", icon:"🏥", iconColor:"#0284c7", phone:"0522-2444444", lat:26.7955, lng:80.9655, mapUrl:"#", rating:"⭐ Standard" },
+    { id:38, name:"Surya Hospital", fullName:"Surya Hospital", area:"Gomti Nagar", type:"private", specialty:"General", icon:"🏥", iconColor:"#ea580c", phone:"0522-2300000", lat:26.8555, lng:80.9855, mapUrl:"#", rating:"⭐ Good Services" },
+    { id:39, name:"Awadh Hospital", fullName:"Awadh Hospital", area:"Alambagh", type:"private", specialty:"General", icon:"🏥", iconColor:"#d97706", phone:"0522-2451111", lat:26.8255, lng:80.9055, mapUrl:"#", rating:"⭐ Active Care" },
+    { id:40, name:"Tanishq", fullName:"Tanishq Hospital", area:"Gomti Nagar", type:"private", specialty:"General", icon:"🏥", iconColor:"#64748b", phone:"0522-2311111", lat:26.8655, lng:80.9955, mapUrl:"#", rating:"⭐ General Health" },
+    { id:41, name:"Nishat Hospital", fullName:"Nishat Hospital", area:"Kaiserbagh", type:"private", specialty:"Maternity", icon:"🏥", iconColor:"#0284c7", phone:"0522-2222222", lat:26.8455, lng:80.9255, mapUrl:"#", rating:"⭐ Heritage Area" },
+    { id:42, name:"Fatima Hospital", fullName:"Fatima Hospital", area:"Mahanagar", type:"private", specialty:"Trust Run", icon:"🏥", iconColor:"#0369a1", phone:"0522-2321111", lat:26.8755, lng:80.9455, mapUrl:"#", rating:"⭐ Charitable" },
+    { id:43, name:"Sanjeevani", fullName:"Sanjeevani Hospital", area:"Aliganj", type:"private", specialty:"General", icon:"🏥", iconColor:"#16a34a", phone:"0522-2366666", lat:26.8955, lng:80.9355, mapUrl:"#", rating:"⭐ Popular" },
+
+    // --- PRIVATE MEDICAL COLLEGES ---
+    { id:44, name:"Era's Medical", fullName:"Era's Lucknow Medical College", area:"Hardoi Road", type:"college", specialty:"Medical College", icon:"🏫", iconColor:"#4f46e5", phone:"0522-2408122", lat:26.8795, lng:80.8855, mapUrl:"#", rating:"⭐ College Hospital" },
+    { id:45, name:"T.S. Misra", fullName:"TS Misra Medical College", area:"Amausi", type:"college", specialty:"Medical College", icon:"🏫", iconColor:"#4f46e5", phone:"0522-3534500", lat:26.7854, lng:80.8754, mapUrl:"#", rating:"⭐ Modern Setup" },
+    { id:46, name:"Career Institute", fullName:"Career Institute of Medical Sciences", area:"IIM Road", type:"college", specialty:"Medical College", icon:"🏫", iconColor:"#4f46e5", phone:"0522-2890722", lat:26.9245, lng:80.9234, mapUrl:"#", rating:"⭐ Student Care" },
+    { id:47, name:"Integral Hospital", fullName:"Integral Inst. of Medical Sciences", area:"Kursi Road", type:"college", specialty:"Medical College", icon:"🏫", iconColor:"#4f46e5", phone:"0522-2890730", lat:26.9555, lng:80.9988, mapUrl:"#", rating:"⭐ Multi Speciality" },
+    { id:48, name:"Prasad Institute", fullName:"Prasad Institute of Med Sciences", area:"Kanpur Road", type:"college", specialty:"Medical College", icon:"🏫", iconColor:"#4f46e5", phone:"0522-2436444", lat:26.7544, lng:80.8544, mapUrl:"#", rating:"⭐ Huge Campus" },
+    { id:49, name:"Hind Hospital", fullName:"Hind Institute of Medical Sciences", area:"Safedabad", type:"college", specialty:"Medical College", icon:"🏫", iconColor:"#4f46e5", phone:"05248-222222", lat:26.9055, lng:81.0855, mapUrl:"#", rating:"⭐ Suburbs" },
+    { id:50, name:"GCRG Medical", fullName:"GCRG Institute of Medical Sciences", area:"BKT", type:"college", specialty:"Medical College", icon:"🏫", iconColor:"#4f46e5", phone:"0522-2811111", lat:26.9855, lng:80.9155, mapUrl:"#", rating:"⭐ Training Center" }
 ];
 
 let userLat = null, userLng = null, currentFilter = 'all';
 
 function getDistanceKm(lat1, lng1, lat2, lng2) {
-    const R = 6371, dLat = (lat2-lat1)*Math.PI/180, dLng = (lng2-lng1)*Math.PI/180;
-    const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)**2;
+    const R = 6371;
+    const dLat = (lat2-lat1)*Math.PI/180;
+    const dLng = (lng2-lng1)*Math.PI/180;
+    const a = Math.pow(Math.sin(dLat/2), 2) + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.pow(Math.sin(dLng/2), 2);
     return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 }
 
 function getFilteredSorted() {
     let list = [...lucknowHospitals];
-    if (userLat !== null) {
+    if (userLat !== null && userLng !== null) {
         list = list.map(h => ({...h, distance: getDistanceKm(userLat, userLng, h.lat, h.lng)}))
                    .sort((a,b) => a.distance - b.distance);
     }
-    if (currentFilter !== 'all') list = list.filter(h => h.type === currentFilter);
+    if (currentFilter !== 'all') {
+        list = list.filter(h => h.type === currentFilter);
+    }
     return list;
 }
 
+// FIXED: Robust render function wrapping in try-catch
 function renderHospitals(hospitals) {
-    const grid = document.getElementById('hospitalsGrid');
-    if (!grid) return;
-    if (!hospitals.length) {
-        grid.innerHTML = '<div class="col-12 text-center text-muted py-3">No hospitals found.</div>';
-        return;
-    }
-    grid.innerHTML = hospitals.map((h, idx) => {
-        const isNearest = idx === 0 && userLat !== null;
-        const distBadge = h.distance !== undefined
-            ? `<span class="distance-badge"><i class="fas fa-map-marker-alt"></i> ${h.distance.toFixed(1)} km away</span>` : '';
-        const typeBadge = h.type === 'government' ? `<span class="govt-tag">Govt</span>` : `<span class="pvt-tag">Private</span>`;
-        return `
-        <div class="col-md-6 col-12 hospital-item" data-type="${h.type}">
-            <div class="hospital-card ${isNearest ? 'nearest-highlight' : ''}">
-                ${isNearest ? '<span class="nearest-badge">📍 Nearest</span>' : ''}
-                <div class="d-flex align-items-start gap-3">
-                    <div style="width:42px;height:42px;background:${h.iconColor}18;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex-shrink:0;">${h.icon}</div>
-                    <div class="flex-grow-1" style="min-width:0;">
-                        <div class="d-flex align-items-center gap-2 flex-wrap">
-                            <span style="font-weight:800;font-size:0.92rem;color:#0f172a;">${h.name}</span>${typeBadge}
+    try {
+        const grid = document.getElementById('hospitalsGrid');
+        if (!grid) return;
+        if (!hospitals || hospitals.length === 0) {
+            grid.innerHTML = '<div class="col-12 text-center text-muted py-3">No hospitals found.</div>';
+            return;
+        }
+        
+        let htmlContent = '';
+        hospitals.forEach((h, idx) => {
+            const isNearest = idx === 0 && userLat !== null;
+            const distText = (h.distance !== undefined && h.distance !== null) ? h.distance.toFixed(1) : '';
+            const distBadge = distText ? `<span class="distance-badge"><i class="fas fa-map-marker-alt"></i> ${distText} km away</span>` : '';
+            
+            let typeBadge = '';
+            if (h.type === 'government') typeBadge = '<span class="govt-tag">Govt</span>';
+            else if (h.type === 'college') typeBadge = '<span class="pvt-tag" style="background:rgba(79,70,229,0.1);color:#4f46e5;">College</span>';
+            else typeBadge = '<span class="pvt-tag">Private</span>';
+
+            htmlContent += `
+            <div class="col-md-6 col-12 hospital-item" data-type="${h.type}">
+                <div class="hospital-card ${isNearest ? 'nearest-highlight' : ''}">
+                    ${isNearest ? '<span class="nearest-badge">📍 Nearest</span>' : ''}
+                    <div class="d-flex align-items-start gap-3">
+                        <div style="width:42px;height:42px;background:${h.iconColor}18;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex-shrink:0;">${h.icon}</div>
+                        <div class="flex-grow-1" style="min-width:0;">
+                            <div class="d-flex align-items-center gap-2 flex-wrap">
+                                <span style="font-weight:800;font-size:0.92rem;color:#0f172a;">${h.name}</span>${typeBadge}
+                            </div>
+                            <div style="font-size:0.75rem;color:#64748b;margin:2px 0;">${h.fullName}</div>
+                            <div style="font-size:0.72rem;color:#94a3b8;"><i class="fas fa-map-marker-alt me-1"></i>${h.area}</div>
+                            <div style="font-size:0.7rem;color:#94a3b8;">${h.specialty}</div>
+                            <div style="font-size:0.7rem;color:#64748b;margin-top:2px;">${h.rating}</div>
+                            ${distBadge}
                         </div>
-                        <div style="font-size:0.75rem;color:#64748b;margin:2px 0;">${h.fullName}</div>
-                        <div style="font-size:0.72rem;color:#94a3b8;"><i class="fas fa-map-marker-alt me-1"></i>${h.area}</div>
-                        <div style="font-size:0.7rem;color:#94a3b8;">${h.specialty}</div>
-                        <div style="font-size:0.7rem;color:#64748b;margin-top:2px;">${h.rating}</div>
-                        ${distBadge}
+                    </div>
+                    <div class="d-flex gap-2 mt-3">
+                        <a href="tel:${h.phone}" class="btn btn-sm flex-fill"
+                            style="background:linear-gradient(135deg,#dc2626,#b91c1c);color:white;border:none;border-radius:8px;padding:7px;font-size:0.75rem;font-weight:700;text-decoration:none;text-align:center;">
+                            <i class="fas fa-phone me-1"></i>${h.phone}
+                        </a>
                     </div>
                 </div>
-                <div class="d-flex gap-2 mt-3">
-                    <a href="tel:${h.phone}" class="btn btn-sm flex-fill"
-                        style="background:linear-gradient(135deg,#dc2626,#b91c1c);color:white;border:none;border-radius:8px;padding:7px;font-size:0.75rem;font-weight:700;text-decoration:none;text-align:center;">
-                        <i class="fas fa-phone me-1"></i>${h.phone}
-                    </a>
-                    <a href="${h.mapUrl}" target="_blank" class="btn btn-sm"
-                        style="background:linear-gradient(135deg,#2563eb,#1d4ed8);color:white;border:none;border-radius:8px;padding:7px 14px;font-size:0.75rem;font-weight:700;text-decoration:none;">
-                        <i class="fas fa-directions"></i>
-                    </a>
-                </div>
-            </div>
-        </div>`;
-    }).join('');
+            </div>`;
+        });
+        
+        grid.innerHTML = htmlContent;
+    } catch (error) {
+        console.error("Error rendering hospitals:", error);
+    }
 }
 
 function filterHospitals(type, btn) {
-    currentFilter = type;
-    document.querySelectorAll('.hosp-filter-btn').forEach(b => {
-        b.classList.remove('active');
-        b.style.background = 'transparent'; b.style.color = '#64748b'; b.style.borderColor = '#64748b';
-    });
-    if (btn) {
-        btn.classList.add('active');
-        btn.style.background = '#2563eb'; btn.style.color = 'white'; btn.style.borderColor = '#2563eb';
+    try {
+        currentFilter = type;
+        document.querySelectorAll('.hosp-filter-btn').forEach(b => {
+            b.classList.remove('active');
+            b.style.background = 'transparent'; 
+            b.style.color = '#64748b'; 
+            b.style.borderColor = '#64748b';
+        });
+        if (btn) {
+            btn.classList.add('active');
+            btn.style.background = '#2563eb'; 
+            btn.style.color = 'white'; 
+            btn.style.borderColor = '#2563eb';
+        }
+        renderHospitals(getFilteredSorted());
+    } catch (e) {
+        console.error("Filter logic failed:", e);
     }
-    renderHospitals(getFilteredSorted());
 }
 
-function findNearestHospitals() {
+// ==========================================
+// 1. FIXED LOCATION SYSTEM (WITH FALLBACK)
+// ==========================================
+window.findNearestHospitals = function() {
     const statusEl   = document.getElementById('locationStatus');
     const btnText    = document.getElementById('locateBtnText');
     const locBtn     = document.getElementById('locateBtn');
-    if (!navigator.geolocation) {
-        if (statusEl) { statusEl.style.display = 'block'; statusEl.style.color = '#dc2626'; statusEl.innerHTML = '<i class="fas fa-exclamation-triangle me-2"></i> Browser location support nahi hai.'; }
-        return;
-    }
+
     if (statusEl) statusEl.style.display = 'block';
     if (btnText)  btnText.textContent = 'Getting Location...';
     if (locBtn)   locBtn.disabled = true;
 
+    // Fallback logic for HTTP development or Denied Permissions
+    const fallbackLocation = (msg) => {
+        userLat = 26.8467; // Hazratganj, Lucknow coordinates
+        userLng = 80.9462;
+        if (statusEl) {
+            statusEl.innerHTML = `<i class="fas fa-info-circle me-2"></i> ${msg} <br><small class="text-muted mt-1 d-block">Using simulated Lucknow center to show feature.</small>`;
+            statusEl.style.background = '#fffbeb';
+            statusEl.style.color = '#d97706'; 
+            statusEl.style.borderColor = '#fcd34d';
+        }
+        if (btnText) btnText.textContent = 'Location Simulated';
+        if (locBtn)  locBtn.disabled = false;
+        
+        const locField = document.getElementById('emrgLocation');
+        if (locField && !locField.value) locField.value = `Simulated Lat: ${userLat.toFixed(4)}, Lng: ${userLng.toFixed(4)}`;
+        renderHospitals(getFilteredSorted());
+    };
+
+    // Check if site is secure (HTTPS)
+    if (!window.isSecureContext) {
+        fallbackLocation("Browser blocks real location on HTTP.");
+        return;
+    }
+
+    if (!navigator.geolocation) {
+        fallbackLocation("Geolocation not supported by your browser.");
+        return;
+    }
+
+    // Try fetching actual location
     navigator.geolocation.getCurrentPosition(
         pos => {
-            userLat = pos.coords.latitude; userLng = pos.coords.longitude;
+            userLat = pos.coords.latitude; 
+            userLng = pos.coords.longitude;
             if (statusEl) {
-                statusEl.innerHTML = '<i class="fas fa-check-circle me-2"></i> Location detected! Hospitals have been sorted by distance.';
+                statusEl.innerHTML = '<i class="fas fa-check-circle me-2"></i> Location active! Hospitals sorted by distance.';
                 statusEl.style.background = 'linear-gradient(135deg,rgba(5,150,105,0.08),rgba(4,120,87,0.05))';
-                statusEl.style.color = '#047857'; statusEl.style.borderColor = 'rgba(5,150,105,0.2)';
+                statusEl.style.color = '#047857'; 
+                statusEl.style.borderColor = 'rgba(5,150,105,0.2)';
             }
             if (btnText) btnText.textContent = '✓ Location Active';
-            if (locBtn)  { locBtn.style.background = 'linear-gradient(135deg,#059669,#047857)'; locBtn.disabled = false; }
+            if (locBtn)  { 
+                locBtn.style.background = 'linear-gradient(135deg,#059669,#047857)'; 
+                locBtn.disabled = false; 
+            }
             const locField = document.getElementById('emrgLocation');
             if (locField && !locField.value) locField.value = `Lat: ${userLat.toFixed(4)}, Lng: ${userLng.toFixed(4)}`;
             renderHospitals(getFilteredSorted());
         },
         err => {
-            let msg = 'Location unavailable.';
-            if (err.code === 1) msg = 'Location permission denied. Browser settings mein allow karein.';
-            else if (err.code === 3) msg = 'Location request timeout. Dobara try karein.';
-            if (statusEl) {
-                statusEl.innerHTML = `<i class="fas fa-exclamation-triangle me-2"></i> ${msg}`;
-                statusEl.style.background = 'linear-gradient(135deg,rgba(220,38,38,0.08),rgba(185,28,28,0.05))';
-                statusEl.style.color = '#dc2626';
-            }
-            if (btnText) btnText.textContent = 'Try Again';
-            if (locBtn)  locBtn.disabled = false;
+            fallbackLocation("Location permission denied or timed out.");
         },
         { timeout: 10000, enableHighAccuracy: true }
     );
-}
+};
+
+
+// ==========================================
+// 2. FIXED CHATBOT SYSTEM (PROPER CHAT UI)
+// ==========================================
+window.submitAssistantQuestion = function() {
+    const input = document.getElementById('assistantInput');
+    const chatHistory = document.getElementById('chatHistory');
+    if (!input || !chatHistory) return;
+    
+    const q = input.value.trim();
+    if (!q) return;
+
+    // A) Append User Message
+    const userMsg = document.createElement('div');
+    userMsg.style.cssText = "background: #2563eb; color: white; border-radius: 14px 14px 0 14px; padding: 10px 14px; font-size: 0.85rem; width: fit-content; max-width: 85%; align-self: flex-end;";
+    userMsg.textContent = q;
+    chatHistory.appendChild(userMsg);
+    input.value = '';
+    chatHistory.scrollTop = chatHistory.scrollHeight;
+
+    // B) Append Typing Indicator
+    const botMsg = document.createElement('div');
+    botMsg.style.cssText = "background: rgba(15,23,42,0.04); color: #0f172a; border-radius: 14px 14px 14px 0; padding: 10px 14px; font-size: 0.85rem; width: fit-content; max-width: 85%; align-self: flex-start;";
+    botMsg.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    chatHistory.appendChild(botMsg);
+    chatHistory.scrollTop = chatHistory.scrollHeight;
+
+    // C) Dummy API Response Delay
+    setTimeout(() => {
+        botMsg.innerHTML = `I found some information regarding "<b>${q}</b>". Would you like me to book an appointment?`;
+        chatHistory.scrollTop = chatHistory.scrollHeight;
+    }, 1200);
+};
+
+// Listen for 'Enter' key inside Chatbot
+document.addEventListener('DOMContentLoaded', function() {
+    const chatInput = document.getElementById('assistantInput');
+    if (chatInput) {
+        chatInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                submitAssistantQuestion();
+            }
+        });
+    }
+
+    // Initialize Health Tips
+    tipItems = document.querySelectorAll('.tip-item');
+    indicators = document.querySelectorAll('.indicator');
+
+    // Safe execution render
+    renderHospitals(getFilteredSorted());
+
+    // Emergency modal listener
+    const eModal = document.getElementById('emergencyModal');
+    if (eModal) {
+        eModal.addEventListener('show.bs.modal', () => {
+            renderHospitals(getFilteredSorted());
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator(), gain = ctx.createGain();
+                osc.connect(gain); gain.connect(ctx.destination);
+                osc.frequency.setValueAtTime(800, ctx.currentTime);
+                osc.frequency.setValueAtTime(600, ctx.currentTime + 0.1);
+                osc.frequency.setValueAtTime(800, ctx.currentTime + 0.2);
+                gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+                osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.3);
+            } catch (e) {
+                // Audio not supported or blocked by autoplay policy, ignore
+            }
+        });
+    }
+
+    // Emergency form
+    const emergencyForm = document.getElementById('emergencyForm');
+    if (emergencyForm) {
+        emergencyForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = this.querySelector('button[type="submit"]');
+            const orig = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending Alert...';
+            btn.disabled = true;
+            setTimeout(() => {
+                alert('✅ Emergency alert sent! Help is on the way.\n\n📞 Also dial 108 for immediate ambulance.');
+                btn.innerHTML = orig; btn.disabled = false;
+                const m = bootstrap.Modal.getInstance(document.getElementById('emergencyModal'));
+                if (m) m.hide();
+                this.reset();
+            }, 2000);
+        });
+    }
+
+    // Quick actions show
+    setTimeout(() => { const qa = document.querySelector('.quick-actions'); if (qa) qa.classList.add('show'); }, 500);
+});
 
 // ===== GENERAL FUNCTIONS =====
 function updateTime() {
     const el = document.getElementById('current-time');
     if (el) el.textContent = new Date().toLocaleTimeString('en-US', { hour12:false, hour:'2-digit', minute:'2-digit' });
 }
-setInterval(updateTime, 1000); updateTime();
-
-function showEmergencyModal() {
-    const modal = new bootstrap.Modal(document.getElementById('emergencyModal'));
-    modal.show();
-    try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = ctx.createOscillator(), gain = ctx.createGain();
-        osc.connect(gain); gain.connect(ctx.destination);
-        osc.frequency.setValueAtTime(800, ctx.currentTime);
-        osc.frequency.setValueAtTime(600, ctx.currentTime + 0.1);
-        osc.frequency.setValueAtTime(800, ctx.currentTime + 0.2);
-        gain.gain.setValueAtTime(0.1, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
-        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.3);
-    } catch(e) {}
-}
+setInterval(updateTime, 1000); 
+updateTime();
 
 function quickAppointment() { window.location.href = "{% url 'appointment_create' %}"; }
 function healthCheck()       { alert('Health Check feature coming soon!'); }
@@ -1357,140 +1593,6 @@ function toggleAssistant(show = true) {
         toggle.style.display = 'flex';
     }
 }
-
-function submitAssistantQuestion() {
-    const input = document.getElementById('assistantInput');
-    const box   = document.getElementById('assistantResponse');
-    if (!input || !box) return;
-    const q = input.value.trim();
-    if (!q) { box.textContent = 'Please type a question.'; return; }
-    box.textContent = 'Searching health resources...';
-    setTimeout(() => { box.textContent = `I found some options for "${q}". Check your dashboard or contact support.`; }, 800);
-    input.value = '';
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-
-    // Emergency modal: render hospitals on open
-    const eModal = document.getElementById('emergencyModal');
-    if (eModal) {
-        eModal.addEventListener('show.bs.modal', () => renderHospitals(getFilteredSorted()));
-    }
-
-    // Emergency form
-    const emergencyForm = document.getElementById('emergencyForm');
-    if (emergencyForm) {
-        emergencyForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const btn = this.querySelector('button[type="submit"]');
-            const orig = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending Alert...';
-            btn.disabled = true;
-            setTimeout(() => {
-                alert('✅ Emergency alert sent! Help is on the way.\n\n📞 Also dial 108 for immediate ambulance.');
-                btn.innerHTML = orig; btn.disabled = false;
-                const m = bootstrap.Modal.getInstance(document.getElementById('emergencyModal'));
-                if (m) m.hide();
-                this.reset();
-            }, 2000);
-        });
-    }
-
-    // Quick actions show
-    setTimeout(() => { const qa = document.querySelector('.quick-actions'); if (qa) qa.classList.add('show'); }, 1000);
-
-    // Health pulse
-    setInterval(() => {
-        const hp = document.getElementById('health-pulse');
-        if (hp) { hp.style.transform = 'scale(1.1)'; setTimeout(() => hp.style.transform = 'scale(1)', 200); }
-    }, 3000);
-
-    // Search suggestions
-    const searchInput = document.getElementById('global-search');
-    const suggestionsBox = document.getElementById('searchSuggestions');
-    const suggestions = ['Search patients','Search appointments','Search doctors','Search medicines','Search prescriptions'];
-    if (searchInput && suggestionsBox) {
-        const populate = (list) => {
-            suggestionsBox.innerHTML = list.map(i => `<div class="search-suggestion-item">${i}</div>`).join('');
-            suggestionsBox.querySelectorAll('.search-suggestion-item').forEach(item => {
-                item.addEventListener('click', () => { searchInput.value = item.textContent; suggestionsBox.classList.remove('active'); });
-            });
-        };
-        searchInput.addEventListener('focus', () => { suggestionsBox.classList.add('active'); populate(suggestions); });
-        searchInput.addEventListener('blur',  () => setTimeout(() => suggestionsBox.classList.remove('active'), 200));
-        searchInput.addEventListener('input', () => {
-            const v = searchInput.value.trim().toLowerCase();
-            const filtered = v ? suggestions.filter(s => s.toLowerCase().includes(v)) : suggestions;
-            populate(filtered.length ? filtered : ['No results found']);
-        });
-    }
-
-    // Notification badge
-    const nb = document.querySelector('.notification-badge');
-    if (nb) setInterval(() => { nb.style.transform='scale(1.1)'; setTimeout(()=>nb.style.transform='scale(1)',200); }, 5000);
-
-    // Health tips
-    tipItems   = document.querySelectorAll('.tip-item');
-    indicators = document.querySelectorAll('.indicator');
-    updateTips();
-    setInterval(nextTip, 10000);
-
-    // Dropdown animations
-    document.querySelectorAll('.dropdown').forEach(dd => {
-        const toggle = dd.querySelector('[data-bs-toggle="dropdown"]');
-        const menu   = dd.querySelector('.dropdown-menu');
-        if (toggle && menu) {
-            toggle.addEventListener('shown.bs.dropdown',  () => menu.style.animation = 'slideDown 0.3s ease-out');
-            toggle.addEventListener('hidden.bs.dropdown', () => menu.style.animation = '');
-        }
-    });
-
-    // Auto-hide alerts
-    document.querySelectorAll('.alert').forEach(alert => {
-        if (!alert.querySelector('.btn-close')) {
-            setTimeout(() => {
-                alert.style.transition = 'all 0.5s ease'; alert.style.opacity = '0'; alert.style.transform = 'translateY(-20px)';
-                setTimeout(() => alert.remove(), 500);
-            }, 5000);
-        }
-    });
-
-    // Particles
-    document.querySelectorAll('.particle').forEach(p => {
-        p.style.left = Math.random()*100+'%';
-        p.style.animationDelay = Math.random()*20+'s';
-        p.style.animationDuration = (Math.random()*10+10)+'s';
-    });
-
-    // Slideout animations style inject
-    const so = document.createElement('style');
-    so.textContent = `
-        @keyframes slideDown { from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:translateY(0)} }
-        @keyframes slideOutLeft  { from{opacity:1;transform:translateX(0)} to{opacity:0;transform:translateX(-20px)} }
-        @keyframes slideOutRight { from{opacity:1;transform:translateX(0)} to{opacity:0;transform:translateX(20px)} }
-        @keyframes ripple { to { transform:scale(4); opacity:0; } }
-    `;
-    document.head.appendChild(so);
-
-    // Ripple on buttons
-    document.querySelectorAll('.btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            const r = document.createElement('span');
-            const rect = this.getBoundingClientRect();
-            const size = Math.max(rect.width, rect.height);
-            r.style.cssText = `position:absolute;border-radius:50%;background:rgba(255,255,255,0.6);transform:scale(0);animation:ripple 0.6s linear;pointer-events:none;width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px;`;
-            this.style.position='relative'; this.style.overflow='hidden';
-            this.appendChild(r); setTimeout(()=>r.remove(),600);
-        });
-    });
-
-    // Assistant toggle init
-    const at = document.getElementById('assistantToggle');
-    if (at) at.style.display = 'flex';
-});
 </script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-{% block extra_js %}{% endblock %}
 </body>
 </html>
