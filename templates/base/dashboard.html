@@ -683,10 +683,10 @@
             </div>
             <div class="stat-card-content">
                 <div>
-                    <div class="stat-card-value" style="color: var(--color-text-info);">
+                    <div class="stat-card-value" style="color: var(--info);">
                         {{ total_patients|default:"0" }}
                     </div>
-                    <a href="{% url 'patient_list' %}" class="stat-link" style="color: var(--color-text-info);">
+                    <a href="{% url 'patients:patient_list' %}" class="stat-link" style="color: var(--info);">
                         View All <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
@@ -695,6 +695,7 @@
                 <span class="trend-badge trend-up">
                     <i class="fas fa-arrow-up"></i> +12%
                 </span>
+                <span class="trend-context">vs last month</span>
             </div>
         </div>
     </div>
@@ -712,10 +713,10 @@
             </div>
             <div class="stat-card-content">
                 <div>
-                    <div class="stat-card-value" style="color: var(--color-text-success);">
+                    <div class="stat-card-value" style="color: var(--success);">
                         {{ total_doctors|default:"0" }}
                     </div>
-                    <a href="{% url 'doctor_list' %}" class="stat-link" style="color: var(--color-text-success);">
+                    <a href="{% url 'doctors:doctor_list' %}" class="stat-link" style="color: var(--success);">
                         View All <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
@@ -724,6 +725,7 @@
                 <span class="trend-badge trend-up">
                     <i class="fas fa-arrow-up"></i> +5%
                 </span>
+                <span class="trend-context">this month</span>
             </div>
         </div>
     </div>
@@ -744,7 +746,7 @@
                     <div class="stat-card-value" style="color: #997404;">
                         {{ total_appointments|default:"0" }}
                     </div>
-                    <a href="{% url 'appointment_list' %}" class="stat-link" style="color: #997404;">
+                    <a href="{% url 'appointments:appointment_list' %}" class="stat-link" style="color: #997404;">
                         View All <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
@@ -753,6 +755,7 @@
                 <span class="trend-badge trend-down">
                     <i class="fas fa-arrow-down"></i> -3%
                 </span>
+                <span class="trend-context">vs last month</span>
             </div>
         </div>
     </div>
@@ -770,10 +773,10 @@
             </div>
             <div class="stat-card-content">
                 <div>
-                    <div class="stat-card-value" style="color: var(--color-text-danger);">
+                    <div class="stat-card-value" style="color: var(--danger);">
                         {{ total_medicines|default:"0" }}
                     </div>
-                    <a href="{% url 'medicine_list' %}" class="stat-link" style="color: var(--color-text-danger);">
+                    <a href="{% url 'pharmacy:medicine_list' %}" class="stat-link" style="color: var(--color-text-danger);">
                         View All <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
@@ -782,10 +785,55 @@
                 <span class="trend-badge trend-up">
                     <i class="fas fa-arrow-up"></i> +8%
                 </span>
+                <span class="trend-context">this month</span>
             </div>
         </div>
-    </div>
+    </div></div>
 
+<!-- Health Tips Widget (Integrated into Dashboard) -->
+<div class="health-tips-widget" style="position: relative; margin-bottom: 2rem;">
+    <div class="tips-header" style="background: linear-gradient(135deg, #0d6efd, #0dcaf0); color: white; padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between; font-weight: 700; border-radius: 16px 16px 0 0;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <i class="fas fa-lightbulb" style="font-size: 1.2rem;"></i>
+            <span>Daily Health Tips</span>
+        </div>
+    </div>
+    <div class="tips-content" style="padding: 1.5rem;">
+        <div class="tip-item active" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+            <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; margin-bottom: 1rem; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);">
+                <i class="fas fa-water"></i>
+            </div>
+            <h6 style="margin: 0 0 8px 0; font-weight: 700; color: #1a1a1a;">Stay Hydrated</h6>
+            <p style="margin: 0; color: #6b7280; font-size: 0.9rem; line-height: 1.4;">Drink at least 8 glasses of water daily to maintain optimal health and hydration levels.</p>
+        </div>
+        <div class="tip-item" style="display: none; flex-direction: column; align-items: center; text-align: center;">
+            <div style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; margin-bottom: 1rem; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);">
+                <i class="fas fa-apple-alt"></i>
+            </div>
+            <h6 style="margin: 0 0 8px 0; font-weight: 700; color: #1a1a1a;">Eat Healthy</h6>
+            <p style="margin: 0; color: #6b7280; font-size: 0.9rem; line-height: 1.4;">Include fruits, vegetables, and whole grains in your diet for better nutrition and energy.</p>
+        </div>
+        <div class="tip-item" style="display: none; flex-direction: column; align-items: center; text-align: center;">
+            <div style="background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; margin-bottom: 1rem; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);">
+                <i class="fas fa-running"></i>
+            </div>
+            <h6 style="margin: 0 0 8px 0; font-weight: 700; color: #1a1a1a;">Exercise Daily</h6>
+            <p style="margin: 0; color: #6b7280; font-size: 0.9rem; line-height: 1.4;">Aim for 30 minutes of physical activity daily to improve your cardiovascular health.</p>
+        </div>
+    </div>
+    <div style="padding: 1rem 1.5rem; background: rgba(248,249,250,0.8); display: flex; align-items: center; justify-content: space-between; border-radius: 0 0 16px 16px;">
+        <button onclick="previousTip()" style="background: #0d6efd; color: white; border: none; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(13, 110, 253, 0.3); font-size: 0.9rem;">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <div style="display: flex; gap: 6px;">
+            <div class="indicator active" style="width: 8px; height: 8px; border-radius: 50%; background: #0d6efd; transition: all 0.3s ease;"></div>
+            <div class="indicator" style="width: 8px; height: 8px; border-radius: 50%; background: rgba(0,0,0,0.2); transition: all 0.3s ease;"></div>
+            <div class="indicator" style="width: 8px; height: 8px; border-radius: 50%; background: rgba(0,0,0,0.2); transition: all 0.3s ease;"></div>
+        </div>
+        <button onclick="nextTip()" style="background: #0d6efd; color: white; border: none; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(13, 110, 253, 0.3); font-size: 0.9rem;">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
 </div>
 
 <!-- Main Content Grid -->
@@ -798,7 +846,7 @@
                 <h2 class="card-header-title">
                     <i class="fas fa-calendar-alt"></i>Recent Appointments
                 </h2>
-                <a href="{% url 'appointment_create' %}" class="btn btn-sm btn-primary">
+                <a href="{% url 'appointments:appointment_create' %}" class="btn btn-sm btn-primary">
                     <i class="fas fa-plus"></i>Book New
                 </a>
             </div>
@@ -818,14 +866,14 @@
                             {% for appt in recent_appointments %}
                                 <tr>
                                     <td>
-                                        <a href="{% url 'appointment_detail' appt.pk %}" class="text-decoration-none fw-semibold" style="color: var(--color-text-info);">
+                                        <a href="{% url 'appointments:appointment_detail' appt.pk %}" class="text-decoration-none fw-semibold" style="color: var(--info);">
                                             {{ appt.patient }}
                                         </a>
                                     </td>
-                                    <td style="color: var(--color-text-secondary); font-size: 13px;">
+                                    <td style="color: var(--gray); font-size: 13px;">
                                         {{ appt.doctor }}
                                     </td>
-                                    <td style="font-size: 13px; color: var(--color-text-secondary);">
+                                    <td style="font-size: 13px; color: var(--gray);">
                                         {% if appt.appointment_date %}
                                             {{ appt.appointment_date|date:"d M, Y" }}
                                         {% else %}
@@ -853,7 +901,7 @@
 
             {% if recent_appointments %}
                 <div class="card-footer">
-                    <a href="{% url 'appointment_list' %}" style="color: var(--color-text-info); text-decoration: none; font-size: 13px;">
+                    <a href="{% url 'appointments:appointment_list' %}" style="color: var(--info); text-decoration: none; font-size: 13px;">
                         View all appointments <i class="fas fa-arrow-right ms-1"></i>
                     </a>
                 </div>
@@ -868,7 +916,7 @@
                 <h2 class="card-header-title">
                     <i class="fas fa-users"></i>Recent Patients
                 </h2>
-                <a href="{% url 'patient_create' %}" class="btn btn-sm btn-success">
+                <a href="{% url 'patients:patient_create' %}" class="btn btn-sm btn-success">
                     <i class="fas fa-plus"></i>Add
                 </a>
             </div>
@@ -887,7 +935,7 @@
                             {% for p in recent_patients %}
                                 <tr>
                                     <td style="max-width: 150px;">
-                                        <a href="{% url 'patient_detail' p.pk %}" class="text-decoration-none fw-semibold" style="color: var(--color-text-info); font-size: 13px;">
+                                        <a href="{% url 'patients:patient_detail' p.pk %}" class="text-decoration-none fw-semibold" style="color: var(--info); font-size: 13px;">
                                             {{ p }}
                                         </a>
                                     </td>
@@ -896,7 +944,7 @@
                                             {{ p.blood_group|default:"N/A" }}
                                         </span>
                                     </td>
-                                    <td style="font-size: 12px; color: var(--color-text-secondary);">
+                                    <td style="font-size: 12px; color: var(--gray);">
                                         {{ p.phone }}
                                     </td>
                                 </tr>
@@ -915,7 +963,7 @@
 
             {% if recent_patients %}
                 <div class="card-footer">
-                    <a href="{% url 'patient_list' %}" style="color: var(--color-text-success); text-decoration: none; font-size: 13px;">
+                    <a href="{% url 'patients:patient_list' %}" style="color: var(--success); text-decoration: none; font-size: 13px;">
                         View all patients <i class="fas fa-arrow-right ms-1"></i>
                     </a>
                 </div>
@@ -938,33 +986,33 @@
             <div class="card-body" style="padding: 1.5rem;">
                 <div class="actions-grid">
 
-                    <a href="{% url 'patient_create' %}" class="action-btn">
-                        <i class="fas fa-user-plus" style="color: var(--color-text-info);"></i>
+                    <a href="{% url 'patients:patient_create' %}" class="action-btn">
+                        <i class="fas fa-user-plus" style="color: var(--info);"></i>
                         <span class="action-btn-text">New Patient</span>
                     </a>
 
-                    <a href="{% url 'doctor_create' %}" class="action-btn">
-                        <i class="fas fa-user-md" style="color: var(--color-text-success);"></i>
+                    <a href="{% url 'doctors:doctor_create' %}" class="action-btn">
+                        <i class="fas fa-user-md" style="color: var(--success);"></i>
                         <span class="action-btn-text">Add Doctor</span>
                     </a>
 
-                    <a href="{% url 'appointment_create' %}" class="action-btn">
+                    <a href="{% url 'appointments:appointment_create' %}" class="action-btn">
                         <i class="fas fa-calendar-plus" style="color: #997404;"></i>
                         <span class="action-btn-text">Book Appointment</span>
                     </a>
 
-                    <a href="{% url 'today_appointments' %}" class="action-btn">
-                        <i class="fas fa-calendar-day" style="color: var(--color-text-info);"></i>
+                    <a href="{% url 'appointments:today_appointments' %}" class="action-btn">
+                        <i class="fas fa-calendar-day" style="color: var(--info);"></i>
                         <span class="action-btn-text">Today's Schedule</span>
                     </a>
 
-                    <a href="{% url 'dispense_medicine' %}" class="action-btn">
-                        <i class="fas fa-prescription-bottle" style="color: var(--color-text-danger);"></i>
+                    <a href="{% url 'pharmacy:dispense_medicine' %}" class="action-btn">
+                        <i class="fas fa-prescription-bottle" style="color: var(--danger);"></i>
                         <span class="action-btn-text">Dispense Medicine</span>
                     </a>
 
-                    <a href="{% url 'medicine_create' %}" class="action-btn">
-                        <i class="fas fa-pills" style="color: var(--color-text-danger);"></i>
+                    <a href="{% url 'pharmacy:medicine_create' %}" class="action-btn">
+                        <i class="fas fa-pills" style="color: var(--danger);"></i>
                         <span class="action-btn-text">Add Medicine</span>
                     </a>
 
@@ -973,5 +1021,55 @@
         </div>
     </div>
 </div>
+
+<script>
+// Health Tips Carousel Functions
+let currentTipIndex = 0;
+const tipItems = document.querySelectorAll('.tip-item');
+const indicators = document.querySelectorAll('.indicator');
+
+function showTip(index) {
+    tipItems.forEach((tip, i) => {
+        tip.style.display = i === index ? 'flex' : 'none';
+    });
+    indicators.forEach((ind, i) => {
+        if (i === index) {
+            ind.style.background = '#0d6efd';
+            ind.style.transform = 'scale(1.2)';
+        } else {
+            ind.style.background = 'rgba(0,0,0,0.2)';
+            ind.style.transform = 'scale(1)';
+        }
+    });
+}
+
+function nextTip() {
+    currentTipIndex = (currentTipIndex + 1) % tipItems.length;
+    showTip(currentTipIndex);
+}
+
+function previousTip() {
+    currentTipIndex = (currentTipIndex - 1 + tipItems.length) % tipItems.length;
+    showTip(currentTipIndex);
+}
+
+// Auto-rotate tips every 10 seconds
+setInterval(nextTip, 10000);
+
+// Assistant Widget Toggle
+const assistantToggle = document.querySelector('.assistant-toggle');
+const assistantWidget = document.querySelector('.assistant-widget');
+
+if (assistantToggle && assistantWidget) {
+    assistantToggle.addEventListener('click', function() {
+        assistantWidget.classList.toggle('show');
+        if (assistantWidget.classList.contains('show')) {
+            assistantToggle.style.opacity = '0.7';
+        } else {
+            assistantToggle.style.opacity = '1';
+        }
+    });
+}
+</script>
 
 {% endblock %}

@@ -39,16 +39,16 @@
                 <hr>
 
                 <div class="d-grid gap-2">
-                    <a href="{% url 'patient_update' patient.pk %}" class="btn btn-outline-warning btn-sm">
+                    <a href="{% url 'patients:patient_update' patient.pk %}" class="btn btn-outline-warning btn-sm">
                         <i class="fas fa-edit me-1"></i>Edit Info
                     </a>
-                    <a href="{% url 'appointment_create' %}?patient={{ patient.pk }}" class="btn btn-outline-success btn-sm">
+                    <a href="{% url 'appointments:appointment_create' %}?patient={{ patient.pk }}" class="btn btn-outline-success btn-sm">
                         <i class="fas fa-calendar-plus me-1"></i>Book Appointment
                     </a>
-                    <a href="{% url 'add_medical_record' patient.pk %}" class="btn btn-outline-info btn-sm">
+                    <a href="{% url 'patients:add_medical_record' patient.pk %}" class="btn btn-outline-info btn-sm">
                         <i class="fas fa-notes-medical me-1"></i>Add Record
                     </a>
-                    <a href="{% url 'add_vital_record' patient.pk %}" class="btn btn-outline-primary btn-sm">
+                    <a href="{% url 'patients:add_vital_record' patient.pk %}" class="btn btn-outline-primary btn-sm">
                         <i class="fas fa-heartbeat me-1"></i>Record Vitals
                     </a>
                 </div>
@@ -85,7 +85,7 @@
         <div class="card mb-4">
             <div class="card-header py-3 px-4 d-flex justify-content-between align-items-center">
                 <span><i class="fas fa-heartbeat text-danger me-2"></i>Latest Vitals</span>
-                <a href="{% url 'add_vital_record' patient.pk %}" class="btn btn-sm btn-outline-danger">
+                <a href="{% url 'patients:add_vital_record' patient.pk %}" class="btn btn-sm btn-outline-danger">
                     <i class="fas fa-plus me-1"></i>Record Vitals
                 </a>
             </div>
@@ -149,7 +149,7 @@
         <div class="card mb-4">
             <div class="card-header py-3 px-4 d-flex justify-content-between align-items-center">
                 <span><i class="fas fa-notes-medical text-info me-2"></i>Medical Records</span>
-                <a href="{% url 'add_medical_record' patient.pk %}" class="btn btn-sm btn-outline-info">
+                <a href="{% url 'patients:add_medical_record' patient.pk %}" class="btn btn-sm btn-outline-info">
                     <i class="fas fa-plus me-1"></i>Add Record
                 </a>
             </div>
@@ -259,7 +259,7 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <a href="{% url 'appointment_detail' appt.pk %}" class="btn btn-sm btn-outline-info">
+                                    <a href="{% url 'appointments:appointment_detail' appt.pk %}" class="btn btn-sm btn-outline-info">
                                         <i class="fas fa-eye"></i>
                                     </a>
                                 </td>

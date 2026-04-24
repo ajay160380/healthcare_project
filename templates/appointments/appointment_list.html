@@ -9,10 +9,10 @@
     <div class="card-header py-3 px-4 d-flex justify-content-between align-items-center">
         <span><i class="fas fa-calendar-alt text-warning me-2"></i>All Appointments</span>
         <div class="d-flex gap-2">
-            <a href="{% url 'today_appointments' %}" class="btn btn-outline-info btn-sm">
+            <a href="{% url 'appointments:today_appointments' %}" class="btn btn-outline-info btn-sm">
                 <i class="fas fa-calendar-day me-1"></i>Today
             </a>
-            <a href="{% url 'appointment_create' %}" class="btn btn-warning btn-sm text-dark">
+            <a href="{% url 'appointments:appointment_create' %}" class="btn btn-warning btn-sm text-dark">
                 <i class="fas fa-plus me-1"></i>Book New
             </a>
         </div>
@@ -36,7 +36,7 @@
                 <button class="btn btn-outline-warning" type="submit">
                     <i class="fas fa-filter me-1"></i>Filter
                 </button>
-                <a href="{% url 'appointment_list' %}" class="btn btn-outline-secondary">Clear</a>
+                <a href="{% url 'appointments:appointment_list' %}" class="btn btn-outline-secondary">Clear</a>
             </div>
         </form>
 
@@ -58,12 +58,12 @@
                     <tr>
                         <td>{{ forloop.counter }}</td>
                         <td>
-                            <a href="{% url 'patient_detail' appt.patient.pk %}" class="text-decoration-none fw-semibold">
+                            <a href="{% url 'patients:patient_detail' appt.patient.pk %}" class="text-decoration-none fw-semibold">
                                 {{ appt.patient }}
                             </a>
                         </td>
                         <td>
-                            <a href="{% url 'doctor_detail' appt.doctor.pk %}" class="text-decoration-none">
+                            <a href="{% url 'doctors:doctor_detail' appt.doctor.pk %}" class="text-decoration-none">
                                 {{ appt.doctor }}
                             </a>
                         </td>
@@ -79,13 +79,13 @@
                         </td>
                         <td>
                             <div class="d-flex gap-1">
-                                <a href="{% url 'appointment_detail' appt.pk %}" class="btn btn-sm btn-outline-info" title="View">
+                                <a href="{% url 'appointments:appointment_detail' appt.pk %}" class="btn btn-sm btn-outline-info" title="View">
                                     <i class="fas fa-eye"></i>
                                 </a>
-                                <a href="{% url 'appointment_update' appt.pk %}" class="btn btn-sm btn-outline-warning" title="Edit">
+                                <a href="{% url 'appointments:appointment_update' appt.pk %}" class="btn btn-sm btn-outline-warning" title="Edit">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <a href="{% url 'appointment_delete' appt.pk %}" class="btn btn-sm btn-outline-danger" title="Delete">
+                                <a href="{% url 'appointments:appointment_delete' appt.pk %}" class="btn btn-sm btn-outline-danger" title="Delete">
                                     <i class="fas fa-trash"></i>
                                 </a>
                             </div>

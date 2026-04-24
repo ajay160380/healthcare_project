@@ -22,7 +22,7 @@
             <div class="mb-3"><label class="form-label fw-semibold">Performed By</label><input type="text" name="performed_by" class="form-control"></div>
             <div class="d-flex gap-2 mt-4">
                 <button type="submit" class="btn btn-success"><i class="fas fa-save me-2"></i>Update Stock</button>
-                <a href="{% url 'medicine_detail' medicine.pk %}" class="btn btn-outline-secondary">Cancel</a>
+                <a href="{% url 'pharmacy:medicine_detail' medicine.pk %}" class="btn btn-outline-secondary">Cancel</a>
             </div>
         </form>
     </div>

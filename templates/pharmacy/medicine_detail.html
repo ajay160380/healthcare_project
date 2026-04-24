@@ -25,9 +25,9 @@
             {% if medicine.requires_prescription %}<div class="mb-2"><span class="badge bg-warning text-dark"><i class="fas fa-prescription me-1"></i>Prescription Required</span></div>{% endif %}
             <hr>
             <div class="d-grid gap-2">
-                <a href="{% url 'add_stock' medicine.pk %}" class="btn btn-success btn-sm"><i class="fas fa-plus me-1"></i>Add/Adjust Stock</a>
-                <a href="{% url 'dispense_medicine' %}" class="btn btn-primary btn-sm"><i class="fas fa-prescription-bottle me-1"></i>Dispense</a>
-                <a href="{% url 'medicine_update' medicine.pk %}" class="btn btn-outline-warning btn-sm"><i class="fas fa-edit me-1"></i>Edit</a>
+                <a href="{% url 'pharmacy:add_stock' medicine.pk %}" class="btn btn-success btn-sm"><i class="fas fa-plus me-1"></i>Add/Adjust Stock</a>
+                <a href="{% url 'pharmacy:dispense_medicine' %}" class="btn btn-primary btn-sm"><i class="fas fa-prescription-bottle me-1"></i>Dispense</a>
+                <a href="{% url 'pharmacy:medicine_update' medicine.pk %}" class="btn btn-outline-warning btn-sm"><i class="fas fa-edit me-1"></i>Edit</a>
             </div>
         </div>
     </div>

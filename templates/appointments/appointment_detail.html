@@ -20,13 +20,13 @@
                 </div>
                 <div class="mb-2 d-flex justify-content-between">
                     <span class="text-muted">Patient</span>
-                    <a href="{% url 'patient_detail' appointment.patient.pk %}" class="fw-semibold text-decoration-none">
+                    <a href="{% url 'patients:patient_detail' appointment.patient.pk %}" class="fw-semibold text-decoration-none">
                         {{ appointment.patient }}
                     </a>
                 </div>
                 <div class="mb-2 d-flex justify-content-between">
                     <span class="text-muted">Doctor</span>
-                    <a href="{% url 'doctor_detail' appointment.doctor.pk %}" class="text-decoration-none">
+                    <a href="{% url 'doctors:doctor_detail' appointment.doctor.pk %}" class="text-decoration-none">
                         {{ appointment.doctor }}
                     </a>
                 </div>
@@ -68,7 +68,7 @@
                 <i class="fas fa-exchange-alt me-2"></i>Update Status
             </div>
             <div class="card-body">
-                <form method="post" action="{% url 'update_status' appointment.pk %}">
+                <form method="post" action="{% url 'appointments:update_status' appointment.pk %}">
                     {% csrf_token %}
                     <div class="d-flex gap-2">
                         <select name="status" class="form-select">
@@ -134,7 +134,7 @@
             <div class="card-body text-center py-5">
                 <i class="fas fa-prescription fa-3x text-muted mb-3"></i>
                 <h6>No prescription yet</h6>
-                <a href="{% url 'add_prescription' appointment.pk %}" class="btn btn-success mt-2">
+                <a href="{% url 'appointments:add_prescription' appointment.pk %}" class="btn btn-success mt-2">
                     <i class="fas fa-plus me-2"></i>Add Prescription
                 </a>
             </div>
@@ -147,18 +147,18 @@
             </div>
             <div class="card-body">
                 <div class="d-flex flex-wrap gap-2">
-                    <a href="{% url 'appointment_update' appointment.pk %}" class="btn btn-outline-warning">
+                    <a href="{% url 'appointments:appointment_update' appointment.pk %}" class="btn btn-outline-warning">
                         <i class="fas fa-edit me-1"></i>Edit Appointment
                     </a>
                     {% if not prescription %}
-                    <a href="{% url 'add_prescription' appointment.pk %}" class="btn btn-outline-success">
+                    <a href="{% url 'appointments:add_prescription' appointment.pk %}" class="btn btn-outline-success">
                         <i class="fas fa-prescription me-1"></i>Add Prescription
                     </a>
                     {% endif %}
-                    <a href="{% url 'appointment_list' %}" class="btn btn-outline-secondary">
+                    <a href="{% url 'appointments:appointment_list' %}" class="btn btn-outline-secondary">
                         <i class="fas fa-arrow-left me-1"></i>Back to List
                     </a>
-                    <a href="{% url 'appointment_delete' appointment.pk %}" class="btn btn-outline-danger">
+                    <a href="{% url 'appointments:appointment_delete' appointment.pk %}" class="btn btn-outline-danger">
                         <i class="fas fa-trash me-1"></i>Delete
                     </a>
                 </div>

@@ -14,8 +14,7 @@ appointments will also be deleted.</p>
 {% csrf_token %}
 <button type="submit" class="btn btn-danger"><i class="fas fa-trash me-2"></i>Yes,
 Delete</button>
-<a href="{% url 'patient_detail' patient.pk %}" class="btn btn-outline-
-secondary">Cancel</a>
+<a href="{% url 'patients:patient_detail' patient.pk %}" class="btn btn-outline-secondary">Cancel</a>
 </form>
 </div>
 </div>
@@ -52,7 +51,7 @@ secondary">Cancel</a>
                 <i class="fas fa-trash me-2"></i> Yes, Delete
             </button>
 
-            <a href="{% url 'patient_detail' patient.pk %}" class="btn btn-outline-secondary">
+            <a href="{% url 'patients:patient_detail' patient.pk %}" class="btn btn-outline-secondary">
                 Cancel
             </a>
         </form>

@@ -10,7 +10,7 @@
             <i class="fas fa-user-md text-success me-2"></i>All Doctors
         </span>
 
-        <a href="{% url 'doctor_create' %}" class="btn btn-success btn-sm">
+        <a href="{% url 'doctors:doctor_create' %}" class="btn btn-success btn-sm">
             <i class="fas fa-plus me-1"></i>Add Doctor
         </a>
     </div>
@@ -29,7 +29,7 @@
                 </button>
 
                 {% if query %}
-                <a href="{% url 'doctor_list' %}" class="btn btn-outline-secondary">
+                <a href="{% url 'doctors:doctor_list' %}" class="btn btn-outline-secondary">
                     Clear
                 </a>
                 {% endif %}
@@ -80,17 +80,17 @@
 
                         <div class="d-flex gap-2">
 
-                            <a href="{% url 'doctor_detail' doctor.pk %}"
+                            <a href="{% url 'doctors:doctor_detail' doctor.pk %}"
                                class="btn btn-sm btn-outline-success flex-fill">
                                 View
                             </a>
 
-                            <a href="{% url 'doctor_update' doctor.pk %}"
+                            <a href="{% url 'doctors:doctor_update' doctor.pk %}"
                                class="btn btn-sm btn-outline-warning flex-fill">
                                 Edit
                             </a>
 
-                            <a href="{% url 'appointment_create' %}?doctor={{ doctor.pk }}"
+                            <a href="{% url 'appointments:appointment_create' %}?doctor={{ doctor.pk }}"
                                class="btn btn-sm btn-outline-primary flex-fill">
                                 Book
                             </a>
@@ -106,7 +106,7 @@
             <div class="col-12 text-center text-muted py-5">
                 <i class="fas fa-user-md fa-3x mb-3 d-block opacity-25"></i>
                 No doctors found.
-                <a href="{% url 'doctor_create' %}">Add the first doctor</a>.
+                <a href="{% url 'doctors:doctor_create' %}">Add the first doctor</a>.
             </div>
             {% endfor %}
 

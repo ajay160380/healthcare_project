@@ -193,26 +193,28 @@ body {
     transition: all 0.2s ease;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    color: var(--primary) !important;
 }
 
 .stat-link:hover {
     gap: 12px;
+    color: var(--primary-dark) !important;
 }
 
 .stat-card.stat-blue .stat-link {
-    color: var(--info);
+    color: var(--primary) !important;
 }
 
 .stat-card.stat-green .stat-link {
-    color: var(--success);
+    color: var(--success) !important;
 }
 
 .stat-card.stat-warning .stat-link {
-    color: var(--warning);
+    color: var(--warning) !important;
 }
 
 .stat-card.stat-danger .stat-link {
-    color: var(--danger);
+    color: var(--danger) !important;
 }
 
 /* Trend badge */
@@ -239,6 +241,16 @@ body {
     background: linear-gradient(135deg, #fee2e2, #fecaca);
     color: #7f1d1d;
     box-shadow: 0 2px 8px rgba(239, 68, 68, 0.2);
+}
+
+.trend-context {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--gray);
+    text-transform: none;
+    letter-spacing: normal;
+    margin-top: 4px;
+    display: block;
 }
 
 /* ============================================================
@@ -478,6 +490,24 @@ body {
 /* ============================================================
    QUICK ACTIONS - PREMIUM DESIGN
    ============================================================ */
+
+.quick-actions-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: #1a1a1a;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.quick-actions-title i {
+    font-size: 22px;
+    background: linear-gradient(135deg, #0d6efd, #0dcaf0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
 
 .actions-grid {
     display: grid;
