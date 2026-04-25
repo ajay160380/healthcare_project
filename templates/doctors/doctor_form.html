@@ -3,126 +3,252 @@
 {% block page_title %}{{ title }}{% endblock %}
 
 {% block content %}
-<div class="card">
-    <div class="card-header py-3 px-4">
-        <i class="fas fa-user-md text-success me-2"></i>{{ title }}
-    </div>
+<style>
+    .premium-card {
+        border-radius: 1rem;
+        overflow: hidden;
+        border: none;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    }
+    .medical-gradient {
+        background: linear-gradient(135deg, #0d6efd 0%, #20c997 100%);
+        height: 120px;
+    }
+    .avatar-wrapper {
+        display: flex;
+        justify-content: center;
+        margin-top: -60px;
+        margin-bottom: 20px;
+    }
+    .avatar-circle {
+        width: 100px;
+        height: 100px;
+        background: #fff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        color: #20c997;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        border: 4px solid #fff;
+    }
+    .section-title {
+        color: #2c3e50;
+        font-weight: 700;
+        position: relative;
+        padding-bottom: 8px;
+        margin-bottom: 25px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 0.9rem;
+    }
+    .section-title::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 40px;
+        height: 3px;
+        background: #20c997;
+        border-radius: 2px;
+    }
+    .custom-input {
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 0.5rem;
+        padding: 0.75rem 1rem;
+        transition: all 0.3s ease;
+    }
+    .custom-input:focus {
+        background-color: #fff;
+        border-color: #20c997;
+        box-shadow: 0 0 0 0.25rem rgba(32, 201, 151, 0.15);
+    }
+    .input-group-text.custom-icon {
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-right: none;
+        color: #adb5bd;
+    }
+    .input-group .custom-input {
+        border-left: none;
+    }
+    .input-group:focus-within .custom-icon {
+        background-color: #fff;
+        border-color: #20c997;
+        color: #20c997;
+    }
+    .btn-save {
+        background: linear-gradient(135deg, #198754 0%, #20c997 100%);
+        border: none;
+        color: white;
+        transition: transform 0.2s;
+    }
+    .btn-save:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(32, 201, 151, 0.4);
+        color: white;
+    }
+</style>
 
-    <div class="card-body p-4">
-        <form method="post">
-            {% csrf_token %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-xl-9">
+            
+            <div class="card premium-card">
+                <div class="medical-gradient"></div>
 
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">First Name *</label>
-                    <input type="text" name="first_name" class="form-control"
-                           value="{{ form.first_name.value|default:'' }}" required>
-                </div>
-
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">Last Name *</label>
-                    <input type="text" name="last_name" class="form-control"
-                           value="{{ form.last_name.value|default:'' }}" required>
-                </div>
-
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">Specialization</label>
-                    <select name="specialization" class="form-select">
-                        <option value="">Select Specialization</option>
-                        {% for spec in form.fields.specialization.queryset %}
-                            <option value="{{ spec.pk }}" {% if form.specialization.value|stringformat:"s" == spec.pk|stringformat:"s" %}selected{% endif %}>
-                                {{ spec.name }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">Qualification *</label>
-                    <input type="text" name="qualification" class="form-control"
-                           value="{{ form.qualification.value|default:'' }}" required>
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label fw-semibold">Experience (Years)</label>
-                    <input type="number" name="experience_years" class="form-control"
-                           value="{{ form.experience_years.value|default:'0' }}" min="0">
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label fw-semibold">Phone *</label>
-                    <input type="text" name="phone" class="form-control"
-                           value="{{ form.phone.value|default:'' }}" required>
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label fw-semibold">Email *</label>
-                    <input type="email" name="email" class="form-control"
-                           value="{{ form.email.value|default:'' }}" required>
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label fw-semibold">License Number *</label>
-                    <input type="text" name="license_number" class="form-control"
-                           value="{{ form.license_number.value|default:'' }}" required>
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label fw-semibold">Consultation Fee (₹)</label>
-                    <input type="number" step="0.01" name="consultation_fee" class="form-control"
-                           value="{{ form.consultation_fee.value|default:'0' }}">
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label fw-semibold">Available Days</label>
-                    <input type="text" name="available_days" class="form-control"
-                           value="{{ form.available_days.value|default:'' }}"
-                           placeholder="Mon,Tue,Wed">
-                </div>
-
-                <div class="col-md-3">
-                    <label class="form-label fw-semibold">Available From</label>
-                    <input type="time" name="available_time_start" class="form-control"
-                           value="{{ form.available_time_start.value|default:'' }}">
-                </div>
-
-                <div class="col-md-3">
-                    <label class="form-label fw-semibold">Available To</label>
-                    <input type="time" name="available_time_end" class="form-control"
-                           value="{{ form.available_time_end.value|default:'' }}">
-                </div>
-
-                <div class="col-md-6 d-flex align-items-end">
-                    <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" name="is_active" id="is_active"
-                               {% if form.is_active.value != False %}checked{% endif %}>
-                        <label class="form-check-label fw-semibold" for="is_active">Active</label>
+                <div class="card-body px-4 px-md-5 pb-5">
+                    
+                    <div class="avatar-wrapper">
+                        <div class="avatar-circle">
+                            <i class="fas fa-user-md"></i>
+                        </div>
                     </div>
-                </div>
+                    
+                    <div class="text-center mb-5">
+                        <h3 class="fw-bold text-dark">{{ title }}</h3>
+                        <p class="text-muted small">Fill in the details below to complete the doctor's profile.</p>
+                    </div>
 
-                <div class="col-12">
-                    <label class="form-label fw-semibold">Bio</label>
-                    <textarea name="bio" class="form-control" rows="3">{{ form.bio.value|default:'' }}</textarea>
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <h6 class="section-title"><i class="fas fa-user me-2"></i>Personal Details</h6>
+                        <div class="row g-4 mb-5">
+                            <div class="col-md-6">
+                                <label class="form-label text-muted fw-semibold small">First Name *</label>
+                                <input type="text" name="first_name" class="form-control custom-input"
+                                       value="{{ form.first_name.value|default:'' }}" placeholder="First Name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label text-muted fw-semibold small">Last Name *</label>
+                                <input type="text" name="last_name" class="form-control custom-input"
+                                       value="{{ form.last_name.value|default:'' }}" placeholder="Last Name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label text-muted fw-semibold small">Phone Number *</label>
+                                <div class="input-group">
+                                    <span class="input-group-text custom-icon"><i class="fas fa-phone-alt"></i></span>
+                                    <input type="text" name="phone" class="form-control custom-input"
+                                           value="{{ form.phone.value|default:'' }}" placeholder="+91 98765 43210" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label text-muted fw-semibold small">Email Address *</label>
+                                <div class="input-group">
+                                    <span class="input-group-text custom-icon"><i class="fas fa-envelope"></i></span>
+                                    <input type="email" name="email" class="form-control custom-input"
+                                           value="{{ form.email.value|default:'' }}" placeholder="doctor@clinic.com" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h6 class="section-title"><i class="fas fa-stethoscope me-2"></i>Professional Info</h6>
+                        <div class="row g-4 mb-5">
+                            <div class="col-md-6">
+                                <label class="form-label text-muted fw-semibold small">Specialization</label>
+                                <select name="specialization" class="form-select custom-input">
+                                    <option value="">Select Specialization</option>
+                                    {% for spec in form.fields.specialization.queryset %}
+                                        <option value="{{ spec.pk }}" {% if form.specialization.value|stringformat:"s" == spec.pk|stringformat:"s" %}selected{% endif %}>
+                                            {{ spec.name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label text-muted fw-semibold small">Qualification *</label>
+                                <input type="text" name="qualification" class="form-control custom-input"
+                                       value="{{ form.qualification.value|default:'' }}" placeholder="MBBS, MD" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label text-muted fw-semibold small">License Number *</label>
+                                <div class="input-group">
+                                    <span class="input-group-text custom-icon"><i class="fas fa-id-card"></i></span>
+                                    <input type="text" name="license_number" class="form-control custom-input"
+                                           value="{{ form.license_number.value|default:'' }}" placeholder="MCI-12345" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label text-muted fw-semibold small">Experience (Years)</label>
+                                <input type="number" name="experience_years" class="form-control custom-input"
+                                       value="{{ form.experience_years.value|default:'0' }}" min="0">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label text-muted fw-semibold small">Consultation Fee (₹)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text custom-icon">₹</span>
+                                    <input type="number" step="0.01" name="consultation_fee" class="form-control custom-input"
+                                           value="{{ form.consultation_fee.value|default:'0' }}">
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label text-muted fw-semibold small">Short Bio / Description</label>
+                                <textarea name="bio" class="form-control custom-input" rows="3" 
+                                          placeholder="Write a brief professional summary...">{{ form.bio.value|default:'' }}</textarea>
+                            </div>
+                        </div>
+
+                        <h6 class="section-title"><i class="fas fa-calendar-check me-2"></i>Availability</h6>
+                        <div class="row g-4 align-items-center mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label text-muted fw-semibold small">Available Days</label>
+                                <div class="input-group">
+                                    <span class="input-group-text custom-icon"><i class="fas fa-calendar-alt"></i></span>
+                                    <input type="text" name="available_days" class="form-control custom-input"
+                                           value="{{ form.available_days.value|default:'' }}" placeholder="Mon, Wed, Fri">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label text-muted fw-semibold small">Shift Start</label>
+                                <input type="time" name="available_time_start" class="form-control custom-input"
+                                       value="{{ form.available_time_start.value|default:'' }}">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label text-muted fw-semibold small">Shift End</label>
+                                <input type="time" name="available_time_end" class="form-control custom-input"
+                                       value="{{ form.available_time_end.value|default:'' }}">
+                            </div>
+
+                            <div class="col-12 mt-4 p-3 bg-light rounded-3 border">
+                                <div class="form-check form-switch d-flex align-items-center gap-3 mb-0">
+                                    <input class="form-check-input" type="checkbox" role="switch" name="is_active" id="is_active"
+                                           {% if form.is_active.value != False %}checked{% endif %} style="width: 3rem; height: 1.5rem; cursor: pointer;">
+                                    <label class="form-check-label fw-bold text-success mb-0" for="is_active" style="cursor: pointer;">
+                                        Profile is Active & Visible
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% if form.errors %}
+                            <div class="alert alert-danger rounded-3 border-0 border-start border-danger border-4 shadow-sm mt-4">
+                                <i class="fas fa-exclamation-triangle me-2"></i><strong>Wait! Please check the errors below:</strong>
+                                <ul class="mb-0 mt-2">
+                                {% for field, errors in form.errors.items %}
+                                    {% for error in errors %}
+                                        <li><strong>{{ field|title }}:</strong> {{ error }}</li>
+                                    {% endfor %}
+                                {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+
+                        <div class="d-flex justify-content-end gap-3 mt-5 pt-4 border-top">
+                            <a href="{% url 'doctors:doctor_list' %}" class="btn btn-light btn-lg px-4 fw-semibold text-secondary">
+                                Cancel
+                            </a>
+                            <button type="submit" class="btn btn-save btn-lg px-5 fw-bold shadow-sm">
+                                <i class="fas fa-check me-2"></i> Save Profile
+                            </button>
+                        </div>
+
+                    </form>
                 </div>
             </div>
-
-            {% if form.errors %}
-                <div class="alert alert-danger mt-3">
-                    {% for field, errors in form.errors.items %}
-                        {% for error in errors %}
-                            <div><strong>{{ field|title }}:</strong> {{ error }}</div>
-                        {% endfor %}
-                    {% endfor %}
-                </div>
-            {% endif %}
-
-            <div class="d-flex gap-2 mt-4">
-                <button type="submit" class="btn btn-success">
-                    <i class="fas fa-save me-2"></i>Save Doctor
-                </button>
-                <a href="{% url 'doctors:doctor_list' %}" class="btn btn-outline-secondary">Cancel</a>
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 {% endblock %}
