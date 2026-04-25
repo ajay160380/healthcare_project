@@ -3,101 +3,859 @@
 {% block page_title %}{{ title }}{% endblock %}
 
 {% block content %}
-<div class="card">
-    <div class="card-header py-3 px-4">
-        <i class="fas fa-user-edit text-primary me-2"></i>{{ title }}
+
+<style>
+    /* ============================================
+       ENHANCED PATIENT FORM STYLES
+       ============================================ */
+
+    :root {
+        --form-primary: linear-gradient(135deg, #0d6efd 0%, #0dcaf0 100%);
+        --form-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        --form-warning: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        --form-danger: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        --form-shadow: 0 8px 32px rgba(0,0,0,0.08);
+        --form-shadow-hover: 0 20px 60px rgba(0,0,0,0.15);
+        --form-border-radius: 16px;
+        --form-transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .form-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+
+    .form-header {
+        text-align: center;
+        margin-bottom: 3rem;
+        padding: 2rem 0;
+    }
+
+    .form-title {
+        font-size: 2.5rem;
+        font-weight: 900;
+        margin: 0;
+        background: var(--form-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .form-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 4px;
+        background: var(--form-primary);
+        border-radius: 2px;
+        animation: titleUnderline 1s ease-out 0.5s forwards;
+    }
+
+    @keyframes titleUnderline {
+        to { width: 100px; }
+    }
+
+    .form-subtitle {
+        font-size: 1.1rem;
+        color: #64748b;
+        margin-top: 1rem;
+        font-weight: 500;
+    }
+
+    /* ============================================
+       ENHANCED FORM CARD
+       ============================================ */
+
+    .form-card {
+        background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
+        backdrop-filter: blur(20px);
+        border-radius: var(--form-border-radius);
+        box-shadow: var(--form-shadow);
+        border: 1px solid rgba(255,255,255,0.2);
+        overflow: hidden;
+        animation: formSlideIn 0.8s ease-out;
+        position: relative;
+    }
+
+    @keyframes formSlideIn {
+        from {
+            opacity: 0;
+            transform: translateY(40px) scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    .form-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 6px;
+        background: var(--form-primary);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.6s ease;
+    }
+
+    .form-card:hover::before {
+        transform: scaleX(1);
+    }
+
+    .form-card-header {
+        background: linear-gradient(135deg, rgba(248,249,250,0.8) 0%, rgba(241,245,249,0.8) 100%);
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+        padding: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+    }
+
+    .form-card-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .form-card-title i {
+        font-size: 1.5rem;
+        color: #0d6efd;
+    }
+
+    .form-progress {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.9rem;
+        color: #64748b;
+    }
+
+    .progress-step {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(0,0,0,0.2);
+        transition: var(--form-transition);
+    }
+
+    .progress-step.active {
+        background: #0d6efd;
+        transform: scale(1.2);
+    }
+
+    /* ============================================
+       FORM SECTIONS
+       ============================================ */
+
+    .form-section {
+        padding: 2rem;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+        position: relative;
+    }
+
+    .form-section:last-child {
+        border-bottom: none;
+    }
+
+    .section-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid rgba(0,0,0,0.05);
+    }
+
+    .section-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        color: white;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .section-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin: 0;
+    }
+
+    .section-subtitle {
+        font-size: 0.9rem;
+        color: #64748b;
+        margin: 0.25rem 0 0 0;
+    }
+
+    /* ============================================
+       ENHANCED FORM FIELDS
+       ============================================ */
+
+    .form-group {
+        margin-bottom: 1.5rem;
+        position: relative;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .form-label i {
+        font-size: 1rem;
+        color: #0d6efd;
+        opacity: 0.7;
+    }
+
+    .form-label.required::after {
+        content: '*';
+        color: #ef4444;
+        font-weight: bold;
+        margin-left: 4px;
+    }
+
+    .form-control, .form-select {
+        border: 2px solid rgba(0,0,0,0.1);
+        border-radius: 12px;
+        padding: 0.875rem 1rem;
+        font-size: 1rem;
+        transition: var(--form-transition);
+        background: rgba(255,255,255,0.8);
+        backdrop-filter: blur(10px);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .form-control::before, .form-select::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(13, 110, 253, 0.05), transparent);
+        transition: left 0.5s ease;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
+        background: rgba(255,255,255,1);
+        transform: translateY(-2px);
+    }
+
+    .form-control:focus::before, .form-select:focus::before {
+        left: 100%;
+    }
+
+    .form-control:hover, .form-select:hover {
+        border-color: rgba(13, 110, 253, 0.3);
+    }
+
+    .form-control.is-invalid {
+        border-color: #ef4444;
+        box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+    }
+
+    .form-control.is-valid {
+        border-color: #10b981;
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+    }
+
+    textarea.form-control {
+        resize: vertical;
+        min-height: 80px;
+    }
+
+    /* ============================================
+       FORM GRID LAYOUT
+       ============================================ */
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+
+    /* ============================================
+       ENHANCED ALERTS
+       ============================================ */
+
+    .alert {
+        border-radius: 12px;
+        border: none;
+        padding: 1rem 1.5rem;
+        position: relative;
+        overflow: hidden;
+        animation: alertSlideIn 0.5s ease-out;
+    }
+
+    @keyframes alertSlideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .alert-danger {
+        background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.1) 100%);
+        color: #dc2626;
+        border-left: 4px solid #ef4444;
+    }
+
+    .alert-success {
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%);
+        color: #059669;
+        border-left: 4px solid #10b981;
+    }
+
+    /* ============================================
+       ENHANCED BUTTONS
+       ============================================ */
+
+    .form-actions {
+        padding: 2rem;
+        background: linear-gradient(135deg, rgba(248,249,250,0.8) 0%, rgba(241,245,249,0.8) 100%);
+        border-top: 1px solid rgba(0,0,0,0.05);
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        font-weight: 600;
+        border-radius: 12px;
+        padding: 0.875rem 2rem;
+        transition: var(--form-transition);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border: none;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        text-decoration: none;
+        min-width: 140px;
+    }
+
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: rgba(255,255,255,0.2);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+    }
+
+    .btn:hover::before {
+        width: 300px;
+        height: 300px;
+    }
+
+    .btn-primary {
+        background: var(--form-primary);
+        color: white;
+        box-shadow: 0 4px 16px rgba(13, 110, 253, 0.3);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 24px rgba(13, 110, 253, 0.4);
+        color: white;
+    }
+
+    .btn-outline-secondary {
+        background: transparent;
+        color: #6c757d;
+        border: 2px solid #6c757d;
+    }
+
+    .btn-outline-secondary:hover {
+        background: #6c757d;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(108, 117, 125, 0.3);
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+
+    @media (max-width: 768px) {
+        .form-container {
+            padding: 1rem;
+        }
+
+        .form-title {
+            font-size: 2rem;
+        }
+
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+
+        .form-card-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .form-actions {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .btn {
+            width: 100%;
+        }
+    }
+
+    /* ============================================
+       ANIMATIONS
+       ============================================ */
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .form-group {
+        animation: fadeInUp 0.6s ease-out forwards;
+        opacity: 0;
+    }
+
+    .form-group:nth-child(1) { animation-delay: 0.1s; }
+    .form-group:nth-child(2) { animation-delay: 0.15s; }
+    .form-group:nth-child(3) { animation-delay: 0.2s; }
+    .form-group:nth-child(4) { animation-delay: 0.25s; }
+    .form-group:nth-child(5) { animation-delay: 0.3s; }
+    .form-group:nth-child(6) { animation-delay: 0.35s; }
+    .form-group:nth-child(7) { animation-delay: 0.4s; }
+    .form-group:nth-child(8) { animation-delay: 0.45s; }
+    .form-group:nth-child(9) { animation-delay: 0.5s; }
+    .form-group:nth-child(10) { animation-delay: 0.55s; }
+</style>
+
+<div class="form-container">
+    <!-- Form Header -->
+    <div class="form-header">
+        <h1 class="form-title">
+            <i class="fas fa-user-plus"></i>
+            {{ title }}
+        </h1>
+        <p class="form-subtitle">Complete patient information for better healthcare management</p>
     </div>
 
-    <div class="card-body p-4">
-        <form method="post">
+    <!-- Enhanced Form Card -->
+    <div class="form-card">
+        <div class="form-card-header">
+            <h2 class="form-card-title">
+                <i class="fas fa-clipboard-list"></i>
+                Patient Registration Form
+            </h2>
+            <div class="form-progress">
+                <span>Step 1 of 3</span>
+                <div class="progress-step active"></div>
+                <div class="progress-step"></div>
+                <div class="progress-step"></div>
+            </div>
+        </div>
+
+        <form method="post" novalidate>
             {% csrf_token %}
 
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">First Name *</label>
-                    <input type="text" name="first_name" class="form-control" 
-                           value="{{ form.first_name.value|default:'' }}" required>
+            <!-- Personal Information Section -->
+            <div class="form-section">
+                <div class="section-header">
+                    <div class="section-icon" style="background: var(--form-primary);">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div>
+                        <h3 class="section-title">Personal Information</h3>
+                        <p class="section-subtitle">Basic patient details and identification</p>
+                    </div>
                 </div>
 
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">Last Name *</label>
-                    <input type="text" name="last_name" class="form-control" 
-                           value="{{ form.last_name.value|default:'' }}" required>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label required">
+                            <i class="fas fa-signature"></i>
+                            First Name
+                        </label>
+                        <input type="text" name="first_name" class="form-control"
+                               value="{{ form.first_name.value|default:'' }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required">
+                            <i class="fas fa-signature"></i>
+                            Last Name
+                        </label>
+                        <input type="text" name="last_name" class="form-control"
+                               value="{{ form.last_name.value|default:'' }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required">
+                            <i class="fas fa-calendar-alt"></i>
+                            Date of Birth
+                        </label>
+                        <input type="date" name="date_of_birth" class="form-control"
+                               value="{{ form.date_of_birth.value|stringformat:'Y-m-d'|default:'' }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required">
+                            <i class="fas fa-venus-mars"></i>
+                            Gender
+                        </label>
+                        <select name="gender" class="form-select" required>
+                            <option value="">Select Gender</option>
+                            <option value="M" {% if form.gender.value == 'M' %}selected{% endif %}>Male</option>
+                            <option value="F" {% if form.gender.value == 'F' %}selected{% endif %}>Female</option>
+                            <option value="O" {% if form.gender.value == 'O' %}selected{% endif %}>Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-tint"></i>
+                            Blood Group
+                        </label>
+                        <select name="blood_group" class="form-select">
+                            <option value="">Select Blood Group</option>
+                            {% for val, label in form.fields.blood_group.choices %}
+                                {% if val %}
+                                    <option value="{{ val }}" {% if form.blood_group.value == val %}selected{% endif %}>
+                                        {{ label }}
+                                    </option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Information Section -->
+            <div class="form-section">
+                <div class="section-header">
+                    <div class="section-icon" style="background: var(--form-success);">
+                        <i class="fas fa-address-book"></i>
+                    </div>
+                    <div>
+                        <h3 class="section-title">Contact Information</h3>
+                        <p class="section-subtitle">Communication details and address</p>
+                    </div>
                 </div>
 
-                <div class="col-md-4">
-                    <label class="form-label fw-semibold">Date of Birth *</label>
-                    <input type="date" name="date_of_birth" class="form-control" 
-                           value="{{ form.date_of_birth.value|stringformat:'Y-m-d'|default:'' }}" required>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label required">
+                            <i class="fas fa-phone"></i>
+                            Phone Number
+                        </label>
+                        <input type="tel" name="phone" class="form-control"
+                               value="{{ form.phone.value|default:'' }}" required
+                               placeholder="+1 (555) 123-4567">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-envelope"></i>
+                            Email Address
+                        </label>
+                        <input type="email" name="email" class="form-control"
+                               value="{{ form.email.value|default:'' }}"
+                               placeholder="patient@example.com">
+                    </div>
+
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label class="form-label required">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Address
+                        </label>
+                        <textarea name="address" class="form-control" rows="3" required
+                                  placeholder="Enter complete address including street, city, state, and zip code">{{ form.address.value|default:'' }}</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Emergency Contact Section -->
+            <div class="form-section">
+                <div class="section-header">
+                    <div class="section-icon" style="background: var(--form-warning);">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div>
+                        <h3 class="section-title">Emergency Contact</h3>
+                        <p class="section-subtitle">Person to contact in case of emergency</p>
+                    </div>
                 </div>
 
-                <div class="col-md-4">
-                    <label class="form-label fw-semibold">Gender *</label>
-                    <select name="gender" class="form-select" required>
-                        <option value="">Select Gender</option>
-                        <option value="M" {% if form.gender.value == 'M' %}selected{% endif %}>Male</option>
-                        <option value="F" {% if form.gender.value == 'F' %}selected{% endif %}>Female</option>
-                        <option value="O" {% if form.gender.value == 'O' %}selected{% endif %}>Other</option>
-                    </select>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-user-friends"></i>
+                            Contact Name
+                        </label>
+                        <input type="text" name="emergency_contact_name" class="form-control"
+                               value="{{ form.emergency_contact_name.value|default:'' }}"
+                               placeholder="Full name of emergency contact">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-phone-alt"></i>
+                            Contact Phone
+                        </label>
+                        <input type="tel" name="emergency_contact_phone" class="form-control"
+                               value="{{ form.emergency_contact_phone.value|default:'' }}"
+                               placeholder="+1 (555) 123-4567">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Medical Information Section -->
+            <div class="form-section">
+                <div class="section-header">
+                    <div class="section-icon" style="background: var(--form-danger);">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <div>
+                        <h3 class="section-title">Medical Information</h3>
+                        <p class="section-subtitle">Health conditions and insurance details</p>
+                    </div>
                 </div>
 
-                <div class="col-md-4">
-                    <label class="form-label fw-semibold">Blood Group</label>
-                    <select name="blood_group" class="form-select">
-                        <option value="">Select Blood Group</option>
-                        {% for val, label in form.fields.blood_group.choices %}
-                            {% if val %}
-                                <option value="{{ val }}" {% if form.blood_group.value == val %}selected{% endif %}>
-                                    {{ label }}
-                                </option>
-                            {% endif %}
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-allergies"></i>
+                            Known Allergies
+                        </label>
+                        <textarea name="allergies" class="form-control" rows="2"
+                                  placeholder="List any known allergies (e.g., penicillin, nuts, etc.)">{{ form.allergies.value|default:'' }}</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-stethoscope"></i>
+                            Chronic Conditions
+                        </label>
+                        <textarea name="chronic_conditions" class="form-control" rows="2"
+                                  placeholder="List any chronic conditions (e.g., diabetes, hypertension, etc.)">{{ form.chronic_conditions.value|default:'' }}</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-shield-alt"></i>
+                            Insurance Provider
+                        </label>
+                        <input type="text" name="insurance_provider" class="form-control"
+                               value="{{ form.insurance_provider.value|default:'' }}"
+                               placeholder="Insurance company name">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-id-card"></i>
+                            Insurance ID
+                        </label>
+                        <input type="text" name="insurance_id" class="form-control"
+                               value="{{ form.insurance_id.value|default:'' }}"
+                               placeholder="Insurance policy number">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Error Messages -->
+            {% if form.errors or form.non_field_errors %}
+            <div class="form-section">
+                <div class="alert alert-danger">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                        <i class="fas fa-exclamation-circle fa-lg"></i>
+                        <strong>Please correct the following errors:</strong>
+                    </div>
+                    <ul style="margin: 0; padding-left: 30px;">
+                    {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                            <li><strong>{{ field|title }}:</strong> {{ error }}</li>
                         {% endfor %}
-                    </select>
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                    </ul>
                 </div>
+            </div>
+            {% endif %}
 
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">Phone *</label>
-                    <input type="text" name="phone" class="form-control" 
-                           value="{{ form.phone.value|default:'' }}" required>
-                </div>
+            <!-- Form Actions -->
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i>
+                    Save Patient
+                </button>
+                <a href="{% url 'patients:patient_list' %}" class="btn btn-outline-secondary">
+                    <i class="fas fa-times"></i>
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
 
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">Email</label>
-                    <input type="email" name="email" class="form-control" 
-                           value="{{ form.email.value|default:'' }}">
-                </div>
+<script>
+// Enhanced form validation and interactions
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    const inputs = document.querySelectorAll('.form-control, .form-select');
 
-                <div class="col-md-12">
-                    <label class="form-label fw-semibold">Address *</label>
-                    <textarea name="address" class="form-control" rows="2" required>{{ form.address.value|default:'' }}</textarea>
-                </div>
+    // Real-time validation
+    inputs.forEach(input => {
+        input.addEventListener('blur', function() {
+            validateField(this);
+        });
 
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">Emergency Contact Name</label>
-                    <input type="text" name="emergency_contact_name" class="form-control" 
-                           value="{{ form.emergency_contact_name.value|default:'' }}">
-                </div>
+        input.addEventListener('input', function() {
+            if (this.classList.contains('is-invalid')) {
+                validateField(this);
+            }
+        });
+    });
 
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">Emergency Contact Phone</label>
-                    <input type="text" name="emergency_contact_phone" class="form-control" 
-                           value="{{ form.emergency_contact_phone.value|default:'' }}">
-                </div>
+    function validateField(field) {
+        const value = field.value.trim();
+        const isRequired = field.hasAttribute('required');
 
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">Known Allergies</label>
-                    <textarea name="allergies" class="form-control" rows="2">{{ form.allergies.value|default:'' }}</textarea>
-                </div>
+        field.classList.remove('is-valid', 'is-invalid');
 
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">Chronic Conditions</label>
-                    <textarea name="chronic_conditions" class="form-control" rows="2">{{ form.chronic_conditions.value|default:'' }}</textarea>
-                </div>
+        if (isRequired && !value) {
+            field.classList.add('is-invalid');
+        } else if (value) {
+            field.classList.add('is-valid');
+        }
+    }
 
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">Insurance Provider</label>
-                    <input type="text" name="insurance_provider" class="form-control" 
-                           value="{{ form.insurance_provider.value|default:'' }}">
+    // Phone number formatting
+    const phoneInputs = document.querySelectorAll('input[type="tel"]');
+    phoneInputs.forEach(input => {
+        input.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 10) {
+                value = value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+            }
+            e.target.value = value;
+        });
+    });
+
+    // Form submission enhancement
+    form.addEventListener('submit', function(e) {
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+        submitBtn.disabled = true;
+
+        // Re-enable after 3 seconds (in case of client-side validation issues)
+        setTimeout(() => {
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }, 3000);
+    });
+
+    // Progress indicator animation
+    const progressSteps = document.querySelectorAll('.progress-step');
+    let currentStep = 0;
+
+    function updateProgress(step) {
+        progressSteps.forEach((stepEl, index) => {
+            if (index <= step) {
+                stepEl.classList.add('active');
+            } else {
+                stepEl.classList.remove('active');
+            }
+        });
+    }
+
+    // Auto-advance progress based on form completion
+    function checkFormProgress() {
+        const requiredFields = form.querySelectorAll('[required]');
+        const filledFields = Array.from(requiredFields).filter(field => field.value.trim() !== '');
+
+        if (filledFields.length >= requiredFields.length * 0.3) {
+            updateProgress(0);
+        }
+        if (filledFields.length >= requiredFields.length * 0.7) {
+            updateProgress(1);
+        }
+        if (filledFields.length === requiredFields.length) {
+            updateProgress(2);
+        }
+    }
+
+    inputs.forEach(input => {
+        input.addEventListener('input', checkFormProgress);
+    });
+
+    // Initialize progress
+    checkFormProgress();
+});
+</script>
+
                 </div>
 
                 <div class="col-md-6">

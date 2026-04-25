@@ -4,59 +4,747 @@
 {% block page_title %}All Patients{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h5 class="mb-0"><i class="fas fa-users text-primary me-2"></i>Registered Patients</h5>
-    <a href="{% url 'patients:patient_create' %}" class="btn btn-primary btn-sm">
-        <i class="fas fa-plus me-1"></i>Add New Patient
-    </a>
-</div>
 
-<div class="card">
-    <div class="table-responsive">
-        <table class="table table-hover align-middle mb-0">
-            <thead class="table-light">
-                <tr>
-                    <th>Patient Name</th>
-                    <th>Gender</th>
-                    <th>Age</th>
-                    <th>Phone</th>
-                    <th>Blood Group</th>
-                    <th class="text-end">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for patient in patients %}
-                <tr>
-                    <td>
-                        <div class="fw-bold text-dark">{{ patient.get_full_name|default:patient.first_name }} {{ patient.last_name }}</div>
-                        <small class="text-muted">ID: #{{ patient.id }}</small>
-                    </td>
-                    <td>{{ patient.get_gender_display|default:patient.gender }}</td>
-                    <td>{{ patient.age|default:"N/A" }} yrs</td>
-                    <td>{{ patient.phone }}</td>
-                    <td><span class="badge bg-info text-dark">{{ patient.blood_group|default:"-" }}</span></td>
-                    <td class="text-end">
-                        <div class="btn-group">
-                            <a href="{% url 'patients:patient_detail' patient.pk %}" class="btn btn-sm btn-outline-primary" title="View">
-                                <i class="fas fa-eye"></i>
-                            </a>
-                            <a href="{% url 'patients:patient_update' patient.pk %}" class="btn btn-sm btn-outline-warning" title="Edit">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                        </div>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="6" class="text-center py-5">
-                        <i class="fas fa-user-injured fa-3x text-muted mb-3"></i>
-                        <p class="text-muted">No patients found. Add your first patient to get started!</p>
-                        <a href="{% url 'patients:patient_create' %}" class="btn btn-primary btn-sm mt-2">Add Patient</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+<style>
+    /* ============================================
+       ENHANCED PATIENT LIST STYLES
+       ============================================ */
+
+    :root {
+        --list-primary: linear-gradient(135deg, #0d6efd 0%, #0dcaf0 100%);
+        --list-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        --list-warning: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        --list-danger: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        --list-shadow: 0 8px 32px rgba(0,0,0,0.08);
+        --list-shadow-hover: 0 20px 60px rgba(0,0,0,0.15);
+        --list-border-radius: 16px;
+        --list-transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .list-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+
+    /* ============================================
+       ENHANCED HEADER
+       ============================================ */
+
+    .list-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        padding: 2rem 0;
+        animation: headerSlideIn 0.8s ease-out;
+    }
+
+    @keyframes headerSlideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .list-title {
+        font-size: 2.5rem;
+        font-weight: 900;
+        margin: 0;
+        background: var(--list-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .list-title i {
+        font-size: 2rem;
+        opacity: 0.8;
+    }
+
+    .list-stats {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+    }
+
+    .stat-item {
+        text-align: center;
+        padding: 1rem;
+        background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,249,250,0.9) 100%);
+        border-radius: 12px;
+        box-shadow: var(--list-shadow);
+        border: 1px solid rgba(255,255,255,0.2);
+        min-width: 120px;
+    }
+
+    .stat-number {
+        font-size: 1.5rem;
+        font-weight: 900;
+        color: #0d6efd;
+        display: block;
+        line-height: 1;
+    }
+
+    .stat-label {
+        font-size: 0.8rem;
+        color: #64748b;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-top: 0.25rem;
+    }
+
+    /* ============================================
+       SEARCH AND FILTERS
+       ============================================ */
+
+    .filters-section {
+        background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
+        backdrop-filter: blur(20px);
+        border-radius: var(--list-border-radius);
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: var(--list-shadow);
+        border: 1px solid rgba(255,255,255,0.2);
+        animation: filtersSlideIn 0.8s ease-out 0.2s both;
+    }
+
+    @keyframes filtersSlideIn {
+        from {
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    .search-group {
+        position: relative;
+        max-width: 400px;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 0.875rem 1rem 0.875rem 3rem;
+        border: 2px solid rgba(0,0,0,0.1);
+        border-radius: 12px;
+        font-size: 1rem;
+        transition: var(--list-transition);
+        background: rgba(255,255,255,0.8);
+        backdrop-filter: blur(10px);
+    }
+
+    .search-input:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
+        background: rgba(255,255,255,1);
+        transform: translateY(-2px);
+    }
+
+    .search-icon {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #64748b;
+        font-size: 1.2rem;
+        z-index: 1;
+    }
+
+    .filters-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-top: 1.5rem;
+    }
+
+    .filter-select {
+        padding: 0.75rem 1rem;
+        border: 2px solid rgba(0,0,0,0.1);
+        border-radius: 12px;
+        background: rgba(255,255,255,0.8);
+        backdrop-filter: blur(10px);
+        transition: var(--list-transition);
+        font-size: 0.9rem;
+    }
+
+    .filter-select:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
+        background: rgba(255,255,255,1);
+        transform: translateY(-2px);
+    }
+
+    /* ============================================
+       ENHANCED TABLE
+       ============================================ */
+
+    .table-container {
+        background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
+        backdrop-filter: blur(20px);
+        border-radius: var(--list-border-radius);
+        box-shadow: var(--list-shadow);
+        border: 1px solid rgba(255,255,255,0.2);
+        overflow: hidden;
+        animation: tableSlideIn 0.8s ease-out 0.4s both;
+    }
+
+    @keyframes tableSlideIn {
+        from {
+            opacity: 0;
+            transform: translateY(40px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .table {
+        margin-bottom: 0;
+        width: 100%;
+    }
+
+    .table thead th {
+        background: linear-gradient(135deg, rgba(248,249,250,0.9) 0%, rgba(241,245,249,0.9) 100%);
+        border-bottom: 2px solid rgba(0,0,0,0.08);
+        padding: 1.25rem 1rem;
+        font-weight: 700;
+        font-size: 0.85rem;
+        color: #374151;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    .table tbody tr {
+        transition: var(--list-transition);
+        border-bottom: 1px solid rgba(0,0,0,0.04);
+    }
+
+    .table tbody tr:hover {
+        background: linear-gradient(90deg, rgba(13, 110, 253, 0.02) 0%, transparent 50%);
+        transform: scale(1.01);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .table tbody tr:last-child {
+        border-bottom: none;
+    }
+
+    .table td {
+        padding: 1.25rem 1rem;
+        vertical-align: middle;
+        border: none;
+    }
+
+    /* ============================================
+       PATIENT CARD DESIGN
+       ============================================ */
+
+    .patient-card {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.5rem 0;
+    }
+
+    .patient-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: white;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .patient-info h6 {
+        margin: 0;
+        font-weight: 700;
+        color: #1e293b;
+        font-size: 1rem;
+    }
+
+    .patient-id {
+        font-size: 0.75rem;
+        color: #64748b;
+        font-weight: 600;
+        background: rgba(13, 110, 253, 0.1);
+        padding: 2px 8px;
+        border-radius: 10px;
+        display: inline-block;
+        margin-top: 2px;
+    }
+
+    /* ============================================
+       ENHANCED BADGES
+       ============================================ */
+
+    .badge {
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 6px 12px;
+        border-radius: 20px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .badge-gender-male {
+        background: linear-gradient(135deg, #0d6efd, #0dcaf0);
+        color: white;
+    }
+
+    .badge-gender-female {
+        background: linear-gradient(135deg, #e91e63, #f06292);
+        color: white;
+    }
+
+    .badge-gender-other {
+        background: linear-gradient(135deg, #9c27b0, #ba68c8);
+        color: white;
+    }
+
+    .badge-blood-group {
+        background: linear-gradient(135deg, #ff5722, #ff8a65);
+        color: white;
+    }
+
+    .badge-age {
+        background: linear-gradient(135deg, #4caf50, #81c784);
+        color: white;
+    }
+
+    /* ============================================
+       ACTION BUTTONS
+       ============================================ */
+
+    .action-buttons {
+        display: flex;
+        gap: 0.5rem;
+        justify-content: flex-end;
+    }
+
+    .btn-action {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        cursor: pointer;
+        transition: var(--list-transition);
+        font-size: 0.9rem;
+        text-decoration: none;
+        color: white;
+    }
+
+    .btn-view {
+        background: var(--list-primary);
+        box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+    }
+
+    .btn-view:hover {
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 6px 16px rgba(13, 110, 253, 0.4);
+    }
+
+    .btn-edit {
+        background: var(--list-warning);
+        box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+    }
+
+    .btn-edit:hover {
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4);
+    }
+
+    /* ============================================
+       EMPTY STATE
+       ============================================ */
+
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        color: #64748b;
+    }
+
+    .empty-icon {
+        font-size: 4rem;
+        opacity: 0.3;
+        margin-bottom: 1.5rem;
+        display: block;
+    }
+
+    .empty-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #374151;
+        margin-bottom: 0.5rem;
+    }
+
+    .empty-text {
+        font-size: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+
+    @media (max-width: 768px) {
+        .list-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.5rem;
+        }
+
+        .list-title {
+            font-size: 2rem;
+        }
+
+        .list-stats {
+            width: 100%;
+            justify-content: space-around;
+        }
+
+        .filters-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .table-container {
+            border-radius: 12px;
+        }
+
+        .patient-card {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .btn-action {
+            width: 100%;
+            height: 40px;
+            margin-bottom: 0.25rem;
+        }
+    }
+
+    /* ============================================
+       ANIMATIONS
+       ============================================ */
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .table tbody tr {
+        animation: fadeInUp 0.6s ease-out forwards;
+        opacity: 0;
+    }
+
+    .table tbody tr:nth-child(1) { animation-delay: 0.1s; }
+    .table tbody tr:nth-child(2) { animation-delay: 0.15s; }
+    .table tbody tr:nth-child(3) { animation-delay: 0.2s; }
+    .table tbody tr:nth-child(4) { animation-delay: 0.25s; }
+    .table tbody tr:nth-child(5) { animation-delay: 0.3s; }
+</style>
+
+<div class="list-container">
+    <!-- Enhanced Header -->
+    <div class="list-header">
+        <h1 class="list-title">
+            <i class="fas fa-users"></i>
+            Patient Directory
+        </h1>
+        <div class="list-stats">
+            <div class="stat-item">
+                <span class="stat-number">{{ patients|length }}</span>
+                <span class="stat-label">Total Patients</span>
+            </div>
+            <a href="{% url 'patients:patient_create' %}" class="btn btn-primary" style="border-radius: 12px; padding: 0.875rem 2rem; font-weight: 600; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 16px rgba(13, 110, 253, 0.3);">
+                <i class="fas fa-plus"></i>
+                Add New Patient
+            </a>
+        </div>
+    </div>
+
+    <!-- Search and Filters -->
+    <div class="filters-section">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h3 style="margin: 0; font-size: 1.25rem; font-weight: 700; color: #1e293b; display: flex; align-items: center; gap: 10px;">
+                <i class="fas fa-filter" style="color: #0d6efd;"></i>
+                Search & Filter Patients
+            </h3>
+            <span style="font-size: 0.9rem; color: #64748b; font-weight: 500;">
+                {{ patients|length }} patient{{ patients|length|pluralize }} found
+            </span>
+        </div>
+
+        <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+            <div class="search-group">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="Search by name, phone, or ID..." id="searchInput">
+            </div>
+
+            <div class="filters-grid">
+                <select class="filter-select" id="genderFilter">
+                    <option value="">All Genders</option>
+                    <option value="M">Male</option>
+                    <option value="F">Female</option>
+                    <option value="O">Other</option>
+                </select>
+
+                <select class="filter-select" id="bloodGroupFilter">
+                    <option value="">All Blood Groups</option>
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                </select>
+
+                <select class="filter-select" id="sortBy">
+                    <option value="name">Sort by Name</option>
+                    <option value="age">Sort by Age</option>
+                    <option value="recent">Recently Added</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enhanced Table -->
+    <div class="table-container">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Patient Information</th>
+                        <th>Gender</th>
+                        <th>Age</th>
+                        <th>Phone</th>
+                        <th>Blood Group</th>
+                        <th style="text-align: right;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="patientTableBody">
+                    {% for patient in patients %}
+                    <tr data-gender="{{ patient.gender }}" data-blood-group="{{ patient.blood_group }}" data-name="{{ patient.get_full_name|lower }}" data-phone="{{ patient.phone }}">
+                        <td>
+                            <div class="patient-card">
+                                <div class="patient-avatar" style="background: linear-gradient(135deg, {% if patient.gender == 'M' %}#0d6efd, #0dcaf0{% elif patient.gender == 'F' %}#e91e63, #f06292{% else %}#9c27b0, #ba68c8{% endif %});">
+                                    {{ patient.first_name|first|upper }}
+                                </div>
+                                <div class="patient-info">
+                                    <h6>{{ patient.get_full_name|default:patient.first_name }} {{ patient.last_name }}</h6>
+                                    <span class="patient-id">ID: #{{ patient.id }}</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge badge-gender-{{ patient.gender|lower }}">
+                                {% if patient.gender == 'M' %}
+                                    <i class="fas fa-mars"></i> Male
+                                {% elif patient.gender == 'F' %}
+                                    <i class="fas fa-venus"></i> Female
+                                {% else %}
+                                    <i class="fas fa-genderless"></i> Other
+                                {% endif %}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge badge-age">
+                                <i class="fas fa-birthday-cake"></i>
+                                {{ patient.age|default:"N/A" }} yrs
+                            </span>
+                        </td>
+                        <td style="font-weight: 600; color: #374151;">
+                            <i class="fas fa-phone" style="color: #10b981; margin-right: 8px;"></i>
+                            {{ patient.phone }}
+                        </td>
+                        <td>
+                            {% if patient.blood_group %}
+                                <span class="badge badge-blood-group">
+                                    <i class="fas fa-tint"></i>
+                                    {{ patient.blood_group }}
+                                </span>
+                            {% else %}
+                                <span style="color: #64748b; font-style: italic;">Not specified</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+                                <a href="{% url 'patients:patient_detail' patient.pk %}" class="btn-action btn-view" title="View Details">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="{% url 'patients:patient_update' patient.pk %}" class="btn-action btn-edit" title="Edit Patient">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6">
+                            <div class="empty-state">
+                                <i class="fas fa-user-injured empty-icon"></i>
+                                <div class="empty-title">No Patients Found</div>
+                                <div class="empty-text">Start building your patient database by adding your first patient record.</div>
+                                <a href="{% url 'patients:patient_create' %}" class="btn btn-primary" style="border-radius: 12px; padding: 0.875rem 2rem; font-weight: 600;">
+                                    <i class="fas fa-plus" style="margin-right: 8px;"></i>
+                                    Add Your First Patient
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
+
+<script>
+// Enhanced search and filtering functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const genderFilter = document.getElementById('genderFilter');
+    const bloodGroupFilter = document.getElementById('bloodGroupFilter');
+    const sortBy = document.getElementById('sortBy');
+    const tableBody = document.getElementById('patientTableBody');
+    const rows = Array.from(tableBody.querySelectorAll('tr')).filter(row => !row.querySelector('.empty-state'));
+
+    function filterAndSortPatients() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const genderValue = genderFilter.value;
+        const bloodGroupValue = bloodGroupFilter.value;
+        const sortValue = sortBy.value;
+
+        let filteredRows = rows.filter(row => {
+            const name = row.dataset.name || '';
+            const phone = row.dataset.phone || '';
+            const gender = row.dataset.gender || '';
+            const bloodGroup = row.dataset.bloodGroup || '';
+
+            const matchesSearch = name.includes(searchTerm) || phone.includes(searchTerm);
+            const matchesGender = !genderValue || gender === genderValue;
+            const matchesBloodGroup = !bloodGroupValue || bloodGroup === bloodGroupValue;
+
+            return matchesSearch && matchesGender && matchesBloodGroup;
+        });
+
+        // Sort patients
+        filteredRows.sort((a, b) => {
+            switch(sortValue) {
+                case 'age':
+                    const ageA = parseInt(a.querySelector('.badge-age')?.textContent?.match(/\d+/)?.[0] || 0);
+                    const ageB = parseInt(b.querySelector('.badge-age')?.textContent?.match(/\d+/)?.[0] || 0);
+                    return ageB - ageA; // Descending age
+                case 'recent':
+                    const idA = parseInt(a.querySelector('.patient-id')?.textContent?.match(/\d+/)?.[0] || 0);
+                    const idB = parseInt(b.querySelector('.patient-id')?.textContent?.match(/\d+/)?.[0] || 0);
+                    return idB - idA; // Descending ID (recent first)
+                default: // 'name'
+                    const nameA = a.dataset.name || '';
+                    const nameB = b.dataset.name || '';
+                    return nameA.localeCompare(nameB);
+            }
+        });
+
+        // Update table
+        const emptyRow = tableBody.querySelector('.empty-state')?.closest('tr');
+        tableBody.innerHTML = '';
+
+        if (filteredRows.length === 0) {
+            if (emptyRow) {
+                tableBody.appendChild(emptyRow);
+            } else {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="6">
+                            <div class="empty-state">
+                                <i class="fas fa-search empty-icon"></i>
+                                <div class="empty-title">No Matching Patients</div>
+                                <div class="empty-text">Try adjusting your search criteria or filters.</div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }
+        } else {
+            filteredRows.forEach(row => {
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Update stats
+        const statsElement = document.querySelector('.list-stats .stat-number');
+        if (statsElement) {
+            statsElement.textContent = filteredRows.length;
+        }
+    }
+
+    // Event listeners
+    searchInput.addEventListener('input', filterAndSortPatients);
+    genderFilter.addEventListener('change', filterAndSortPatients);
+    bloodGroupFilter.addEventListener('change', filterAndSortPatients);
+    sortBy.addEventListener('change', filterAndSortPatients);
+
+    // Search input enhancement
+    searchInput.addEventListener('focus', function() {
+        this.parentElement.style.transform = 'scale(1.02)';
+    });
+
+    searchInput.addEventListener('blur', function() {
+        this.parentElement.style.transform = 'scale(1)';
+    });
+
+    // Clear search on escape
+    searchInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            this.value = '';
+            filterAndSortPatients();
+            this.blur();
+        }
+    });
+
+    // Initialize
+    filterAndSortPatients();
+});
+</script>
+
 {% endblock %}

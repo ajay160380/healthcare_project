@@ -1,103 +1,1001 @@
 {% extends 'base/base.html' %}
 {% block title %}{{ patient }} - HealthCare Portal{% endblock %}
-{% block page_title %}Patient Detail{% endblock %}
+{% block page_title %}Patient Profile{% endblock %}
 
 {% block content %}
-<div class="row g-4">
 
-    <!-- Patient Info Card -->
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-body text-center p-4">
+<style>
+    /* ============================================
+       ENHANCED PATIENT DETAIL STYLES
+       ============================================ */
 
-                <div style="width:80px;height:80px;background:linear-gradient(135deg,#0d6efd,#084298);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 15px;">
-                    <i class="fas fa-user fa-2x text-white"></i>
+    :root {
+        --detail-primary: linear-gradient(135deg, #0d6efd 0%, #0dcaf0 100%);
+        --detail-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        --detail-warning: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        --detail-danger: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        --detail-info: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+        --detail-shadow: 0 8px 32px rgba(0,0,0,0.08);
+        --detail-shadow-hover: 0 20px 60px rgba(0,0,0,0.15);
+        --detail-border-radius: 20px;
+        --detail-transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .detail-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+
+    /* ============================================
+       PROFILE HEADER
+       ============================================ */
+
+    .profile-header {
+        background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
+        backdrop-filter: blur(20px);
+        border-radius: var(--detail-border-radius);
+        box-shadow: var(--detail-shadow);
+        border: 1px solid rgba(255,255,255,0.2);
+        padding: 2rem;
+        margin-bottom: 2rem;
+        animation: headerSlideIn 0.8s ease-out;
+        position: relative;
+        overflow: hidden;
+    }
+
+    @keyframes headerSlideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .profile-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 6px;
+        background: var(--detail-primary);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.6s ease;
+        animation: headerProgress 1s ease-out 0.5s forwards;
+    }
+
+    @keyframes headerProgress {
+        to { transform: scaleX(1); }
+    }
+
+    .profile-main {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .profile-avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        font-weight: 900;
+        color: white;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .profile-avatar::before {
+        content: '';
+        position: absolute;
+        top: -50%; left: -50%;
+        width: 200%; height: 200%;
+        background: conic-gradient(from 0deg, transparent, rgba(255,255,255,0.3), transparent);
+        animation: rotate 4s linear infinite;
+    }
+
+    @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
+    .profile-avatar i {
+        position: relative;
+        z-index: 1;
+    }
+
+    .profile-info h1 {
+        font-size: 2.5rem;
+        font-weight: 900;
+        margin: 0;
+        background: var(--detail-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .profile-meta {
+        display: flex;
+        gap: 1rem;
+        margin: 0.5rem 0;
+        flex-wrap: wrap;
+    }
+
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.9rem;
+        color: #64748b;
+        font-weight: 500;
+    }
+
+    .meta-item i {
+        color: #0d6efd;
+        font-size: 1rem;
+    }
+
+    .profile-badges {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .profile-badge {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .badge-blood {
+        background: var(--detail-danger);
+        color: white;
+    }
+
+    .badge-gender-male {
+        background: var(--detail-primary);
+        color: white;
+    }
+
+    .badge-gender-female {
+        background: linear-gradient(135deg, #e91e63, #f06292);
+        color: white;
+    }
+
+    .badge-gender-other {
+        background: linear-gradient(135deg, #9c27b0, #ba68c8);
+        color: white;
+    }
+
+    /* ============================================
+       QUICK ACTIONS
+       ============================================ */
+
+    .quick-actions {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+
+    .action-btn {
+        background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,249,250,0.9) 100%);
+        border: 2px solid rgba(0,0,0,0.05);
+        border-radius: 16px;
+        padding: 1.5rem;
+        text-decoration: none;
+        transition: var(--detail-transition);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .action-btn::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(13, 110, 253, 0.05) 0%, transparent 100%);
+        opacity: 0;
+        transition: opacity 0.4s ease;
+    }
+
+    .action-btn:hover::before {
+        opacity: 1;
+    }
+
+    .action-btn:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        border-color: rgba(13, 110, 253, 0.2);
+    }
+
+    .action-btn i {
+        font-size: 2rem;
+        transition: var(--detail-transition);
+    }
+
+    .action-btn:hover i {
+        transform: scale(1.1);
+    }
+
+    .action-btn-text {
+        font-weight: 600;
+        color: #374151;
+        font-size: 0.9rem;
+        text-align: center;
+    }
+
+    /* ============================================
+       ENHANCED CARDS
+       ============================================ */
+
+    .detail-card {
+        background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
+        backdrop-filter: blur(20px);
+        border-radius: var(--detail-border-radius);
+        box-shadow: var(--detail-shadow);
+        border: 1px solid rgba(255,255,255,0.2);
+        overflow: hidden;
+        animation: cardSlideIn 0.6s ease-out forwards;
+        opacity: 0;
+        transform: translateY(30px);
+        margin-bottom: 2rem;
+    }
+
+    .detail-card:nth-child(1) { animation-delay: 0.1s; }
+    .detail-card:nth-child(2) { animation-delay: 0.2s; }
+    .detail-card:nth-child(3) { animation-delay: 0.3s; }
+    .detail-card:nth-child(4) { animation-delay: 0.4s; }
+
+    @keyframes cardSlideIn {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .detail-card-header {
+        background: linear-gradient(135deg, rgba(248,249,250,0.8) 0%, rgba(241,245,249,0.8) 100%);
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+        padding: 1.5rem 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .detail-card-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .detail-card-title i {
+        color: #0d6efd;
+        font-size: 1.2rem;
+    }
+
+    /* ============================================
+       VITALS DISPLAY
+       ============================================ */
+
+    .vitals-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        padding: 2rem;
+    }
+
+    .vital-card {
+        background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,249,250,0.9) 100%);
+        border-radius: 16px;
+        padding: 1.5rem;
+        text-align: center;
+        transition: var(--detail-transition);
+        border: 1px solid rgba(0,0,0,0.05);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .vital-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--detail-primary);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.4s ease;
+    }
+
+    .vital-card:hover::before {
+        transform: scaleX(1);
+    }
+
+    .vital-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    }
+
+    .vital-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        font-size: 1.5rem;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .vital-value {
+        font-size: 2rem;
+        font-weight: 900;
+        margin-bottom: 0.5rem;
+        color: #1e293b;
+    }
+
+    .vital-label {
+        font-size: 0.9rem;
+        color: #64748b;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .vital-timestamp {
+        font-size: 0.8rem;
+        color: #94a3b8;
+        margin-top: 1rem;
+        padding-top: 0.5rem;
+        border-top: 1px solid rgba(0,0,0,0.05);
+    }
+
+    /* ============================================
+       MEDICAL RECORDS
+       ============================================ */
+
+    .records-container {
+        padding: 0;
+    }
+
+    .record-accordion .accordion-item {
+        border: 1px solid rgba(0,0,0,0.05);
+        border-radius: 12px !important;
+        margin-bottom: 1rem;
+        overflow: hidden;
+    }
+
+    .record-accordion .accordion-button {
+        background: linear-gradient(135deg, rgba(248,249,250,0.8) 0%, rgba(241,245,249,0.8) 100%);
+        border: none;
+        padding: 1.5rem;
+        font-weight: 600;
+        color: #1e293b;
+        transition: var(--detail-transition);
+    }
+
+    .record-accordion .accordion-button:hover {
+        background: linear-gradient(135deg, rgba(241,245,249,0.9) 0%, rgba(235,240,245,0.9) 100%);
+    }
+
+    .record-accordion .accordion-button:not(.collapsed) {
+        background: var(--detail-primary);
+        color: white;
+        box-shadow: 0 4px 12px rgba(13, 110, 253, 0.2);
+    }
+
+    .record-accordion .accordion-body {
+        padding: 1.5rem;
+        background: rgba(255,255,255,0.5);
+    }
+
+    .record-meta {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .record-field {
+        background: rgba(255,255,255,0.7);
+        padding: 1rem;
+        border-radius: 8px;
+        border-left: 3px solid #0d6efd;
+    }
+
+    .record-field strong {
+        color: #1e293b;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+
+    .record-field p {
+        margin: 0;
+        color: #64748b;
+        line-height: 1.5;
+    }
+
+    /* ============================================
+       APPOINTMENTS TABLE
+       ============================================ */
+
+    .appointments-table {
+        margin: 0;
+        width: 100%;
+    }
+
+    .appointments-table thead th {
+        background: linear-gradient(135deg, rgba(248,249,250,0.9) 0%, rgba(241,245,249,0.9) 100%);
+        border-bottom: 2px solid rgba(0,0,0,0.08);
+        padding: 1rem 1.5rem;
+        font-weight: 700;
+        font-size: 0.85rem;
+        color: #374151;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .appointments-table tbody tr {
+        transition: var(--detail-transition);
+        border-bottom: 1px solid rgba(0,0,0,0.04);
+    }
+
+    .appointments-table tbody tr:hover {
+        background: linear-gradient(90deg, rgba(13, 110, 253, 0.02) 0%, transparent 50%);
+        transform: scale(1.01);
+    }
+
+    .appointments-table td {
+        padding: 1rem 1.5rem;
+        vertical-align: middle;
+        border: none;
+    }
+
+    .appointment-date {
+        font-weight: 600;
+        color: #1e293b;
+        margin-bottom: 0.25rem;
+    }
+
+    .appointment-time {
+        font-size: 0.8rem;
+        color: #64748b;
+    }
+
+    .badge {
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 6px 12px;
+        border-radius: 20px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .badge-status-scheduled {
+        background: rgba(245, 158, 11, 0.1);
+        color: #d97706;
+    }
+
+    .badge-status-completed {
+        background: rgba(16, 185, 129, 0.1);
+        color: #059669;
+    }
+
+    .badge-status-cancelled {
+        background: rgba(239, 68, 68, 0.1);
+        color: #dc2626;
+    }
+
+    /* ============================================
+       ALERT CARDS
+       ============================================ */
+
+    .alert-card {
+        border-radius: 16px;
+        border: none;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        position: relative;
+        overflow: hidden;
+        animation: alertSlideIn 0.5s ease-out;
+    }
+
+    @keyframes alertSlideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .alert-allergies {
+        background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(217, 119, 6, 0.1) 100%);
+        border-left: 4px solid #f59e0b;
+    }
+
+    .alert-conditions {
+        background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.1) 100%);
+        border-left: 4px solid #ef4444;
+    }
+
+    .alert-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 0.5rem;
+    }
+
+    .alert-header i {
+        font-size: 1.2rem;
+    }
+
+    .alert-title {
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .alert-text {
+        margin: 0;
+        color: #64748b;
+        line-height: 1.5;
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+
+    @media (max-width: 768px) {
+        .profile-main {
+            flex-direction: column;
+            text-align: center;
+            gap: 1.5rem;
+        }
+
+        .profile-info h1 {
+            font-size: 2rem;
+        }
+
+        .profile-meta {
+            justify-content: center;
+        }
+
+        .quick-actions {
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        }
+
+        .vitals-grid {
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        }
+
+        .detail-card-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .record-meta {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="detail-container">
+    <!-- Enhanced Profile Header -->
+    <div class="profile-header">
+        <div class="profile-main">
+            <div class="profile-avatar" style="background: linear-gradient(135deg, {% if patient.gender == 'M' %}#0d6efd, #0dcaf0{% elif patient.gender == 'F' %}#e91e63, #f06292{% else %}#9c27b0, #ba68c8{% endif %});">
+                <i class="fas fa-user"></i>
+            </div>
+
+            <div class="profile-info">
+                <h1>{{ patient.get_full_name|default:patient.first_name }} {{ patient.last_name }}</h1>
+
+                <div class="profile-meta">
+                    <div class="meta-item">
+                        <i class="fas fa-birthday-cake"></i>
+                        {{ patient.age }} years old
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-phone"></i>
+                        {{ patient.phone }}
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-envelope"></i>
+                        {{ patient.email|default:"No email" }}
+                    </div>
                 </div>
 
-                <h5 class="fw-bold">{{ patient }}</h5>
-                <p class="text-muted mb-1">{{ patient.email|default:"No email" }}</p>
+                <div class="profile-badges">
+                    {% if patient.blood_group %}
+                        <span class="profile-badge badge-blood">
+                            <i class="fas fa-tint"></i>
+                            {{ patient.blood_group }}
+                        </span>
+                    {% endif %}
 
-                <span class="badge bg-danger me-1">{{ patient.blood_group|default:"N/A" }}</span>
-                <span class="badge bg-primary">{{ patient.get_gender_display }}</span>
+                    {% if patient.gender == 'M' %}
+                        <span class="profile-badge badge-gender-male">
+                            <i class="fas fa-mars"></i>
+                            Male
+                        </span>
+                    {% elif patient.gender == 'F' %}
+                        <span class="profile-badge badge-gender-female">
+                            <i class="fas fa-venus"></i>
+                            Female
+                        </span>
+                    {% else %}
+                        <span class="profile-badge badge-gender-other">
+                            <i class="fas fa-genderless"></i>
+                            Other
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
 
-                <hr>
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <a href="{% url 'patients:patient_update' patient.pk %}" class="action-btn">
+                <i class="fas fa-edit" style="color: #f59e0b;"></i>
+                <span class="action-btn-text">Edit Profile</span>
+            </a>
 
-                <div class="text-start">
-                    <div class="mb-2"><i class="fas fa-birthday-cake text-muted me-2"></i><small>DOB: {{ patient.date_of_birth }}</small></div>
-                    <div class="mb-2"><i class="fas fa-user-clock text-muted me-2"></i><small>Age: {{ patient.age }} years</small></div>
-                    <div class="mb-2"><i class="fas fa-phone text-muted me-2"></i><small>{{ patient.phone }}</small></div>
-                    <div class="mb-2"><i class="fas fa-map-marker-alt text-muted me-2"></i><small>{{ patient.address|truncatechars:60 }}</small></div>
+            <a href="{% url 'appointments:appointment_create' %}?patient={{ patient.pk }}" class="action-btn">
+                <i class="fas fa-calendar-plus" style="color: #10b981;"></i>
+                <span class="action-btn-text">Book Appointment</span>
+            </a>
 
-                    {% if patient.insurance_provider %}
-                    <div class="mb-2">
-                        <i class="fas fa-shield-alt text-muted me-2"></i>
-                        <small>{{ patient.insurance_provider }} ({{ patient.insurance_id }})</small>
+            <a href="{% url 'patients:add_medical_record' patient.pk %}" class="action-btn">
+                <i class="fas fa-notes-medical" style="color: #06b6d4;"></i>
+                <span class="action-btn-text">Add Record</span>
+            </a>
+
+            <a href="{% url 'patients:add_vital_record' patient.pk %}" class="action-btn">
+                <i class="fas fa-heartbeat" style="color: #ef4444;"></i>
+                <span class="action-btn-text">Record Vitals</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Health Alerts -->
+    {% if patient.allergies %}
+    <div class="alert-card alert-allergies">
+        <div class="alert-header">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h6 class="alert-title">Allergies Alert</h6>
+        </div>
+        <p class="alert-text">{{ patient.allergies }}</p>
+    </div>
+    {% endif %}
+
+    {% if patient.chronic_conditions %}
+    <div class="alert-card alert-conditions">
+        <div class="alert-header">
+            <i class="fas fa-diagnoses"></i>
+            <h6 class="alert-title">Chronic Conditions</h6>
+        </div>
+        <p class="alert-text">{{ patient.chronic_conditions }}</p>
+    </div>
+    {% endif %}
+
+    <div class="row g-4">
+        <!-- Patient Details Sidebar -->
+        <div class="col-lg-4">
+            <div class="detail-card">
+                <div class="detail-card-header">
+                    <h3 class="detail-card-title">
+                        <i class="fas fa-id-card"></i>
+                        Patient Information
+                    </h3>
+                </div>
+
+                <div style="padding: 2rem;">
+                    <div style="display: grid; gap: 1.5rem;">
+                        <div class="info-item">
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 0.5rem;">
+                                <i class="fas fa-calendar-alt" style="color: #0d6efd; font-size: 1.1rem;"></i>
+                                <strong style="font-size: 0.9rem; color: #374151; text-transform: uppercase; letter-spacing: 0.5px;">Date of Birth</strong>
+                            </div>
+                            <div style="color: #1e293b; font-weight: 600;">{{ patient.date_of_birth|date:"M d, Y" }}</div>
+                        </div>
+
+                        <div class="info-item">
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 0.5rem;">
+                                <i class="fas fa-phone" style="color: #10b981; font-size: 1.1rem;"></i>
+                                <strong style="font-size: 0.9rem; color: #374151; text-transform: uppercase; letter-spacing: 0.5px;">Phone</strong>
+                            </div>
+                            <div style="color: #1e293b; font-weight: 600;">{{ patient.phone }}</div>
+                        </div>
+
+                        <div class="info-item">
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 0.5rem;">
+                                <i class="fas fa-map-marker-alt" style="color: #f59e0b; font-size: 1.1rem;"></i>
+                                <strong style="font-size: 0.9rem; color: #374151; text-transform: uppercase; letter-spacing: 0.5px;">Address</strong>
+                            </div>
+                            <div style="color: #64748b; line-height: 1.5;">{{ patient.address }}</div>
+                        </div>
+
+                        {% if patient.insurance_provider %}
+                        <div class="info-item">
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 0.5rem;">
+                                <i class="fas fa-shield-alt" style="color: #ef4444; font-size: 1.1rem;"></i>
+                                <strong style="font-size: 0.9rem; color: #374151; text-transform: uppercase; letter-spacing: 0.5px;">Insurance</strong>
+                            </div>
+                            <div style="color: #1e293b; font-weight: 600;">{{ patient.insurance_provider }}</div>
+                            {% if patient.insurance_id %}
+                                <div style="color: #64748b; font-size: 0.9rem; margin-top: 0.25rem;">ID: {{ patient.insurance_id }}</div>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-lg-8">
+            <!-- Enhanced Vitals Card -->
+            <div class="detail-card">
+                <div class="detail-card-header">
+                    <h3 class="detail-card-title">
+                        <i class="fas fa-heartbeat"></i>
+                        Latest Vital Signs
+                    </h3>
+                    <a href="{% url 'patients:add_vital_record' patient.pk %}" class="btn btn-primary" style="border-radius: 12px; padding: 0.5rem 1.5rem; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-plus"></i>
+                        Record Vitals
+                    </a>
+                </div>
+
+                {% if vitals %}
+                    {% with v=vitals.0 %}
+                    <div class="vitals-grid">
+                        <div class="vital-card">
+                            <div class="vital-icon" style="background: var(--detail-danger); color: white;">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <div class="vital-value">{{ v.heart_rate|default:"—" }}</div>
+                            <div class="vital-label">Heart Rate (BPM)</div>
+                        </div>
+
+                        <div class="vital-card">
+                            <div class="vital-icon" style="background: var(--detail-primary); color: white;">
+                                <i class="fas fa-tint"></i>
+                            </div>
+                            <div class="vital-value">
+                                {% if v.blood_pressure_systolic %}
+                                    {{ v.blood_pressure_systolic }}/{{ v.blood_pressure_diastolic }}
+                                {% else %}—{% endif %}
+                            </div>
+                            <div class="vital-label">Blood Pressure</div>
+                        </div>
+
+                        <div class="vital-card">
+                            <div class="vital-icon" style="background: var(--detail-warning); color: white;">
+                                <i class="fas fa-thermometer-half"></i>
+                            </div>
+                            <div class="vital-value">{{ v.temperature|default:"—" }}{% if v.temperature %}°C{% endif %}</div>
+                            <div class="vital-label">Temperature</div>
+                        </div>
+
+                        <div class="vital-card">
+                            <div class="vital-icon" style="background: var(--detail-success); color: white;">
+                                <i class="fas fa-weight"></i>
+                            </div>
+                            <div class="vital-value">{{ v.weight|default:"—" }}{% if v.weight %}kg{% endif %}</div>
+                            <div class="vital-label">
+                                Weight {% if v.bmi %}(BMI: {{ v.bmi }}){% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="padding: 0 2rem 2rem; text-align: center;">
+                        <div class="vital-timestamp">
+                            <i class="fas fa-clock" style="margin-right: 8px;"></i>
+                            Recorded on {{ v.recorded_at|date:"F d, Y" }} at {{ v.recorded_at|time:"H:i" }}
+                        </div>
+                    </div>
+                    {% endwith %}
+                {% else %}
+                    <div style="padding: 4rem 2rem; text-align: center; color: #64748b;">
+                        <i class="fas fa-heartbeat fa-3x" style="opacity: 0.3; margin-bottom: 1rem; display: block;"></i>
+                        <h5 style="margin-bottom: 0.5rem; color: #374151;">No Vital Signs Recorded</h5>
+                        <p style="margin: 0;">Start monitoring patient's health by recording their first vital signs.</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Enhanced Medical Records -->
+            <div class="detail-card">
+                <div class="detail-card-header">
+                    <h3 class="detail-card-title">
+                        <i class="fas fa-notes-medical"></i>
+                        Medical Records
+                    </h3>
+                    <a href="{% url 'patients:add_medical_record' patient.pk %}" class="btn btn-info" style="border-radius: 12px; padding: 0.5rem 1.5rem; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-plus"></i>
+                        Add Record
+                    </a>
+                </div>
+
+                <div class="records-container">
+                    {% if medical_records %}
+                    <div class="record-accordion accordion">
+                        {% for record in medical_records %}
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#record{{ record.pk }}">
+                                    <div style="display: flex; align-items: center; gap: 12px; width: 100%;">
+                                        <i class="fas fa-calendar-alt" style="color: #0d6efd;"></i>
+                                        <div>
+                                            <strong>{{ record.record_date|date:"M d, Y" }}</strong>
+                                            <span style="margin-left: 10px; font-weight: normal; color: #64748b;">{{ record.diagnosis|truncatechars:50 }}</span>
+                                        </div>
+                                    </div>
+                                </button>
+                            </h2>
+
+                            <div id="record{{ record.pk }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}">
+                                <div class="accordion-body">
+                                    <div class="record-meta">
+                                        {% if record.symptoms %}
+                                        <div class="record-field">
+                                            <strong>Symptoms</strong>
+                                            <p>{{ record.symptoms }}</p>
+                                        </div>
+                                        {% endif %}
+
+                                        {% if record.diagnosis %}
+                                        <div class="record-field">
+                                            <strong>Diagnosis</strong>
+                                            <p>{{ record.diagnosis }}</p>
+                                        </div>
+                                        {% endif %}
+
+                                        {% if record.treatment %}
+                                        <div class="record-field">
+                                            <strong>Treatment</strong>
+                                            <p>{{ record.treatment }}</p>
+                                        </div>
+                                        {% endif %}
+
+                                        {% if record.prescription %}
+                                        <div class="record-field">
+                                            <strong>Prescription</strong>
+                                            <p>{{ record.prescription }}</p>
+                                        </div>
+                                        {% endif %}
+
+                                        {% if record.doctor_name %}
+                                        <div class="record-field">
+                                            <strong>Doctor</strong>
+                                            <p>{{ record.doctor_name }}</p>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+
+                                    {% if record.notes %}
+                                    <div class="record-field" style="grid-column: 1 / -1;">
+                                        <strong>Additional Notes</strong>
+                                        <p>{{ record.notes }}</p>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div style="padding: 4rem 2rem; text-align: center; color: #64748b;">
+                        <i class="fas fa-notes-medical fa-3x" style="opacity: 0.3; margin-bottom: 1rem; display: block;"></i>
+                        <h5 style="margin-bottom: 0.5rem; color: #374151;">No Medical Records</h5>
+                        <p style="margin: 0;">Medical history and records will appear here once added.</p>
                     </div>
                     {% endif %}
                 </div>
+            </div>
 
-                <hr>
-
-                <div class="d-grid gap-2">
-                    <a href="{% url 'patients:patient_update' patient.pk %}" class="btn btn-outline-warning btn-sm">
-                        <i class="fas fa-edit me-1"></i>Edit Info
-                    </a>
-                    <a href="{% url 'appointments:appointment_create' %}?patient={{ patient.pk }}" class="btn btn-outline-success btn-sm">
-                        <i class="fas fa-calendar-plus me-1"></i>Book Appointment
-                    </a>
-                    <a href="{% url 'patients:add_medical_record' patient.pk %}" class="btn btn-outline-info btn-sm">
-                        <i class="fas fa-notes-medical me-1"></i>Add Record
-                    </a>
-                    <a href="{% url 'patients:add_vital_record' patient.pk %}" class="btn btn-outline-primary btn-sm">
-                        <i class="fas fa-heartbeat me-1"></i>Record Vitals
-                    </a>
+            <!-- Enhanced Appointments History -->
+            <div class="detail-card">
+                <div class="detail-card-header">
+                    <h3 class="detail-card-title">
+                        <i class="fas fa-calendar-alt"></i>
+                        Appointment History
+                    </h3>
                 </div>
 
+                <div style="padding: 0;">
+                    <div class="table-responsive">
+                        <table class="appointments-table table">
+                            <thead>
+                                <tr>
+                                    <th>Appointment Details</th>
+                                    <th>Doctor</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for appt in patient.appointments.all|slice:":10" %}
+                                <tr>
+                                    <td>
+                                        <div class="appointment-date">{{ appt.appointment_date|date:"M d, Y" }}</div>
+                                        <div class="appointment-time">{{ appt.appointment_time|time:"H:i" }}</div>
+                                    </td>
+                                    <td style="font-weight: 600; color: #1e293b;">{{ appt.doctor }}</td>
+                                    <td>
+                                        <span style="background: rgba(6, 182, 212, 0.1); color: #0891b2; padding: 4px 8px; border-radius: 12px; font-size: 0.8rem; font-weight: 600;">
+                                            {{ appt.get_appointment_type_display }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="badge badge-status-{{ appt.status }}">
+                                            {{ appt.get_status_display }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'appointments:appointment_detail' appt.pk %}" class="btn btn-outline-primary btn-sm" style="border-radius: 8px; padding: 0.5rem 1rem;">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="5">
+                                        <div style="padding: 3rem 1rem; text-align: center; color: #64748b;">
+                                            <i class="fas fa-calendar-times fa-2x" style="opacity: 0.3; margin-bottom: 1rem; display: block;"></i>
+                                            <div style="font-weight: 600; color: #374151; margin-bottom: 0.5rem;">No Appointments</div>
+                                            <div>Appointment history will appear here.</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
-
-        {% if patient.allergies %}
-        <div class="card mt-3 border-warning">
-            <div class="card-header bg-warning text-dark fw-bold py-2">
-                <i class="fas fa-exclamation-triangle me-2"></i>Allergies
-            </div>
-            <div class="card-body py-2">
-                <small>{{ patient.allergies }}</small>
-            </div>
-        </div>
-        {% endif %}
-
-        {% if patient.chronic_conditions %}
-        <div class="card mt-3 border-danger">
-            <div class="card-header bg-danger text-white fw-bold py-2">
-                <i class="fas fa-diagnoses me-2"></i>Chronic Conditions
-            </div>
-            <div class="card-body py-2">
-                <small>{{ patient.chronic_conditions }}</small>
-            </div>
-        </div>
-        {% endif %}
     </div>
+</div>
 
-    <div class="col-md-8">
-
-        <!-- Vitals -->
-        <div class="card mb-4">
-            <div class="card-header py-3 px-4 d-flex justify-content-between align-items-center">
-                <span><i class="fas fa-heartbeat text-danger me-2"></i>Latest Vitals</span>
-                <a href="{% url 'patients:add_vital_record' patient.pk %}" class="btn btn-sm btn-outline-danger">
-                    <i class="fas fa-plus me-1"></i>Record Vitals
-                </a>
-            </div>
-
-            <div class="card-body">
-                {% if vitals %}
-                {% with v=vitals.0 %}
-                <div class="row g-3">
-
-                    <div class="col-6 col-md-3">
-                        <div class="text-center p-3 bg-light rounded">
-                            <i class="fas fa-heart text-danger mb-1"></i>
+{% endblock %}
                             <div class="fw-bold">{{ v.heart_rate|default:"—" }}</div>
                             <small class="text-muted">Heart Rate (BPM)</small>
                         </div>
