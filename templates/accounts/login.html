@@ -5,120 +5,551 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - HealthCare Portal</title>
 
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
 
     <style>
+        :root {
+            --login-primary: linear-gradient(135deg, #0d6efd 0%, #084298 100%);
+            --login-secondary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --login-accent: #10b981;
+            --login-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            --login-border-radius: 20px;
+            --login-transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            background: linear-gradient(135deg, #0d6efd 0%, #084298 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(37, 99, 235, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(96, 165, 250, 0.05) 0%, transparent 50%),
+                linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image:
+                radial-gradient(circle at 25% 25%, rgba(102, 126, 234, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(240, 147, 251, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 480px;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .login-card {
-            border-radius: 20px;
-            border: none;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: var(--login-border-radius);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: var(--login-shadow);
+            overflow: hidden;
+            transition: var(--login-transition);
+        }
+
+        .login-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.2);
         }
 
         .login-header {
-            background: linear-gradient(135deg, #0d6efd, #084298);
-            border-radius: 20px 20px 0 0;
-            padding: 40px;
+            background: var(--login-primary);
+            padding: 50px 40px 40px;
             text-align: center;
             color: white;
+            position: relative;
+        }
+
+        .login-header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            right: 0; bottom: 0;
+            background: var(--login-secondary);
+            opacity: 0.1;
+            border-radius: var(--login-border-radius) var(--login-border-radius) 0 0;
+        }
+
+        .login-header .content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .login-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        .login-subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin: 0;
+            font-weight: 400;
+        }
+
+        .login-body {
+            padding: 40px;
+        }
+
+        .form-floating {
+            margin-bottom: 20px;
+        }
+
+        .form-floating > label {
+            padding: 1rem 0.75rem;
+            font-weight: 500;
+            color: #6b7280;
         }
 
         .form-control {
-            border-radius: 10px;
-            padding: 12px 15px;
-            border: 1px solid #dee2e6;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1rem 0.75rem;
+            font-size: 1rem;
+            transition: var(--login-transition);
+            background: #ffffff;
         }
 
         .form-control:focus {
-            box-shadow: 0 0 0 3px rgba(13,110,253,0.15);
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
+            background: #ffffff;
+        }
+
+        .form-control.is-invalid {
+            border-color: #ef4444;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+        }
+
+        .input-group-text {
+            background: #f8fafc;
+            border: 2px solid #e5e7eb;
+            border-right: none;
+            color: #6b7280;
+            border-radius: 12px 0 0 12px;
+        }
+
+        .form-control:focus + .input-group-text,
+        .input-group .form-control:focus {
+            border-color: #0d6efd;
+        }
+
+        .form-check {
+            margin: 20px 0;
+        }
+
+        .form-check-input:checked {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
         }
 
         .btn-login {
-            border-radius: 10px;
-            padding: 12px;
+            background: var(--login-primary);
+            border: none;
+            border-radius: 12px;
+            padding: 14px 24px;
             font-weight: 600;
             font-size: 1rem;
+            color: white;
+            width: 100%;
+            transition: var(--login-transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 25px rgba(13, 110, 253, 0.3);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .btn-login.loading {
+            pointer-events: none;
+        }
+
+        .btn-login.loading::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 50%;
+            left: 50%;
+            margin-left: -10px;
+            margin-top: -10px;
+            border: 2px solid transparent;
+            border-top: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .alert {
+            border-radius: 12px;
+            border: none;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            font-weight: 500;
+        }
+
+        .alert-danger {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            color: #dc2626;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e5e7eb;
+        }
+
+        .divider::before {
+            margin-right: 20px;
+        }
+
+        .divider::after {
+            margin-left: 20px;
+        }
+
+        .divider-text {
+            color: #6b7280;
+            font-size: 0.875rem;
+            font-weight: 500;
+            padding: 0 10px;
+        }
+
+        .auth-links {
+            text-align: center;
+            margin-top: 24px;
+        }
+
+        .auth-links a {
+            color: #0d6efd;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--login-transition);
+            display: inline-block;
+            margin: 0 8px;
+        }
+
+        .auth-links a:hover {
+            color: #084298;
+            transform: translateY(-1px);
+        }
+
+        .back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--login-transition);
+            padding: 8px 16px;
+            border-radius: 8px;
+        }
+
+        .back-link:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 576px) {
+            .login-header {
+                padding: 40px 30px 30px;
+            }
+
+            .login-body {
+                padding: 30px 20px;
+            }
+
+            .login-title {
+                font-size: 1.75rem;
+            }
+
+            .login-icon {
+                width: 70px;
+                height: 70px;
+                font-size: 2rem;
+            }
+        }
+
+        /* Accessibility improvements */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Focus visible for better accessibility */
+        .btn-login:focus-visible,
+        .form-control:focus-visible,
+        .form-check-input:focus-visible {
+            outline: 2px solid #0d6efd;
+            outline-offset: 2px;
         }
     </style>
 </head>
-
 <body>
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-5">
-            <div class="card login-card">
+    <a href="{% url 'home' %}" class="back-link" aria-label="Back to home">
+        <i class="fas fa-arrow-left me-1"></i> Back to Home
+    </a>
 
-                <div class="login-header">
-                    <i class="fas fa-heartbeat fa-3x mb-3"></i>
-                    <h4 class="fw-bold mb-1">HealthCare Portal</h4>
-                    <p class="opacity-75 mb-0">Sign in to your account</p>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="content">
+                    <div class="login-icon">
+                        <i class="fas fa-heartbeat" aria-hidden="true"></i>
+                    </div>
+                    <h1 class="login-title">HealthCare Portal</h1>
+                    <p class="login-subtitle">Secure access to your medical dashboard</p>
                 </div>
+            </div>
 
-                <div class="card-body p-4">
-
-                    {% if messages %}
-                        {% for message in messages %}
-                            <div class="alert alert-danger">{{ message }}</div>
-                        {% endfor %}
-                    {% endif %}
-
-                    <form method="post">
-                        {% csrf_token %}
-
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Username</label>
-                            <div class="input-group">
-                                <span class="input-group-text">
-                                    <i class="fas fa-user"></i>
-                                </span>
-                                <input type="text" name="username" class="form-control"
-                                       placeholder="Enter username" required>
-                            </div>
+            <div class="login-body">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-danger" role="alert">
+                            <i class="fas fa-exclamation-triangle me-2" aria-hidden="true"></i>
+                            {{ message }}
                         </div>
+                    {% endfor %}
+                {% endif %}
 
-                        <div class="mb-4">
-                            <label class="form-label fw-semibold">Password</label>
-                            <div class="input-group">
-                                <span class="input-group-text">
-                                    <i class="fas fa-lock"></i>
-                                </span>
-                                <input type="password" name="password" class="form-control"
-                                       placeholder="Enter password" required>
-                            </div>
+                <form method="post" id="loginForm" novalidate>
+                    {% csrf_token %}
+
+                    <div class="form-floating">
+                        <input type="text"
+                               name="username"
+                               class="form-control"
+                               id="username"
+                               placeholder="Enter your username"
+                               required
+                               autocomplete="username"
+                               aria-describedby="usernameHelp">
+                        <label for="username">
+                            <i class="fas fa-user me-2" aria-hidden="true"></i>Username
+                        </label>
+                        <div class="invalid-feedback">
+                            Please enter a valid username.
                         </div>
+                    </div>
 
-                        <button type="submit" class="btn btn-primary btn-login w-100">
-                            <i class="fas fa-sign-in-alt me-2"></i> Sign In
-                        </button>
-                    </form>
+                    <div class="form-floating">
+                        <input type="password"
+                               name="password"
+                               class="form-control"
+                               id="password"
+                               placeholder="Enter your password"
+                               required
+                               autocomplete="current-password"
+                               aria-describedby="passwordHelp">
+                        <label for="password">
+                            <i class="fas fa-lock me-2" aria-hidden="true"></i>Password
+                        </label>
+                        <div class="invalid-feedback">
+                            Please enter your password.
+                        </div>
+                    </div>
 
-                    <hr>
+                    <div class="form-check">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               id="rememberMe"
+                               name="remember_me">
+                        <label class="form-check-label" for="rememberMe">
+                            Remember me
+                        </label>
+                    </div>
 
-                    <p class="text-center mb-0 text-muted">
-                        Don't have an account?
-                        <a href="{% url 'register' %}" class="text-primary fw-semibold">Register</a>
-                    </p>
+                    <button type="submit"
+                            class="btn btn-login"
+                            id="loginBtn"
+                            aria-describedby="loginHelp">
+                        <span class="btn-text">
+                            <i class="fas fa-sign-in-alt me-2" aria-hidden="true"></i>
+                            Sign In Securely
+                        </span>
+                    </button>
 
-                    <p class="text-center mb-0 mt-2">
-                        <a href="{% url 'home' %}" class="text-muted small">
-                            <i class="fas fa-arrow-left me-1"></i> Back to Home
+                    <div class="auth-links">
+                        <a href="#" id="forgotPassword" aria-label="Forgot password?">
+                            <i class="fas fa-key me-1" aria-hidden="true"></i>Forgot Password?
                         </a>
-                    </p>
+                        <span class="text-muted">|</span>
+                        <a href="{% url 'register' %}" aria-label="Create new account">
+                            <i class="fas fa-user-plus me-1" aria-hidden="true"></i>Create Account
+                        </a>
+                    </div>
+                </form>
 
+                <div class="divider">
+                    <span class="divider-text">Secure & HIPAA Compliant</span>
                 </div>
 
+                <div class="text-center text-muted small">
+                    <i class="fas fa-shield-alt me-1" aria-hidden="true"></i>
+                    Your data is protected with enterprise-grade security
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Form validation and enhancement
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('loginForm');
+            const loginBtn = document.getElementById('loginBtn');
+            const btnText = loginBtn.querySelector('.btn-text');
+
+            // Form validation
+            form.addEventListener('submit', function(e) {
+                if (!form.checkValidity()) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    // Add validation classes
+                    form.classList.add('was-validated');
+
+                    // Focus first invalid field
+                    const firstInvalid = form.querySelector(':invalid');
+                    if (firstInvalid) {
+                        firstInvalid.focus();
+                    }
+                } else {
+                    // Show loading state
+                    loginBtn.classList.add('loading');
+                    btnText.style.opacity = '0';
+                }
+            });
+
+            // Real-time validation feedback
+            const inputs = form.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('blur', function() {
+                    if (this.checkValidity()) {
+                        this.classList.remove('is-invalid');
+                        this.classList.add('is-valid');
+                    } else {
+                        this.classList.remove('is-valid');
+                        this.classList.add('is-invalid');
+                    }
+                });
+
+                input.addEventListener('input', function() {
+                    if (this.classList.contains('is-invalid') && this.checkValidity()) {
+                        this.classList.remove('is-invalid');
+                        this.classList.add('is-valid');
+                    }
+                });
+            });
+
+            // Forgot password handler (placeholder)
+            document.getElementById('forgotPassword').addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('Password reset functionality will be implemented soon. Please contact your administrator.');
+            });
+
+            // Enter key support
+            form.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !loginBtn.classList.contains('loading')) {
+                    form.dispatchEvent(new Event('submit'));
+                }
+            });
+
+            // Accessibility: Focus management
+            const backLink = document.querySelector('.back-link');
+            backLink.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    window.location.href = this.href;
+                }
+            });
+        });
+    </script>
 </body>
 </html>
