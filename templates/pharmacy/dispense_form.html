@@ -1,38 +1,202 @@
 {% extends 'base/base.html' %}
-{% block title %}Dispense Medicine{% endblock %}
+{% block title %}Dispense Medicine - HealthCare Portal{% endblock %}
 {% block page_title %}Dispense Medicine{% endblock %}
+
 {% block content %}
-<div class="card" style="max-width:600px;margin:auto;">
-    <div class="card-header py-3 px-4"><i class="fas fa-prescription-bottle text-primary me-2"></i>Dispense Medicine</div>
-    <div class="card-body p-4">
-        <form method="post">
-            {% csrf_token %}
-            <div class="row g-3">
-                <div class="col-12">
-                    <label class="form-label fw-semibold">Medicine *</label>
-                    <select name="medicine" class="form-select" required>
-                        <option value="">Select Medicine</option>
-                        {% for med in form.fields.medicine.queryset %}
-                        <option value="{{ med.pk }}">{{ med }} — Stock: {{ med.stock_quantity }}</option>
-                        {% endfor %}
-                    </select>
+<style>
+    .premium-card {
+        border-radius: 1rem;
+        overflow: hidden;
+        border: none;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    }
+    .pharmacy-gradient {
+        background: linear-gradient(135deg, #0d6efd 0%, #0dcaf0 100%);
+        height: 120px;
+    }
+    .avatar-wrapper {
+        display: flex;
+        justify-content: center;
+        margin-top: -60px;
+        margin-bottom: 20px;
+    }
+    .avatar-circle {
+        width: 100px;
+        height: 100px;
+        background: #fff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        color: #0dcaf0;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        border: 4px solid #fff;
+    }
+    .section-title {
+        color: #2c3e50;
+        font-weight: 700;
+        position: relative;
+        padding-bottom: 8px;
+        margin-bottom: 25px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 0.9rem;
+    }
+    .section-title::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 40px;
+        height: 3px;
+        background: #0dcaf0;
+        border-radius: 2px;
+    }
+    .custom-input {
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 0.5rem;
+        padding: 0.75rem 1rem;
+        transition: all 0.3s ease;
+    }
+    .custom-input:focus {
+        background-color: #fff;
+        border-color: #0dcaf0;
+        box-shadow: 0 0 0 0.25rem rgba(13, 202, 240, 0.15);
+    }
+    .input-group-text.custom-icon {
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-right: none;
+        color: #adb5bd;
+    }
+    .input-group .custom-input {
+        border-left: none;
+    }
+    .input-group:focus-within .custom-icon {
+        background-color: #fff;
+        border-color: #0dcaf0;
+        color: #0dcaf0;
+    }
+    .btn-dispense {
+        background: linear-gradient(135deg, #0d6efd 0%, #0dcaf0 100%);
+        border: none;
+        color: white;
+        transition: transform 0.2s;
+    }
+    .btn-dispense:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(13, 202, 240, 0.4);
+        color: white;
+    }
+</style>
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            
+            <div class="card premium-card">
+                <div class="pharmacy-gradient"></div>
+
+                <div class="card-body px-4 px-md-5 pb-5">
+                    
+                    <div class="avatar-wrapper">
+                        <div class="avatar-circle">
+                            <i class="fas fa-prescription-bottle-alt"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mb-5">
+                        <h3 class="fw-bold text-dark">Dispense Medicine</h3>
+                        <p class="text-muted small">Record medicine distribution and manage pharmacy stock.</p>
+                    </div>
+
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <h6 class="section-title"><i class="fas fa-pills me-2"></i>Dispensation Details</h6>
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-8">
+                                <label class="form-label text-muted fw-semibold small">Select Medicine *</label>
+                                <div class="input-group">
+                                    <span class="input-group-text custom-icon"><i class="fas fa-capsules"></i></span>
+                                    <select name="medicine" class="form-select custom-input" required>
+                                        <option value="">Select Medicine</option>
+                                        {% for med in form.fields.medicine.queryset %}
+                                        <option value="{{ med.pk }}">{{ med.name }} — (Stock: {{ med.stock_quantity }})</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label text-muted fw-semibold small">Quantity *</label>
+                                <div class="input-group">
+                                    <span class="input-group-text custom-icon"><i class="fas fa-hashtag"></i></span>
+                                    <input type="number" name="quantity" class="form-control custom-input" min="1" placeholder="0" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h6 class="section-title mt-5"><i class="fas fa-user-injured me-2"></i>Patient Information</h6>
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label text-muted fw-semibold small">Patient Name *</label>
+                                <div class="input-group">
+                                    <span class="input-group-text custom-icon"><i class="fas fa-user"></i></span>
+                                    <input type="text" name="patient_name" class="form-control custom-input" placeholder="Enter patient name" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-muted fw-semibold small">Dispensed By</label>
+                                <div class="input-group">
+                                    <span class="input-group-text custom-icon"><i class="fas fa-user-nurse"></i></span>
+                                    <input type="text" name="dispensed_by" class="form-control custom-input" placeholder="Pharmacist name">
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label text-muted fw-semibold small">Prescription Reference</label>
+                                <div class="input-group">
+                                    <span class="input-group-text custom-icon"><i class="fas fa-file-medical"></i></span>
+                                    <input type="text" name="prescription_ref" class="form-control custom-input" placeholder="e.g. RX-98765432 (Optional)">
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label text-muted fw-semibold small">Additional Notes</label>
+                                <textarea name="notes" class="form-control custom-input" rows="3" placeholder="Any specific dosage instructions or remarks..."></textarea>
+                            </div>
+                        </div>
+
+                        {% if form.errors %}
+                            <div class="alert alert-danger rounded-3 border-0 border-start border-danger border-4 shadow-sm mt-4">
+                                <i class="fas fa-exclamation-triangle me-2"></i><strong>Please correct the errors:</strong>
+                                <ul class="mb-0 mt-2">
+                                {% for field, errors in form.errors.items %}
+                                    {% for error in errors %}
+                                        <li><strong>{{ field|title }}:</strong> {{ error }}</li>
+                                    {% endfor %}
+                                {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+
+                        <div class="d-flex justify-content-end gap-3 mt-5 pt-4 border-top">
+                            <a href="{% url 'pharmacy:pharmacy_dashboard' %}" class="btn btn-light btn-lg px-4 fw-semibold text-secondary">
+                                Cancel
+                            </a>
+                            <button type="submit" class="btn btn-dispense btn-lg px-5 fw-bold shadow-sm">
+                                <i class="fas fa-check-circle me-2"></i> Dispense Medicine
+                            </button>
+                        </div>
+
+                    </form>
                 </div>
-                <div class="col-12"><label class="form-label fw-semibold">Patient Name *</label><input type="text" name="patient_name" class="form-control" required></div>
-                <div class="col-md-6"><label class="form-label fw-semibold">Quantity *</label><input type="number" name="quantity" class="form-control" min="1" required></div>
-                <div class="col-md-6"><label class="form-label fw-semibold">Dispensed By</label><input type="text" name="dispensed_by" class="form-control"></div>
-                <div class="col-12"><label class="form-label fw-semibold">Prescription Reference</label><input type="text" name="prescription_ref" class="form-control" placeholder="Optional reference number"></div>
-                <div class="col-12"><label class="form-label fw-semibold">Notes</label><textarea name="notes" class="form-control" rows="2"></textarea></div>
             </div>
-            {% if form.errors %}
-                <div class="alert alert-danger mt-3">
-                    {% for f,e in form.errors.items %}{% for err in e %}<div>{{ f }}: {{ err }}</div>{% endfor %}{% endfor %}
-                </div>
-            {% endif %}
-            <div class="d-flex gap-2 mt-4">
-                <button type="submit" class="btn btn-primary"><i class="fas fa-check me-2"></i>Dispense</button>
-                <a href="{% url 'pharmacy:pharmacy_dashboard' %}" class="btn btn-outline-secondary">Cancel</a>
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 {% endblock %}
