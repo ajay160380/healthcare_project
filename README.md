@@ -25,6 +25,10 @@ Based on the repository layout:
 * `/healthcare_dashboard`: Main UI for hospital administration.
 * `/static` & `/templates`: Global assets and UI components.
 
+## 🌐 Live Demo
+You can access the live application here:  
+[https://healthcare-g2c9.onrender.com](https://healthcare-g2c9.onrender.com)
+
 ## ⚙️ Installation & Setup
 
 1. **Clone the repository:**
@@ -33,7 +37,6 @@ Based on the repository layout:
    cd Healthcare_project
 
 
-   Set up Virtual Environment:
 
 2. **Set up Virtual Environment:**
 ```bash
