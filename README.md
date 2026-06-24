@@ -6,7 +6,7 @@ Welcome to the **Advanced Healthcare Management Portal**—a full-stack, enterpr
 
 ## 🚀 Live Demo & Deployment
 Experience the live application deployed on Hugging Face Spaces:
-👉 **[solocode12-healthcare.hf.space](https://solocode12-healthcare.hf.space)**
+👉 **[live demo](https://solocode12-healthcare.hf.space)**
 
 ---
 
