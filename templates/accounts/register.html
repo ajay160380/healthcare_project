@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,132 +6,113 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - HealthCare Portal</title>
 
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="{% static 'css/custom.css' %}?v=1.2" rel="stylesheet">
 
     <style>
-        :root {
-            --primary-blue: #0ea5e9; /* Medical bright blue */
-            --dark-blue: #0284c7;
-            --bg-color: #f0f9ff;
-        }
-
         body {
-            background: var(--bg-color);
+            background: radial-gradient(circle at 10% 20%, rgba(79, 70, 229, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
+                        linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
-            padding: 40px 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: var(--font-sans);
+            padding: 50px 0;
         }
 
         .reg-card {
             border-radius: 24px;
-            border: none;
-            box-shadow: 0 15px 35px rgba(14, 165, 233, 0.15);
-            overflow: hidden; /* Important for the header curve */
-            background: white;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
         }
 
         .reg-header {
-            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
-            padding: 40px 30px;
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+            padding: 35px 24px;
             text-align: center;
             color: white;
-            position: relative;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        /* Modern bottom curve for header */
-        .reg-header::after {
-            content: '';
-            position: absolute;
-            bottom: -20px;
-            left: 0;
-            width: 100%;
-            height: 40px;
-            background: white;
-            border-radius: 50% 50% 0 0;
+        .reg-header i {
+            animation: pulseHeart 2s infinite;
+        }
+
+        @keyframes pulseHeart {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
 
         .form-label {
-            font-size: 0.9rem;
-            color: #475569;
-            margin-bottom: 0.3rem;
-        }
-
-        .input-group-custom {
-            position: relative;
-        }
-
-        .input-group-custom i.field-icon {
-            position: absolute;
-            top: 50%;
-            left: 15px;
-            transform: translateY(-50%);
-            color: #94a3b8;
-            z-index: 10;
+            color: #e2e8f0;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 6px;
         }
 
         .form-control, .form-select {
-            border-radius: 12px;
-            padding: 12px 15px 12px 45px; /* Extra left padding for icon */
-            border: 1px solid #e2e8f0;
-            background-color: #f8fafc;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-        }
-
-        .form-select {
-            padding-left: 45px; /* For role icon */
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            transition: var(--transition-smooth);
         }
 
         .form-control:focus, .form-select:focus {
-            box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.15);
-            border-color: var(--primary-blue);
-            background-color: #fff;
+            background-color: rgba(255, 255, 255, 0.08);
+            border-color: var(--success);
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.25);
+            color: #ffffff;
         }
 
-        .toggle-password {
-            position: absolute;
-            top: 50%;
-            right: 15px;
-            transform: translateY(-50%);
-            cursor: pointer;
+        .form-control::placeholder {
             color: #94a3b8;
-            z-index: 10;
-            transition: color 0.3s ease;
+            opacity: 0.7;
         }
 
-        .toggle-password:hover {
-            color: var(--dark-blue);
+        .form-select option {
+            background-color: #1e293b;
+            color: #ffffff;
         }
 
-        .btn-custom {
-            background: var(--primary-blue);
-            color: white;
-            border: none;
+        .btn-register {
             border-radius: 12px;
             padding: 14px;
+            font-weight: 700;
             font-size: 1rem;
-            transition: all 0.3s ease;
+            letter-spacing: 0.02em;
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+            border: none;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+            transition: var(--transition-smooth);
         }
 
-        .btn-custom:hover {
-            background: var(--dark-blue);
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(14, 165, 233, 0.3);
+        .btn-register:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
         }
 
-        .login-link {
+        .text-link {
+            color: #a5b4fc;
             text-decoration: none;
-            color: var(--primary-blue);
-            transition: color 0.3s ease;
+            transition: var(--transition-smooth);
         }
 
-        .login-link:hover {
-            color: var(--dark-blue);
-            text-decoration: underline;
+        .text-link:hover {
+            color: #ffffff;
         }
     </style>
 </head>
@@ -138,142 +120,110 @@
 <body>
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-lg-8 col-md-10">
+        <div class="col-md-8 col-sm-10">
             <div class="card reg-card">
 
                 <div class="reg-header">
-                    <i class="fas fa-heartbeat fa-3x mb-3 shadow-sm" style="border-radius: 50%; background: rgba(255,255,255,0.2); padding: 15px;"></i>
-                    <h3 class="fw-bold mb-1">Join HealthCare Portal</h3>
-                    <p class="opacity-75 mb-4">Create your account to access medical services</p>
+                    <i class="fas fa-user-plus fa-2x mb-2"></i>
+                    <h4 class="fw-bold mb-1">Create Account</h4>
+                    <p class="opacity-75 mb-0 small">Join the HealthCare Portal</p>
                 </div>
 
-                <div class="card-body px-5 py-4">
+                <div class="card-body p-4 p-md-5">
 
                     {% if messages %}
                         {% for m in messages %}
-                            <div class="alert alert-danger rounded-3 border-0 shadow-sm"><i class="fas fa-exclamation-circle me-2"></i>{{ m }}</div>
+                            <div class="alert alert-danger-light text-danger bg-danger-light border-0 mb-4">{{ m }}</div>
                         {% endfor %}
-                    {% endif %}
-
-                    {% if form.errors %}
-                        <div class="alert alert-danger rounded-3 border-0 shadow-sm mb-4">
-                            {% for field, errors in form.errors.items %}
-                                {% for error in errors %}
-                                    <div class="mb-1"><i class="fas fa-exclamation-circle me-2"></i><strong>{{ field|title }}:</strong> {{ error }}</div>
-                                {% endfor %}
-                            {% endfor %}
-                        </div>
                     {% endif %}
 
                     <form method="post">
                         {% csrf_token %}
 
                         <div class="row g-4">
+
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold">First Name</label>
-                                <div class="input-group-custom">
-                                    <i class="fas fa-user field-icon"></i>
-                                    <input type="text" name="first_name" class="form-control" placeholder="John" required>
-                                </div>
+                                <label class="form-label">First Name</label>
+                                <input type="text" name="first_name" class="form-control" placeholder="First name" required>
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold">Last Name</label>
-                                <div class="input-group-custom">
-                                    <i class="fas fa-user field-icon"></i>
-                                    <input type="text" name="last_name" class="form-control" placeholder="Doe" required>
-                                </div>
+                                <label class="form-label">Last Name</label>
+                                <input type="text" name="last_name" class="form-control" placeholder="Last name" required>
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold">Username</label>
-                                <div class="input-group-custom">
-                                    <i class="fas fa-at field-icon"></i>
-                                    <input type="text" name="username" class="form-control" placeholder="johndoe123" required>
-                                </div>
+                                <label class="form-label">Username</label>
+                                <input type="text" name="username" class="form-control" placeholder="Choose a username" required>
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold">Email Address</label>
-                                <div class="input-group-custom">
-                                    <i class="fas fa-envelope field-icon"></i>
-                                    <input type="email" name="email" class="form-control" placeholder="john@example.com" required>
-                                </div>
+                                <label class="form-label">Email</label>
+                                <input type="email" name="email" class="form-control" placeholder="example@health.com" required>
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold">Select Role</label>
-                                <div class="input-group-custom">
-                                    <i class="fas fa-user-tag field-icon"></i>
-                                    <select name="role" class="form-select">
-                                        <option value="patient">Patient</option>
-                                        <option value="doctor">Doctor</option>
-                                        <option value="staff">Staff</option>
-                                        <option value="admin">Admin</option>
-                                    </select>
-                                </div>
+                                <label class="form-label">Role</label>
+                                <select name="role" class="form-select">
+                                    <option value="patient">Patient</option>
+                                    <option value="doctor">Doctor</option>
+                                    <option value="staff">Staff</option>
+                                    <option value="admin">Admin</option>
+                                </select>
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold">Phone Number</label>
-                                <div class="input-group-custom">
-                                    <i class="fas fa-phone field-icon"></i>
-                                    <input type="text" name="phone" class="form-control" placeholder="+91 9876543210">
-                                </div>
+                                <label class="form-label">Phone</label>
+                                <input type="text" name="phone" class="form-control" placeholder="Phone number">
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold">Password</label>
-                                <div class="input-group-custom">
-                                    <i class="fas fa-lock field-icon"></i>
-                                    <input type="password" name="password1" id="pwd1" class="form-control" placeholder="Create password" required>
-                                    <i class="fas fa-eye toggle-password" onclick="togglePwd('pwd1', this)"></i>
-                                </div>
+                                <label class="form-label">Password</label>
+                                <input type="password" name="password1" class="form-control" placeholder="Enter password" required>
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold">Confirm Password</label>
-                                <div class="input-group-custom">
-                                    <i class="fas fa-lock field-icon"></i>
-                                    <input type="password" name="password2" id="pwd2" class="form-control" placeholder="Repeat password" required>
-                                    <i class="fas fa-eye toggle-password" onclick="togglePwd('pwd2', this)"></i>
-                                </div>
+                                <label class="form-label">Confirm Password</label>
+                                <input type="password" name="password2" class="form-control" placeholder="Repeat password" required>
                             </div>
+
                         </div>
 
-                        <button type="submit" class="btn btn-custom w-100 mt-5 fw-bold">
-                            Create Account <i class="fas fa-arrow-right ms-2"></i>
+                        {% if form.errors %}
+                            <div class="alert alert-danger-light text-danger bg-danger-light border-0 mt-4">
+                                {% for field, errors in form.errors.items %}
+                                    {% for error in errors %}
+                                        <div class="small">{{ field|capfirst }}: {{ error }}</div>
+                                    {% endfor %}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                        <button type="submit" class="btn btn-success btn-register w-100 mt-5">
+                            <i class="fas fa-user-plus me-2"></i> Create Account
                         </button>
                     </form>
 
-                    <hr class="my-4 text-muted">
+                    <div class="border-top border-white-10 pt-4 text-center mt-4">
+                        <p class="mb-0 text-slate-400 small">
+                            Already have an account?
+                            <a href="{% url 'login' %}" class="text-link fw-semibold ms-1">Sign In</a>
+                        </p>
 
-                    <p class="text-center mb-0 text-muted">
-                        Already have an account?
-                        <a href="{% url 'login' %}" class="login-link fw-bold ms-1">Sign In here</a>
-                    </p>
+                        <p class="mb-0 mt-3">
+                            <a href="{% url 'home' %}" class="text-slate-400 small text-decoration-none hover-white">
+                                <i class="fas fa-arrow-left me-1"></i> Back to Home
+                            </a>
+                        </p>
+                    </div>
 
                 </div>
+
             </div>
         </div>
-    </div> 
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-<script>
-    function togglePwd(inputId, icon) {
-        const input = document.getElementById(inputId);
-        if (input.type === "password") {
-            input.type = "text";
-            icon.classList.remove("fa-eye");
-            icon.classList.add("fa-eye-slash");
-        } else {
-            input.type = "password";
-            icon.classList.remove("fa-eye-slash");
-            icon.classList.add("fa-eye");
-        }
-    }
-</script>
 </body>
 </html>

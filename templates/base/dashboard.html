@@ -1,864 +1,101 @@
 {% extends 'base/base.html' %}
 {% block title %}Dashboard - HealthCare Portal{% endblock %}
-{% block page_title %}Dashboard - Healthcare Management{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
 
 {% block content %}
 
-<style>
-    /* ============================================
-       DASHBOARD SPECIFIC STYLES
-       ============================================ */
+<div class="row g-4 mb-5">
+
+    <div class="col-md-3 col-sm-6">
+        <div class="stat-card" style="background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="stat-value">{{ total_patients }}</div>
+                    <div class="stat-label">Total Patients</div>
+                </div>
+                <div class="stat-icon"><i class="fas fa-users"></i></div>
+            </div>
+            <div class="mt-3 pt-2 border-top border-white-50">
+                <a href="{% url 'patients:patient_list' %}" class="text-white text-decoration-none small d-flex align-items-center justify-content-between opacity-90 hover-opacity-100">
+                    <span>View All Patients</span> <i class="fas fa-chevron-right fs-xs"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6">
+        <div class="stat-card" style="background: linear-gradient(135deg, #34d399 0%, #059669 100%)">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="stat-value">{{ total_doctors }}</div>
+                    <div class="stat-label">Active Doctors</div>
+                </div>
+                <div class="stat-icon"><i class="fas fa-user-md"></i></div>
+            </div>
+            <div class="mt-3 pt-2 border-top border-white-50">
+                <a href="{% url 'doctors:doctor_list' %}" class="text-white text-decoration-none small d-flex align-items-center justify-content-between opacity-90 hover-opacity-100">
+                    <span>View All Doctors</span> <i class="fas fa-chevron-right fs-xs"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6">
+        <div class="stat-card" style="background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%)">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="stat-value">{{ total_appointments }}</div>
+                    <div class="stat-label">Appointments</div>
+                </div>
+                <div class="stat-icon"><i class="fas fa-calendar-alt"></i></div>
+            </div>
+            <div class="mt-3 pt-2 border-top border-white-50">
+                <a href="{% url 'appointments:appointment_list' %}" class="text-white text-decoration-none small d-flex align-items-center justify-content-between opacity-90 hover-opacity-100">
+                    <span>View Appointments</span> <i class="fas fa-chevron-right fs-xs"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6">
+        <div class="stat-card" style="background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%)">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="stat-value">{{ total_medicines }}</div>
+                    <div class="stat-label">Medicines</div>
+                </div>
+                <div class="stat-icon"><i class="fas fa-pills"></i></div>
+            </div>
+            <div class="mt-3 pt-2 border-top border-white-50">
+                <a href="{% url 'pharmacy:medicine_list' %}" class="text-white text-decoration-none small d-flex align-items-center justify-content-between opacity-90 hover-opacity-100">
+                    <span>View Pharmacy Stock</span> <i class="fas fa-chevron-right fs-xs"></i>
+                </a>
+            </div>
+        </div>
+    </div>
 
-    .dashboard-header {
-        margin-bottom: 2.5rem;
-        padding-bottom: 1.5rem;
-        border-bottom: 2px solid rgba(0, 0, 0, 0.08);
-    }
-
-    .dashboard-title {
-        font-size: 32px;
-        font-weight: 800;
-        color: #1a1a1a;
-        margin: 0;
-        background: linear-gradient(135deg, #0d6efd, #0dcaf0);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-
-    .dashboard-subtitle {
-        font-size: 14px;
-        color: #6c757d;
-        margin-top: 6px;
-        font-weight: 500;
-    }
-
-    /* ============================================
-       STAT CARD ENHANCEMENTS
-       ============================================ */
-
-    .stat-card {
-        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-        border-radius: 15px;
-        padding: 1.75rem;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        border: 1px solid rgba(0, 0, 0, 0.06);
-        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        position: relative;
-        overflow: hidden;
-    }
-
-    .stat-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 4px;
-        transform: scaleX(0);
-        transform-origin: left;
-        transition: transform 0.4s ease;
-    }
-
-    .stat-card::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 120px;
-        height: 120px;
-        background: radial-gradient(circle, rgba(0,0,0,0.02) 0%, transparent 70%);
-        border-radius: 50%;
-    }
-
-    .stat-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
-        border-color: rgba(0, 0, 0, 0.1);
-    }
-
-    .stat-card:hover::before {
-        transform: scaleX(1);
-    }
-
-    .stat-card.stat-blue::before {
-        background: linear-gradient(90deg, #0d6efd, #0dcaf0);
-    }
-
-    .stat-card.stat-green::before {
-        background: linear-gradient(90deg, #198754, #20c997);
-    }
-
-    .stat-card.stat-warning::before {
-        background: linear-gradient(90deg, #fd7e14, #ffc107);
-    }
-
-    .stat-card.stat-danger::before {
-        background: linear-gradient(90deg, #dc3545, #ff6b6b);
-    }
-
-    .stat-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: 1.25rem;
-    }
-
-    .stat-card-title {
-        font-size: 11px;
-        color: #6c757d;
-        text-transform: uppercase;
-        letter-spacing: 1.2px;
-        font-weight: 700;
-        margin: 0;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .stat-card-title i {
-        font-size: 16px;
-    }
-
-    .stat-card-icon {
-        font-size: 3rem;
-        opacity: 0.08;
-        transition: all 0.4s ease;
-    }
-
-    .stat-card:hover .stat-card-icon {
-        opacity: 0.12;
-        transform: scale(1.1) rotate(5deg);
-    }
-
-    .stat-card-content {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-end;
-    }
-
-    .stat-card-value {
-        font-size: 2.5rem;
-        font-weight: 800;
-        line-height: 1;
-        margin-bottom: 0.5rem;
-        background: linear-gradient(135deg, #0d6efd, #0dcaf0);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-
-    .stat-card.stat-green .stat-card-value {
-        background: linear-gradient(135deg, #198754, #20c997);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-
-    .stat-card.stat-warning .stat-card-value {
-        background: linear-gradient(135deg, #fd7e14, #ffc107);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-
-    .stat-card.stat-danger .stat-card-value {
-        background: linear-gradient(135deg, #dc3545, #ff6b6b);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-
-    .stat-card-footer {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin-top: 1rem;
-    }
-
-    .stat-link {
-        font-size: 12px;
-        text-decoration: none;
-        transition: all 0.2s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        font-weight: 600;
-    }
-
-    .stat-link i {
-        font-size: 11px;
-        transition: transform 0.2s ease;
-    }
-
-    .stat-link:hover i {
-        transform: translateX(4px);
-    }
-
-    .trend-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        font-size: 11px;
-        font-weight: 700;
-        padding: 4px 10px;
-        border-radius: 6px;
-        margin-left: auto;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    .trend-up {
-        background: linear-gradient(135deg, #d1e7dd 0%, #c3e6cb 100%);
-        color: #0a3622;
-    }
-
-    .trend-down {
-        background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
-        color: #842029;
-    }
-
-    .trend-up i,
-    .trend-down i {
-        font-size: 10px;
-    }
-
-    /* ============================================
-       CARD ENHANCEMENTS
-       ============================================ */
-
-    .card {
-        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-        border-radius: 15px;
-        border: 1px solid rgba(0, 0, 0, 0.06);
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        overflow: hidden;
-        transition: all 0.3s ease;
-        position: relative;
-    }
-
-    .card:hover {
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
-        border-color: rgba(0, 0, 0, 0.1);
-    }
-
-    .card-header {
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        padding: 1.5rem;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 1rem;
-    }
-
-    .card-header-title {
-        font-size: 16px;
-        font-weight: 700;
-        color: #1a1a1a;
-        margin: 0;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-
-    .card-header-title i {
-        font-size: 20px;
-        background: linear-gradient(135deg, #0d6efd, #0dcaf0);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-
-    .card-body {
-        padding: 0;
-    }
-
-    .card-footer {
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        padding: 1.25rem 1.5rem;
-        border-top: 1px solid rgba(0, 0, 0, 0.06);
-        text-align: center;
-        font-size: 13px;
-    }
-
-    /* ============================================
-       TABLE ENHANCEMENTS
-       ============================================ */
-
-    .table-wrapper {
-        overflow-x: auto;
-    }
-
-    .table {
-        margin-bottom: 0;
-        width: 100%;
-    }
-
-    .table th {
-        background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
-        padding: 1.25rem;
-        text-align: left;
-        font-weight: 700;
-        color: #1a1a1a;
-        border-bottom: 2px solid rgba(0, 0, 0, 0.1);
-        font-size: 12px;
-        text-transform: uppercase;
-        letter-spacing: 0.6px;
-    }
-
-    .table td {
-        padding: 1rem 1.25rem;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.04);
-        vertical-align: middle;
-    }
-
-    .table tbody tr {
-        transition: all 0.2s ease;
-    }
-
-    .table tbody tr:hover {
-        background: linear-gradient(90deg, #f0f4ff 0%, transparent 100%);
-    }
-
-    .table tbody tr:last-child td {
-        border-bottom: none;
-    }
-
-    .table-empty {
-        text-align: center;
-        padding: 3.5rem 1rem;
-        color: #6c757d;
-    }
-
-    .table-empty i {
-        font-size: 3rem;
-        opacity: 0.15;
-        display: block;
-        margin-bottom: 1rem;
-    }
-
-    .table-empty p {
-        margin: 0;
-        font-size: 13px;
-    }
-
-    /* ============================================
-       BUTTON ENHANCEMENTS
-       ============================================ */
-
-    .btn {
-        font-weight: 600;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        padding: 0.6rem 1.2rem;
-        border: none;
-        cursor: pointer;
-        white-space: nowrap;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-    }
-
-    .btn i {
-        font-size: 14px;
-    }
-
-    .btn-primary {
-        background: linear-gradient(135deg, #0d6efd, #0dcaf0);
-        color: white;
-        border: none;
-    }
-
-    .btn-primary:hover {
-        background: linear-gradient(135deg, #0055cc, #0bbbd4);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(13, 110, 253, 0.3);
-    }
-
-    .btn-success {
-        background: linear-gradient(135deg, #198754, #20c997);
-        color: white;
-        border: none;
-    }
-
-    .btn-success:hover {
-        background: linear-gradient(135deg, #146c43, #1aa179);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(25, 135, 84, 0.3);
-    }
-
-    .btn-secondary {
-        background: transparent;
-        color: #0d6efd;
-        border: 2px solid #0d6efd;
-    }
-
-    .btn-secondary:hover {
-        background: #0d6efd;
-        color: white;
-        box-shadow: 0 6px 12px rgba(13, 110, 253, 0.2);
-    }
-
-    .btn-sm {
-        padding: 0.5rem 0.9rem;
-        font-size: 12px;
-    }
-
-    /* ============================================
-       QUICK ACTIONS
-       ============================================ */
-
-    .actions-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-        gap: 1.25rem;
-    }
-
-    .action-btn {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 2rem 1.25rem;
-        text-decoration: none;
-        border-radius: 12px;
-        border: 2px solid rgba(0, 0, 0, 0.06);
-        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        gap: 14px;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .action-btn::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(135deg, rgba(13, 110, 253, 0.05) 0%, transparent 100%);
-        opacity: 0;
-        transition: opacity 0.4s ease;
-    }
-
-    .action-btn:hover {
-        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
-        transform: translateY(-6px);
-        border-color: rgba(13, 110, 253, 0.2);
-        background: linear-gradient(135deg, #ffffff 0%, #f0f4ff 100%);
-    }
-
-    .action-btn:hover::before {
-        opacity: 1;
-    }
-
-    .action-btn i {
-        font-size: 2rem;
-        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        position: relative;
-        z-index: 1;
-    }
-
-    .action-btn:hover i {
-        transform: scale(1.2) rotate(8deg);
-    }
-
-    .action-btn-text {
-        font-size: 13px;
-        font-weight: 600;
-        text-align: center;
-        color: #1a1a1a;
-        position: relative;
-        z-index: 1;
-    }
-
-    /* ============================================
-       RESPONSIVE DESIGN
-       ============================================ */
-
-    @media (max-width: 768px) {
-        .dashboard-title {
-            font-size: 22px;
-        }
-
-        .stat-card {
-            padding: 1.25rem;
-        }
-
-        .stat-card-value {
-            font-size: 1.75rem;
-        }
-
-        .actions-grid {
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-        }
-
-        .table {
-            font-size: 13px;
-        }
-
-        .table th,
-        .table td {
-            padding: 0.75rem;
-        }
-
-        .card-header {
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        .btn {
-            width: 100%;
-        }
-    }
-
-    /* ============================================
-       DARK MODE
-       ============================================ */
-
-    @media (prefers-color-scheme: dark) {
-        .card,
-        .stat-card {
-            background: linear-gradient(135deg, #1a1a1a 0%, #232323 100%);
-            border-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .card-header {
-            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
-            border-bottom-color: rgba(255, 255, 255, 0.08);
-        }
-
-        .table th {
-            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
-            border-bottom-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .table tbody tr:hover {
-            background: linear-gradient(90deg, rgba(13, 110, 253, 0.15) 0%, transparent 100%);
-        }
-
-        .stat-card-icon {
-            opacity: 0.1;
-        }
-
-        .action-btn {
-            background: linear-gradient(135deg, #232323 0%, #2d2d2d 100%);
-            border-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .action-btn:hover {
-            background: linear-gradient(135deg, #2d2d2d 0%, #383838 100%);
-            border-color: rgba(13, 110, 253, 0.3);
-        }
-
-        .dashboard-title {
-            color: #ffffff;
-            background: linear-gradient(135deg, #64b5f6, #42a5f5);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .dashboard-subtitle {
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .stat-card-title {
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        .action-btn-text {
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .stat-card-value {
-            background: linear-gradient(135deg, #64b5f6, #42a5f5);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .table td {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .table th {
-            color: rgba(255, 255, 255, 0.8);
-        }
-    }
-
-    /* ============================================
-       ANIMATIONS
-       ============================================ */
-
-    @keyframes slideInUp {
-        from {
-            opacity: 0;
-            transform: translateY(25px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-        }
-        to {
-            opacity: 1;
-        }
-    }
-
-    @keyframes scaleIn {
-        from {
-            opacity: 0;
-            transform: scale(0.95);
-        }
-        to {
-            opacity: 1;
-            transform: scale(1);
-        }
-    }
-
-    .stat-card {
-        animation: slideInUp 0.6s ease-out forwards;
-        opacity: 0;
-    }
-
-    .stat-card:nth-child(1) {
-        animation-delay: 0.1s;
-    }
-
-    .stat-card:nth-child(2) {
-        animation-delay: 0.15s;
-    }
-
-    .stat-card:nth-child(3) {
-        animation-delay: 0.2s;
-    }
-
-    .stat-card:nth-child(4) {
-        animation-delay: 0.25s;
-    }
-
-    .card {
-        animation: slideInUp 0.6s ease-out 0.3s forwards;
-        opacity: 0;
-    }
-
-    /* Badge Colors */
-    .badge {
-        font-size: 11px;
-        font-weight: 700;
-        padding: 5px 12px;
-        border-radius: 6px;
-        display: inline-block;
-        text-transform: uppercase;
-        letter-spacing: 0.4px;
-    }
-</style>
-
-<!-- Dashboard Header -->
-<div class="dashboard-header">
-    <h1 class="dashboard-title">Dashboard</h1>
-    <p class="dashboard-subtitle">Welcome back! Here's your healthcare portal overview.</p>
 </div>
 
-<!-- Stat Cards Section -->
-<div class="row g-4 mb-4">
 
-    <!-- Total Patients Card -->
-    <div class="col-md-6 col-lg-3">
-        <div class="stat-card stat-blue">
-            <div class="stat-header">
-                <h3 class="stat-card-title">
-                    <i class="fas fa-users"></i>Total Patients
-                </h3>
-                <div class="stat-card-icon">
-                    <i class="fas fa-users"></i>
-                </div>
-            </div>
-            <div class="stat-card-content">
-                <div>
-                    <div class="stat-card-value" style="color: var(--info);">
-                        {{ total_patients|default:"0" }}
-                    </div>
-                    <a href="{% url 'patients:patient_list' %}" class="stat-link" style="color: var(--info);">
-                        View All <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="stat-card-footer">
-                <span class="trend-badge trend-up">
-                    <i class="fas fa-arrow-up"></i> +12%
-                </span>
-                <span class="trend-context">vs last month</span>
-            </div>
-        </div>
-    </div>
+<div class="row g-4">
 
-    <!-- Active Doctors Card -->
-    <div class="col-md-6 col-lg-3">
-        <div class="stat-card stat-green">
-            <div class="stat-header">
-                <h3 class="stat-card-title">
-                    <i class="fas fa-user-md"></i>Active Doctors
-                </h3>
-                <div class="stat-card-icon">
-                    <i class="fas fa-user-md"></i>
-                </div>
-            </div>
-            <div class="stat-card-content">
-                <div>
-                    <div class="stat-card-value" style="color: var(--success);">
-                        {{ total_doctors|default:"0" }}
-                    </div>
-                    <a href="{% url 'doctors:doctor_list' %}" class="stat-link" style="color: var(--success);">
-                        View All <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="stat-card-footer">
-                <span class="trend-badge trend-up">
-                    <i class="fas fa-arrow-up"></i> +5%
-                </span>
-                <span class="trend-context">this month</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Appointments Card -->
-    <div class="col-md-6 col-lg-3">
-        <div class="stat-card stat-warning">
-            <div class="stat-header">
-                <h3 class="stat-card-title">
-                    <i class="fas fa-calendar-alt"></i>Appointments
-                </h3>
-                <div class="stat-card-icon">
-                    <i class="fas fa-calendar-alt"></i>
-                </div>
-            </div>
-            <div class="stat-card-content">
-                <div>
-                    <div class="stat-card-value" style="color: #997404;">
-                        {{ total_appointments|default:"0" }}
-                    </div>
-                    <a href="{% url 'appointments:appointment_list' %}" class="stat-link" style="color: #997404;">
-                        View All <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="stat-card-footer">
-                <span class="trend-badge trend-down">
-                    <i class="fas fa-arrow-down"></i> -3%
-                </span>
-                <span class="trend-context">vs last month</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Medicines Card -->
-    <div class="col-md-6 col-lg-3">
-        <div class="stat-card stat-danger">
-            <div class="stat-header">
-                <h3 class="stat-card-title">
-                    <i class="fas fa-pills"></i>Medicines
-                </h3>
-                <div class="stat-card-icon">
-                    <i class="fas fa-pills"></i>
-                </div>
-            </div>
-            <div class="stat-card-content">
-                <div>
-                    <div class="stat-card-value" style="color: var(--danger);">
-                        {{ total_medicines|default:"0" }}
-                    </div>
-                    <a href="{% url 'pharmacy:medicine_list' %}" class="stat-link" style="color: var(--color-text-danger);">
-                        View All <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="stat-card-footer">
-                <span class="trend-badge trend-up">
-                    <i class="fas fa-arrow-up"></i> +8%
-                </span>
-                <span class="trend-context">this month</span>
-            </div>
-        </div>
-    </div></div>
-
-<!-- Health Tips Widget (Integrated into Dashboard) -->
-<div class="health-tips-widget" style="position: relative; margin-bottom: 2rem;">
-    <div class="tips-header" style="background: linear-gradient(135deg, #0d6efd, #0dcaf0); color: white; padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between; font-weight: 700; border-radius: 16px 16px 0 0;">
-        <div style="display: flex; align-items: center; gap: 10px;">
-            <i class="fas fa-lightbulb" style="font-size: 1.2rem;"></i>
-            <span>Daily Health Tips</span>
-        </div>
-    </div>
-    <div class="tips-content" style="padding: 1.5rem;">
-        <div class="tip-item active" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
-            <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; margin-bottom: 1rem; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);">
-                <i class="fas fa-water"></i>
-            </div>
-            <h6 style="margin: 0 0 8px 0; font-weight: 700; color: #1a1a1a;">Stay Hydrated</h6>
-            <p style="margin: 0; color: #6b7280; font-size: 0.9rem; line-height: 1.4;">Drink at least 8 glasses of water daily to maintain optimal health and hydration levels.</p>
-        </div>
-        <div class="tip-item" style="display: none; flex-direction: column; align-items: center; text-align: center;">
-            <div style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; margin-bottom: 1rem; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);">
-                <i class="fas fa-apple-alt"></i>
-            </div>
-            <h6 style="margin: 0 0 8px 0; font-weight: 700; color: #1a1a1a;">Eat Healthy</h6>
-            <p style="margin: 0; color: #6b7280; font-size: 0.9rem; line-height: 1.4;">Include fruits, vegetables, and whole grains in your diet for better nutrition and energy.</p>
-        </div>
-        <div class="tip-item" style="display: none; flex-direction: column; align-items: center; text-align: center;">
-            <div style="background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; margin-bottom: 1rem; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);">
-                <i class="fas fa-running"></i>
-            </div>
-            <h6 style="margin: 0 0 8px 0; font-weight: 700; color: #1a1a1a;">Exercise Daily</h6>
-            <p style="margin: 0; color: #6b7280; font-size: 0.9rem; line-height: 1.4;">Aim for 30 minutes of physical activity daily to improve your cardiovascular health.</p>
-        </div>
-    </div>
-    <div style="padding: 1rem 1.5rem; background: rgba(248,249,250,0.8); display: flex; align-items: center; justify-content: space-between; border-radius: 0 0 16px 16px;">
-        <button onclick="previousTip()" style="background: #0d6efd; color: white; border: none; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(13, 110, 253, 0.3); font-size: 0.9rem;">
-            <i class="fas fa-chevron-left"></i>
-        </button>
-        <div style="display: flex; gap: 6px;">
-            <div class="indicator active" style="width: 8px; height: 8px; border-radius: 50%; background: #0d6efd; transition: all 0.3s ease;"></div>
-            <div class="indicator" style="width: 8px; height: 8px; border-radius: 50%; background: rgba(0,0,0,0.2); transition: all 0.3s ease;"></div>
-            <div class="indicator" style="width: 8px; height: 8px; border-radius: 50%; background: rgba(0,0,0,0.2); transition: all 0.3s ease;"></div>
-        </div>
-        <button onclick="nextTip()" style="background: #0d6efd; color: white; border: none; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(13, 110, 253, 0.3); font-size: 0.9rem;">
-            <i class="fas fa-chevron-right"></i>
-        </button>
-    </div>
-</div>
-
-<!-- Main Content Grid -->
-<div class="row g-4 mb-4">
-
-    <!-- Recent Appointments Card -->
-    <div class="col-lg-8">
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-header-title">
-                    <i class="fas fa-calendar-alt"></i>Recent Appointments
-                </h2>
+    <div class="col-lg-7">
+        <div class="card h-100">
+            <div class="card-header d-flex justify-content-between align-items-center py-3.5 px-4">
+                <span class="fs-6 fw-bold"><i class="fas fa-calendar-alt text-primary me-2"></i>Recent Appointments</span>
                 <a href="{% url 'appointments:appointment_create' %}" class="btn btn-sm btn-primary">
-                    <i class="fas fa-plus"></i>Book New
+                    <i class="fas fa-plus me-1"></i>Book New
                 </a>
             </div>
 
-            <div class="card-body">
-                <div class="table-wrapper">
-                    <table class="table table-hover">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
                         <thead>
                             <tr>
-                                <th>Patient Name</th>
+                                <th>Patient</th>
                                 <th>Doctor</th>
-                                <th>Appointment Date</th>
+                                <th>Date & Time</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -866,20 +103,12 @@
                             {% for appt in recent_appointments %}
                                 <tr>
                                     <td>
-                                        <a href="{% url 'appointments:appointment_detail' appt.pk %}" class="text-decoration-none fw-semibold" style="color: var(--info);">
+                                        <a href="{% url 'appointments:appointment_detail' appt.pk %}" class="text-decoration-none fw-semibold text-slate-800">
                                             {{ appt.patient }}
                                         </a>
                                     </td>
-                                    <td style="color: var(--gray); font-size: 13px;">
-                                        {{ appt.doctor }}
-                                    </td>
-                                    <td style="font-size: 13px; color: var(--gray);">
-                                        {% if appt.appointment_date %}
-                                            {{ appt.appointment_date|date:"d M, Y" }}
-                                        {% else %}
-                                            N/A
-                                        {% endif %}
-                                    </td>
+                                    <td>{{ appt.doctor }}</td>
+                                    <td>{{ appt.appointment_date }}</td>
                                     <td>
                                         <span class="badge badge-status-{{ appt.status }}">
                                             {{ appt.get_status_display }}
@@ -888,9 +117,9 @@
                                 </tr>
                             {% empty %}
                                 <tr>
-                                    <td colspan="4" class="table-empty">
-                                        <i class="fas fa-inbox"></i>
-                                        <p>No appointments scheduled yet.</p>
+                                    <td colspan="4" class="text-center text-muted py-5">
+                                        <i class="far fa-calendar-times fa-2x mb-2 text-slate-300 d-block"></i>
+                                        No appointments scheduled yet.
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -898,61 +127,49 @@
                     </table>
                 </div>
             </div>
-
-            {% if recent_appointments %}
-                <div class="card-footer">
-                    <a href="{% url 'appointments:appointment_list' %}" style="color: var(--info); text-decoration: none; font-size: 13px;">
-                        View all appointments <i class="fas fa-arrow-right ms-1"></i>
-                    </a>
-                </div>
-            {% endif %}
         </div>
     </div>
 
-    <!-- Recent Patients Card -->
-    <div class="col-lg-4">
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-header-title">
-                    <i class="fas fa-users"></i>Recent Patients
-                </h2>
+
+    <div class="col-lg-5">
+        <div class="card h-100">
+            <div class="card-header d-flex justify-content-between align-items-center py-3.5 px-4">
+                <span class="fs-6 fw-bold"><i class="fas fa-users text-success me-2"></i>Recent Patients</span>
                 <a href="{% url 'patients:patient_create' %}" class="btn btn-sm btn-success">
-                    <i class="fas fa-plus"></i>Add
+                    <i class="fas fa-plus me-1"></i>Add Patient
                 </a>
             </div>
 
-            <div class="card-body">
-                <div class="table-wrapper">
-                    <table class="table table-hover">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
                         <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>Blood</th>
+                                <th>Blood Group</th>
                                 <th>Phone</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for p in recent_patients %}
                                 <tr>
-                                    <td style="max-width: 150px;">
-                                        <a href="{% url 'patients:patient_detail' p.pk %}" class="text-decoration-none fw-semibold" style="color: var(--info); font-size: 13px;">
+                                    <td>
+                                        <a href="{% url 'patients:patient_detail' p.pk %}" class="text-decoration-none fw-semibold text-slate-800">
                                             {{ p }}
                                         </a>
                                     </td>
                                     <td>
-                                        <span class="badge" style="background-color: #f8d7da; color: #842029;">
+                                        <span class="badge bg-danger-light text-danger">
                                             {{ p.blood_group|default:"N/A" }}
                                         </span>
                                     </td>
-                                    <td style="font-size: 12px; color: var(--gray);">
-                                        {{ p.phone }}
-                                    </td>
+                                    <td>{{ p.phone }}</td>
                                 </tr>
                             {% empty %}
                                 <tr>
-                                    <td colspan="3" class="table-empty">
-                                        <i class="fas fa-inbox"></i>
-                                        <p>No patients registered yet.</p>
+                                    <td colspan="3" class="text-center text-muted py-5">
+                                        <i class="fas fa-user-injured fa-2x mb-2 text-slate-300 d-block"></i>
+                                        No patients registered yet.
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -960,60 +177,44 @@
                     </table>
                 </div>
             </div>
-
-            {% if recent_patients %}
-                <div class="card-footer">
-                    <a href="{% url 'patients:patient_list' %}" style="color: var(--success); text-decoration: none; font-size: 13px;">
-                        View all patients <i class="fas fa-arrow-right ms-1"></i>
-                    </a>
-                </div>
-            {% endif %}
         </div>
     </div>
 
 </div>
 
-<!-- Quick Actions Section -->
-<div class="row g-4">
-    <div class="col-12">
+
+<div class="row g-4 mt-2">
+    <div class="col-md-12">
         <div class="card">
-            <div class="card-header">
-                <h2 class="card-header-title">
-                    <i class="fas fa-bolt"></i>Quick Actions
-                </h2>
+            <div class="card-header py-3.5 px-4">
+                <span class="fs-6 fw-bold"><i class="fas fa-bolt text-warning me-2"></i>Quick Actions</span>
             </div>
 
-            <div class="card-body" style="padding: 1.5rem;">
-                <div class="actions-grid">
+            <div class="card-body py-4">
+                <div class="d-flex flex-wrap gap-3">
 
-                    <a href="{% url 'patients:patient_create' %}" class="action-btn">
-                        <i class="fas fa-user-plus" style="color: var(--info);"></i>
-                        <span class="action-btn-text">New Patient</span>
+                    <a href="{% url 'patients:patient_create' %}" class="btn btn-outline-primary px-4 py-2.5">
+                        <i class="fas fa-user-plus me-2"></i>New Patient
                     </a>
 
-                    <a href="{% url 'doctors:doctor_create' %}" class="action-btn">
-                        <i class="fas fa-user-md" style="color: var(--success);"></i>
-                        <span class="action-btn-text">Add Doctor</span>
+                    <a href="{% url 'doctors:doctor_create' %}" class="btn btn-outline-success px-4 py-2.5">
+                        <i class="fas fa-plus me-2"></i>Add Doctor
                     </a>
 
-                    <a href="{% url 'appointments:appointment_create' %}" class="action-btn">
-                        <i class="fas fa-calendar-plus" style="color: #997404;"></i>
-                        <span class="action-btn-text">Book Appointment</span>
+                    <a href="{% url 'appointments:appointment_create' %}" class="btn btn-outline-warning px-4 py-2.5">
+                        <i class="fas fa-calendar-plus me-2"></i>Book Appointment
                     </a>
 
-                    <a href="{% url 'appointments:today_appointments' %}" class="action-btn">
-                        <i class="fas fa-calendar-day" style="color: var(--info);"></i>
-                        <span class="action-btn-text">Today's Schedule</span>
+                    <a href="{% url 'appointments:today_appointments' %}" class="btn btn-outline-info px-4 py-2.5">
+                        <i class="fas fa-calendar-day me-2"></i>Today's Schedule
                     </a>
 
-                    <a href="{% url 'pharmacy:dispense_medicine' %}" class="action-btn">
-                        <i class="fas fa-prescription-bottle" style="color: var(--danger);"></i>
-                        <span class="action-btn-text">Dispense Medicine</span>
+                    <a href="{% url 'pharmacy:dispense_medicine' %}" class="btn btn-outline-danger px-4 py-2.5">
+                        <i class="fas fa-prescription-bottle me-2"></i>Dispense Medicine
                     </a>
 
-                    <a href="{% url 'pharmacy:medicine_create' %}" class="action-btn">
-                        <i class="fas fa-pills" style="color: var(--danger);"></i>
-                        <span class="action-btn-text">Add Medicine</span>
+                    <a href="{% url 'pharmacy:medicine_create' %}" class="btn btn-outline-secondary px-4 py-2.5">
+                        <i class="fas fa-pills me-2"></i>Add Medicine
                     </a>
 
                 </div>
@@ -1021,55 +222,5 @@
         </div>
     </div>
 </div>
-
-<script>
-// Health Tips Carousel Functions
-let currentTipIndex = 0;
-const tipItems = document.querySelectorAll('.tip-item');
-const indicators = document.querySelectorAll('.indicator');
-
-function showTip(index) {
-    tipItems.forEach((tip, i) => {
-        tip.style.display = i === index ? 'flex' : 'none';
-    });
-    indicators.forEach((ind, i) => {
-        if (i === index) {
-            ind.style.background = '#0d6efd';
-            ind.style.transform = 'scale(1.2)';
-        } else {
-            ind.style.background = 'rgba(0,0,0,0.2)';
-            ind.style.transform = 'scale(1)';
-        }
-    });
-}
-
-function nextTip() {
-    currentTipIndex = (currentTipIndex + 1) % tipItems.length;
-    showTip(currentTipIndex);
-}
-
-function previousTip() {
-    currentTipIndex = (currentTipIndex - 1 + tipItems.length) % tipItems.length;
-    showTip(currentTipIndex);
-}
-
-// Auto-rotate tips every 10 seconds
-setInterval(nextTip, 10000);
-
-// Assistant Widget Toggle
-const assistantToggle = document.querySelector('.assistant-toggle');
-const assistantWidget = document.querySelector('.assistant-widget');
-
-if (assistantToggle && assistantWidget) {
-    assistantToggle.addEventListener('click', function() {
-        assistantWidget.classList.toggle('show');
-        if (assistantWidget.classList.contains('show')) {
-            assistantToggle.style.opacity = '0.7';
-        } else {
-            assistantToggle.style.opacity = '1';
-        }
-    });
-}
-</script>
 
 {% endblock %}

@@ -1,0 +1,318 @@
+{% extends 'base/base.html' %}
+{% block title %}AI Health Assistant - HealthCare Portal{% endblock %}
+{% block page_title %}AI Health Assistant{% endblock %}
+
+{% block extra_css %}
+<style>
+    .chat-container {
+        height: 70vh;
+        display: flex;
+        flex-direction: column;
+        border-radius: 16px;
+        background: #ffffff;
+        box-shadow: var(--card-shadow);
+        border: 1px solid #f1f5f9;
+        overflow: hidden;
+    }
+
+    .chat-header {
+        padding: 20px 24px;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .chat-header i {
+        font-size: 1.5rem;
+    }
+
+    .chat-messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 24px;
+        background: #f8fafc;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .message-bubble {
+        max-width: 75%;
+        padding: 14px 20px;
+        border-radius: 16px;
+        line-height: 1.5;
+        font-size: 0.95rem;
+        animation: bubbleAppear 0.25s ease-out;
+    }
+
+    @keyframes bubbleAppear {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .message-user {
+        background-color: var(--primary);
+        color: #ffffff;
+        align-self: flex-end;
+        border-bottom-right-radius: 4px;
+        box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2);
+    }
+
+    .message-ai {
+        background-color: #ffffff;
+        color: #1e293b;
+        align-self: flex-start;
+        border-bottom-left-radius: 4px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        border: 1px solid #e2e8f0;
+    }
+
+    .message-ai p:last-child {
+        margin-bottom: 0;
+    }
+
+    .chat-input-area {
+        padding: 20px 24px;
+        background: #ffffff;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    .prompt-chip {
+        display: inline-block;
+        padding: 8px 16px;
+        background-color: #f1f5f9;
+        border: 1px solid #e2e8f0;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        color: #475569;
+        cursor: pointer;
+        transition: var(--transition-smooth);
+        margin: 4px;
+        font-weight: 500;
+        text-align: left;
+    }
+
+    .prompt-chip:hover {
+        background-color: var(--primary-light);
+        border-color: rgba(79, 70, 229, 0.2);
+        color: var(--primary);
+    }
+
+    /* Typing Animation */
+    .typing-dots {
+        display: flex;
+        gap: 6px;
+        padding: 8px 12px;
+        align-items: center;
+    }
+
+    .typing-dots span {
+        width: 8px;
+        height: 8px;
+        background-color: #94a3b8;
+        border-radius: 50%;
+        animation: typingBounce 1.4s infinite both;
+    }
+
+    .typing-dots span:nth-child(2) {
+        animation-delay: .2s;
+    }
+
+    .typing-dots span:nth-child(3) {
+        animation-delay: .4s;
+    }
+
+    @keyframes typingBounce {
+
+        0%,
+        80%,
+        100% {
+            transform: scale(0.6);
+            opacity: 0.4;
+        }
+
+        40% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+
+    <!-- Suggestions Sidebar -->
+    <div class="col-lg-4">
+        <div class="card h-100">
+            <div class="card-header py-3.5 px-4">
+                <span class="fs-6 fw-bold"><i class="fas fa-lightbulb text-warning me-2"></i>Quick Consult
+                    Templates</span>
+            </div>
+            <div class="card-body p-4">
+                <p class="text-muted small mb-3">Click on any template prompt below to load it into the clinical
+                    assistant instantly:</p>
+
+                <div class="d-flex flex-column gap-2">
+                    <div class="prompt-chip"
+                        onclick="fillPrompt('What is a healthy balanced diet plan for someone managing high blood pressure?')">
+                        <i class="fas fa-heartbeat text-danger me-1"></i> Hypertension Diet Plan
+                    </div>
+                    <div class="prompt-chip"
+                        onclick="fillPrompt('Can you explain the common symptoms of seasonal influenza and standard self-care remedies?')">
+                        <i class="fas fa-thermometer-half text-warning me-1"></i> Influenza Symptoms & Care
+                    </div>
+                    <div class="prompt-chip"
+                        onclick="fillPrompt('What are key lifestyle improvements to support cardiovascular health?')">
+                        <i class="fas fa-shield-alt text-success me-1"></i> Cardiovascular Health Tips
+                    </div>
+                    <div class="prompt-chip"
+                        onclick="fillPrompt('Explain the difference between Type 1 and Type 2 diabetes in simple terms.')">
+                        <i class="fas fa-dna text-info me-1"></i> Diabetes Types Explained
+                    </div>
+                    <div class="prompt-chip"
+                        onclick="fillPrompt('How does the HealthCare Portal help doctors and patients track checkups?')">
+                        <i class="fas fa-laptop-medical text-primary me-1"></i> About this Portal
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Chat Window -->
+    <div class="col-lg-8">
+        <div class="chat-container">
+
+            <div class="chat-header">
+                <i class="fas fa-robot"></i>
+                <div>
+                    <h5 class="mb-0 text-white">AI Medical Companion</h5>
+                    <!-- <span class="small opacity-75">Powered by Llama-3 (Groq API)</span> -->
+                </div>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <!-- Welcome Message -->
+                <div class="message-bubble message-ai">
+                    <p>Hello! I am your AI Medical Assistant. I can help answer clinical queries, explain diagnoses, or
+                        provide wellness and diet guidelines.</p>
+                    <p class="small text-muted mb-0"><strong>Disclaimer:</strong> My responses are for educational
+                        purposes. Always consult a real healthcare provider for emergency care or medical diagnosis.</p>
+                </div>
+            </div>
+
+            <!-- Loader / Typing indicator (hidden by default) -->
+            <div id="aiLoader" class="d-none px-4 py-2 bg-light border-top">
+                <div class="d-flex align-items-center gap-2">
+                    <span class="small text-muted">AI is analyzing</span>
+                    <div class="typing-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input area -->
+            <div class="chat-input-area">
+                <form id="chatForm" onsubmit="sendMessage(event)">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <input type="text" id="userInput" class="form-control py-2.5"
+                            placeholder="Type symptoms, health questions..." autocomplete="off" required>
+                        <button class="btn btn-primary px-4" type="submit">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const chatMessages = document.getElementById('chatMessages');
+    const userInput = document.getElementById('userInput');
+    const aiLoader = document.getElementById('aiLoader');
+
+    function fillPrompt(text) {
+        userInput.value = text;
+        userInput.focus();
+    }
+
+    function appendMessage(text, isUser = false) {
+        const bubble = document.createElement('div');
+        bubble.classList.add('message-bubble');
+        bubble.classList.add(isUser ? 'message-user' : 'message-ai');
+
+        if (isUser) {
+            bubble.textContent = text;
+        } else {
+            // Render markdown lists or line breaks cleanly
+            bubble.innerHTML = formatMarkdown(text);
+        }
+
+        chatMessages.appendChild(bubble);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function formatMarkdown(text) {
+        // Simple client-side replacement for markdown bullet points and bold text
+        let html = text
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.*?)\*/g, '<em>$1</em>')
+            .replace(/\n/g, '<br>');
+
+        return html;
+    }
+
+    function sendMessage(event) {
+        event.preventDefault();
+        const messageText = userInput.value.trim();
+        if (!messageText) return;
+
+        appendMessage(messageText, true);
+        userInput.value = '';
+        aiLoader.classList.remove('d-none');
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        fetch('{% url "ai_assistant" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken
+            },
+            body: JSON.stringify({ message: messageText })
+        })
+            .then(response => response.json())
+            .then(data => {
+                aiLoader.classList.add('d-none');
+                if (data.reply) {
+                    appendMessage(data.reply, false);
+                } else if (data.error) {
+                    appendMessage("Error: " + data.error, false);
+                }
+            })
+            .catch(error => {
+                aiLoader.classList.add('d-none');
+                appendMessage("Error contacting assistant: " + error, false);
+            });
+    }
+</script>
+{% endblock %}

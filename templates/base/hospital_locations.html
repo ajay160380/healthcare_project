@@ -1,0 +1,257 @@
+{% extends 'base/base.html' %}
+{% block title %}Emergency Hospitals - HealthCare Portal{% endblock %}
+{% block page_title %}Emergency Hospital Finder (Lucknow){% endblock %}
+
+{% block extra_css %}
+<!-- Leaflet.js Map CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<style>
+    #map {
+        height: 62vh;
+        border-radius: 16px;
+        border: 1px solid #e2e8f0;
+        box-shadow: var(--card-shadow);
+        z-index: 1;
+    }
+
+    .hospital-card {
+        border-left: 4px solid var(--danger);
+        transition: var(--transition-smooth);
+        cursor: pointer;
+    }
+
+    .hospital-card:hover {
+        transform: translateY(-2px);
+        border-left-color: var(--primary);
+    }
+
+    .phone-btn {
+        background-color: var(--danger-light);
+        color: var(--danger);
+        font-weight: 700;
+        border: none;
+        border-radius: 8px;
+        transition: var(--transition-smooth);
+    }
+
+    .phone-btn:hover {
+        background-color: var(--danger);
+        color: #ffffff;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+    
+    <!-- Directory Panel -->
+    <div class="col-lg-5 col-md-12">
+        <div class="card h-100" style="max-height: 70vh; overflow-y: auto;">
+            <div class="card-header py-3.5 px-4 d-flex justify-content-between align-items-center">
+                <span class="fw-bold fs-6"><i class="fas fa-ambulance text-danger me-2"></i>Emergency Contacts</span>
+                <span class="badge bg-danger">Lucknow</span>
+            </div>
+            
+            <div class="card-body p-3">
+                <div class="d-flex flex-column gap-3" id="hospitalListContainer">
+                    {% for h in hospitals %}
+                    <div class="card hospital-card border-0 shadow-sm p-3" id="h-card-{{ h.id }}" data-id="{{ h.id }}" data-lat="{{ h.lat }}" data-lng="{{ h.lng }}" onclick="focusHospital({{ h.lat }}, {{ h.lng }}, '{{ h.name|escapejs }}', {{ h.id }})">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h6 class="fw-bold mb-0 text-slate-800" style="max-width: 80%;">{{ h.name }}</h6>
+                            <span class="badge bg-slate-100 text-slate-600 border" id="dist-badge-{{ h.id }}">{{ h.distance }}</span>
+                        </div>
+                        <p class="text-muted small mb-2"><i class="fas fa-map-marker-alt text-danger me-1"></i> {{ h.address }}</p>
+                        <p class="small text-slate-600 mb-3"><i class="fas fa-stethoscope text-primary me-1"></i> <strong>Specialty:</strong> {{ h.specialty }}</p>
+                        
+                        <div class="d-flex gap-2">
+                            <a href="tel:{{ h.phone }}" class="btn btn-sm phone-btn px-3 py-1.5 flex-fill text-center text-decoration-none">
+                                <i class="fas fa-phone-alt me-1.5"></i> Call: {{ h.phone }}
+                            </a>
+                            <button class="btn btn-sm btn-outline-primary px-3 py-1.5 flex-fill" onclick="event.stopPropagation(); focusHospital({{ h.lat }}, {{ h.lng }}, '{{ h.name|escapejs }}', {{ h.id }})">
+                                <i class="fas fa-crosshairs me-1.5"></i> Locate
+                            </button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Map Panel -->
+    <div class="col-lg-7 col-md-12">
+        <div id="map"></div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Leaflet.js Map Library -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+    // Initialize map centered on Lucknow
+    var map = L.map('map').setView([26.8467, 80.9462], 12);
+
+    // Load OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // List of hospital data passed from Django context
+    var hospitals = [
+        {% for h in hospitals %}
+        {
+            id: {{ h.id }},
+            name: "{{ h.name|escapejs }}",
+            lat: {{ h.lat }},
+            lng: {{ h.lng }},
+            address: "{{ h.address|escapejs }}",
+            phone: "{{ h.phone|escapejs }}",
+            specialty: "{{ h.specialty|escapejs }}",
+            distance: "{{ h.distance|escapejs }}"
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
+
+    // Marker dictionary to store references for trigger popups
+    var markers = {};
+
+    // Add markers to the map
+    hospitals.forEach(function(h) {
+        var popupContent = `
+            <div style="font-family: 'Plus Jakarta Sans', sans-serif; padding: 4px;">
+                <h6 style="font-weight: 700; margin-bottom: 6px; color: #0f172a;">${h.name}</h6>
+                <p style="font-size: 11px; color: #64748b; margin-bottom: 6px;">${h.address}</p>
+                <div style="display: flex; gap: 6px; margin-top: 8px;">
+                    <a href="tel:${h.phone}" style="font-size: 11px; font-weight: 600; padding: 5px 8px; border-radius: 6px; background-color: #f43f5e; color: white; text-decoration: none;">
+                        <i class="fas fa-phone-alt me-1"></i> Call Emergency
+                    </a>
+                </div>
+            </div>
+        `;
+
+        var marker = L.marker([h.lat, h.lng])
+            .bindPopup(popupContent)
+            .addTo(map);
+        
+        markers[h.id] = marker;
+    });
+
+    // Locate and focus on a hospital
+    function focusHospital(lat, lng, name, id) {
+        // Pan/Zoom map to location
+        map.setView([lat, lng], 15, {
+            animate: true,
+            duration: 1.2
+        });
+
+        // Open popup
+        if (markers[id]) {
+            markers[id].openPopup();
+        }
+
+        // Highlight card visually
+        document.querySelectorAll('.hospital-card').forEach(function(c) {
+            c.classList.remove('border-primary');
+            c.classList.add('border-danger');
+        });
+        
+        var card = document.getElementById('h-card-' + id);
+        if (card) {
+            card.classList.remove('border-danger');
+            card.classList.add('border-primary');
+            card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    }
+
+    // Geolocation API to find user's current location and update distances
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var userLat = position.coords.latitude;
+            var userLng = position.coords.longitude;
+
+            // Add marker for User's Location on map
+            var userMarker = L.marker([userLat, userLng], {
+                icon: L.divIcon({
+                    className: 'user-location-marker',
+                    html: '<div style="background-color: var(--primary); width: 16px; height: 16px; border-radius: 50%; border: 3px solid #ffffff; box-shadow: 0 0 10px rgba(79,70,229,0.8); animation: pulseMarker 1.8s infinite;"></div>',
+                    iconSize: [16, 16]
+                })
+            }).bindPopup("<b>You are here!</b>").addTo(map);
+
+            // Add standard CSS pulse animation in document head dynamically
+            var styleEl = document.createElement('style');
+            styleEl.innerHTML = `
+                @keyframes pulseMarker {
+                    0% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.7); }
+                    70% { box-shadow: 0 0 0 10px rgba(79, 70, 229, 0); }
+                    100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); }
+                }
+            `;
+            document.head.appendChild(styleEl);
+
+            // Calculate distance to each hospital
+            var calculatedList = [];
+            hospitals.forEach(function(h) {
+                var distanceKm = calculateHaversine(userLat, userLng, h.lat, h.lng);
+                h.realDistance = distanceKm;
+                
+                // Update text on badge
+                var badge = document.getElementById('dist-badge-' + h.id);
+                if (badge) {
+                    badge.textContent = distanceKm.toFixed(1) + ' km';
+                    badge.classList.remove('bg-slate-100', 'text-slate-600');
+                    badge.classList.add('bg-primary-light', 'text-primary');
+                }
+                
+                calculatedList.push(h);
+            });
+
+            // Sort list by distance ascending
+            calculatedList.sort(function(a, b) {
+                return a.realDistance - b.realDistance;
+            });
+
+            // Re-order the elements in DOM
+            var container = document.getElementById('hospitalListContainer');
+            if (container) {
+                calculatedList.forEach(function(h) {
+                    var card = document.getElementById('h-card-' + h.id);
+                    if (card) {
+                        container.appendChild(card); // Appending existing node moves it to the bottom
+                    }
+                });
+            }
+
+            // Adjust map view to include both user and nearest hospital (or all)
+            var bounds = L.latLngBounds([
+                [userLat, userLng],
+                [calculatedList[0].lat, calculatedList[0].lng]
+            ]);
+            map.fitBounds(bounds, { padding: [50, 50] });
+
+        }, function(error) {
+            console.log("Geolocation error: ", error);
+        });
+    }
+
+    // Haversine formula calculation (KM)
+    function calculateHaversine(lat1, lon1, lat2, lon2) {
+        var R = 6371; // Radius of earth in km
+        var dLat = deg2rad(lat2 - lat1);
+        var dLon = deg2rad(lon2 - lon1);
+        var a = 
+            Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+            Math.sin(dLon/2) * Math.sin(dLon/2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        return R * c;
+    }
+
+    function deg2rad(deg) {
+        return deg * (Math.PI/180);
+    }
+</script>
+{% endblock %}
