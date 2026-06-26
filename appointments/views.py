@@ -49,7 +49,7 @@ def appointment_create(request):
         if form.is_valid():
             appt = form.save()
             messages.success(request, 'Appointment booked successfully!')
-            return redirect('appointment_detail', pk=appt.pk)
+            return redirect('appointments:appointment_detail', pk=appt.pk)
     else:
         form = AppointmentForm()
         patient_id = request.GET.get('patient')
@@ -72,7 +72,7 @@ def appointment_update(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, 'Appointment updated successfully!')
-            return redirect('appointment_detail', pk=appointment.pk)
+            return redirect('appointments:appointment_detail', pk=appointment.pk)
     else:
         form = AppointmentForm(instance=appointment)
         
@@ -88,7 +88,7 @@ def appointment_delete(request, pk):
     if request.method == 'POST':
         appointment.delete()
         messages.success(request, 'Appointment cancelled and deleted.')
-        return redirect('appointment_list')
+        return redirect('appointments:appointment_list')
     return render(request, 'appointments/appointment_confirm_delete.html', {
         'appointment': appointment
     })
@@ -102,7 +102,7 @@ def update_status(request, pk):
             appointment.status = new_status
             appointment.save()
             messages.success(request, f'Appointment status updated to {appointment.get_status_display()}.')
-    return redirect('appointment_detail', pk=pk)
+    return redirect('appointments:appointment_detail', pk=pk)
 
 @login_required
 def add_prescription(request, appointment_pk):
@@ -132,7 +132,7 @@ def add_prescription(request, appointment_pk):
                         instructions=instructions_list[i] if i < len(instructions_list) else '',
                     )
             messages.success(request, 'Prescription added successfully!')
-            return redirect('appointment_detail', pk=appointment_pk)
+            return redirect('appointments:appointment_detail', pk=appointment_pk)
     else:
         form = PrescriptionForm()
     return render(request, 'appointments/prescription_form.html', {

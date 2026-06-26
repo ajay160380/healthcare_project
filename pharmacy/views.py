@@ -45,7 +45,7 @@ def medicine_create(request):
         if form.is_valid():
             medicine = form.save()
             messages.success(request, f'{medicine.name} added to pharmacy!')
-            return redirect('medicine_detail', pk=medicine.pk)
+            return redirect('pharmacy:medicine_detail', pk=medicine.pk)
     else:
         form = MedicineForm()
     return render(request, 'pharmacy/medicine_form.html', {'form': form, 'title': 'Add Medicine'})
@@ -58,7 +58,7 @@ def medicine_update(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, 'Medicine updated successfully!')
-            return redirect('medicine_detail', pk=medicine.pk)
+            return redirect('pharmacy:medicine_detail', pk=medicine.pk)
     else:
         form = MedicineForm(instance=medicine)
     return render(request, 'pharmacy/medicine_form.html', {
@@ -80,7 +80,7 @@ def dispense_medicine(request):
                 dispensing.unit_price = medicine.unit_price
                 dispensing.save()
                 messages.success(request, f'Medicine dispensed successfully! Total: ₹{dispensing.total_price}')
-                return redirect('dispensing_list')
+                return redirect('pharmacy:dispensing_list')
     else:
         form = DispensingForm()
     return render(request, 'pharmacy/dispense_form.html', {'form': form})
@@ -112,7 +112,7 @@ def add_stock(request, pk):
             medicine.save()
             movement.save()
             messages.success(request, 'Stock updated successfully!')
-            return redirect('medicine_detail', pk=pk)
+            return redirect('pharmacy:medicine_detail', pk=pk)
     else:
         form = StockMovementForm()
     return render(request, 'pharmacy/stock_form.html', {'form': form, 'medicine': medicine})
@@ -148,7 +148,7 @@ def category_create(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Category added successfully!')
-            return redirect('category_list')
+            return redirect('pharmacy:category_list')
     else:
         form = MedicineCategoryForm()
     return render(request, 'pharmacy/category_form.html', {'form': form})

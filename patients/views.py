@@ -45,7 +45,7 @@ def patient_create(request):
         if form.is_valid():
             patient = form.save()
             messages.success(request, f'Patient {patient.get_full_name()} added successfully!')
-            return redirect('patient_detail', pk=patient.pk)
+            return redirect('patients:patient_detail', pk=patient.pk)
     else:
         form = PatientForm()
 
@@ -64,7 +64,7 @@ def patient_update(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, 'Patient information updated successfully!')
-            return redirect('patient_detail', pk=patient.pk)
+            return redirect('patients:patient_detail', pk=patient.pk)
     else:
         form = PatientForm(instance=patient)
 
@@ -83,7 +83,7 @@ def patient_delete(request, pk):
         name = patient.get_full_name()
         patient.delete()
         messages.success(request, f'Patient {name} deleted successfully.')
-        return redirect('patient_list')
+        return redirect('patients:patient_list')
 
     return render(request, 'patients/patient_confirm_delete.html', {
         'patient': patient
@@ -101,7 +101,7 @@ def add_medical_record(request, patient_pk):
             record.patient = patient
             record.save()
             messages.success(request, 'Medical record added successfully!')
-            return redirect('patient_detail', pk=patient_pk)
+            return redirect('patients:patient_detail', pk=patient_pk)
     else:
         form = MedicalRecordForm()
 
@@ -122,7 +122,7 @@ def add_vital_record(request, patient_pk):
             vital.patient = patient
             vital.save()
             messages.success(request, 'Vital signs recorded successfully!')
-            return redirect('patient_detail', pk=patient_pk)
+            return redirect('patients:patient_detail', pk=patient_pk)
     else:
         form = VitalRecordForm()
 

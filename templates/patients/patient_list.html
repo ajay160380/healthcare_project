@@ -6,7 +6,7 @@
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h5 class="mb-0"><i class="fas fa-users text-primary me-2"></i>Registered Patients</h5>
-    <a href="{% url 'patient_create' %}" class="btn btn-primary btn-sm">
+    <a href="{% url 'patients:patient_create' %}" class="btn btn-primary btn-sm">
         <i class="fas fa-plus me-1"></i>Add New Patient
     </a>
 </div>
@@ -37,10 +37,10 @@
                     <td><span class="badge bg-info text-dark">{{ patient.blood_group|default:"-" }}</span></td>
                     <td class="text-end">
                         <div class="btn-group">
-                            <a href="{% url 'patient_detail' patient.pk %}" class="btn btn-sm btn-outline-primary" title="View">
+                            <a href="{% url 'patients:patient_detail' patient.pk %}" class="btn btn-sm btn-outline-primary" title="View">
                                 <i class="fas fa-eye"></i>
                             </a>
-                            <a href="{% url 'patient_update' patient.pk %}" class="btn btn-sm btn-outline-warning" title="Edit">
+                            <a href="{% url 'patients:patient_update' patient.pk %}" class="btn btn-sm btn-outline-warning" title="Edit">
                                 <i class="fas fa-edit"></i>
                             </a>
                         </div>
@@ -51,7 +51,7 @@
                     <td colspan="6" class="text-center py-5">
                         <i class="fas fa-user-injured fa-3x text-muted mb-3"></i>
                         <p class="text-muted">No patients found. Add your first patient to get started!</p>
-                        <a href="{% url 'patient_create' %}" class="btn btn-primary btn-sm mt-2">Add Patient</a>
+                        <a href="{% url 'patients:patient_create' %}" class="btn btn-primary btn-sm mt-2">Add Patient</a>
                     </td>
                 </tr>
                 {% endfor %}

@@ -49,7 +49,7 @@ def doctor_create(request):
         if form.is_valid():
             doctor = form.save()
             messages.success(request, f'{doctor.get_full_name()} successfully add ho gaye hain!')
-            return redirect('doctor_detail', pk=doctor.pk)
+            return redirect('doctors:doctor_detail', pk=doctor.pk)
     else:
         form = DoctorForm()
     
@@ -63,7 +63,7 @@ def doctor_update(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, 'Doctor details update kar di gayi hain.')
-            return redirect('doctor_detail', pk=doctor.pk)
+            return redirect('doctors:doctor_detail', pk=doctor.pk)
     else:
         form = DoctorForm(instance=doctor)
     
@@ -82,7 +82,7 @@ def doctor_delete(request, pk):
         doctor.is_active = False
         doctor.save()
         messages.success(request, f'{name} ko deactivate kar diya gaya hai.')
-        return redirect('doctor_list')
+        return redirect('doctors:doctor_list')
     return render(request, 'doctors/doctor_confirm_delete.html', {'doctor': doctor})
 
 # --- Specialization Views ---
@@ -99,7 +99,7 @@ def specialization_create(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Nayi Specialization add ho gayi!')
-            return redirect('specialization_list')
+            return redirect('doctors:specialization_list')
     else:
         form = SpecializationForm()
     return render(request, 'doctors/specialization_form.html', {'form': form})
