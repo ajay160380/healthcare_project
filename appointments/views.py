@@ -149,3 +149,11 @@ def today_appointments(request):
         'appointments': appointments, 
         'today': today
     })
+
+@login_required
+def prescription_print(request, pk):
+    appointment = get_object_or_404(Appointment, pk=pk)
+    prescription = get_object_or_404(Prescription, appointment=appointment)
+    return render(request, 'appointments/prescription_print.html', {
+        'prescription': prescription
+    })

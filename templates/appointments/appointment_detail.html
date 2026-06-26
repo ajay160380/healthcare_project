@@ -90,10 +90,15 @@
         <div class="card mb-3">
             <div class="card-header py-3 px-4 d-flex justify-content-between align-items-center">
                 <span><i class="fas fa-prescription text-success me-2"></i>Prescription</span>
-                <small class="text-muted">
-                    Issued: {{ prescription.issued_date }} 
-                    {% if prescription.valid_until %}| Valid till: {{ prescription.valid_until }}{% endif %}
-                </small>
+                <div class="d-flex align-items-center gap-3">
+                    <a href="{% url 'appointments:prescription_print' appointment.pk %}" target="_blank" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-print me-1"></i>Print
+                    </a>
+                    <small class="text-muted">
+                        Issued: {{ prescription.issued_date }} 
+                        {% if prescription.valid_until %}| Valid till: {{ prescription.valid_until }}{% endif %}
+                    </small>
+                </div>
             </div>
             <div class="card-body">
                 {% if prescription.notes %}
@@ -153,6 +158,10 @@
                     {% if not prescription %}
                     <a href="{% url 'appointments:add_prescription' appointment.pk %}" class="btn btn-outline-success">
                         <i class="fas fa-prescription me-1"></i>Add Prescription
+                    </a>
+                    {% else %}
+                    <a href="{% url 'appointments:prescription_print' appointment.pk %}" target="_blank" class="btn btn-outline-primary">
+                        <i class="fas fa-print me-1"></i>Print Prescription
                     </a>
                     {% endif %}
                     <a href="{% url 'appointments:appointment_list' %}" class="btn btn-outline-secondary">
