@@ -99,6 +99,13 @@ def ai_assistant(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
+            
+            # Check for clear action
+            if data.get('action') == 'clear':
+                request.session['ai_chat_history'] = []
+                request.session.modified = True
+                return JsonResponse({'status': 'cleared'})
+                
             user_message = data.get('message', '')
             if not user_message:
                 return JsonResponse({'error': 'Message cannot be empty.'}, status=400)
@@ -119,12 +126,23 @@ def ai_assistant(request):
                 "CRITICAL: Always include a standard, brief disclaimer reminding the user that you are an AI assistant and they should consult a professional healthcare provider for diagnostic assessments or emergencies."
             )
             
+            # Retrieve history from session
+            history = request.session.get('ai_chat_history', [])
+            
+            # Limit history to prevent payload bloating (last 10 messages)
+            if len(history) > 10:
+                history = history[-10:]
+                
+            messages_payload = [{'role': 'system', 'content': system_prompt}]
+            for msg in history:
+                messages_payload.append({'role': msg['role'], 'content': msg['content']})
+                
+            # Append new user message
+            messages_payload.append({'role': 'user', 'content': user_message})
+            
             payload = {
                 'model': 'llama-3.1-8b-instant',
-                'messages': [
-                    {'role': 'system', 'content': system_prompt},
-                    {'role': 'user', 'content': user_message}
-                ],
+                'messages': messages_payload,
                 'temperature': 0.7,
                 'max_tokens': 1024
             }
@@ -139,6 +157,13 @@ def ai_assistant(request):
             if response.status_code == 200:
                 result = response.json()
                 reply = result['choices'][0]['message']['content']
+                
+                # Append user message and AI response to history
+                history.append({'role': 'user', 'content': user_message})
+                history.append({'role': 'assistant', 'content': reply})
+                request.session['ai_chat_history'] = history
+                request.session.modified = True
+                
                 return JsonResponse({'reply': reply})
             else:
                 error_data = response.json()
@@ -148,7 +173,9 @@ def ai_assistant(request):
         except Exception as e:
             return JsonResponse({'error': f"Internal Server Error: {str(e)}"}, status=500)
             
-    return render(request, 'base/ai_assistant.html')
+    # GET request
+    chat_history = request.session.get('ai_chat_history', [])
+    return render(request, 'base/ai_assistant.html', {'chat_history': chat_history})
 
 
 @login_required
