@@ -17,23 +17,36 @@
 
     <div class="card-body">
 
-        <form method="get" class="mb-3">
-            <div class="input-group" style="max-width:400px">
-
-                <input type="text" name="q" class="form-control"
-                       placeholder="Search by name, specialization..."
-                       value="{{ query }}">
-
-                <button class="btn btn-outline-success" type="submit">
-                    <i class="fas fa-search"></i>
-                </button>
-
-                {% if query %}
-                <a href="{% url 'doctors:doctor_list' %}" class="btn btn-outline-secondary">
-                    Clear
-                </a>
-                {% endif %}
-
+        <form method="get" class="mb-4">
+            <div class="row g-2 align-items-center">
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0"><i class="fas fa-search text-muted"></i></span>
+                        <input type="text" name="q" class="form-control border-start-0"
+                               placeholder="Search doctor name or phone..."
+                               value="{{ query }}">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <select name="specialization" class="form-select" onchange="this.form.submit()">
+                        <option value="">-- Filter by Specialization --</option>
+                        {% for spec in specializations %}
+                        <option value="{{ spec.pk }}" {% if selected_specialization == spec.pk %}selected{% endif %}>
+                            {{ spec.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-4 d-flex gap-2">
+                    <button class="btn btn-success" type="submit">
+                        Apply Filter
+                    </button>
+                    {% if query or selected_specialization %}
+                    <a href="{% url 'doctors:doctor_list' %}" class="btn btn-outline-secondary">
+                        Clear
+                    </a>
+                    {% endif %}
+                </div>
             </div>
         </form>
 

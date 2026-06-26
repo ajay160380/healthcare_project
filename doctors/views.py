@@ -10,7 +10,8 @@ from .forms import DoctorForm, SpecializationForm
 @login_required
 def doctor_list(request):
     query = request.GET.get('q', '')
-    # select_related use karne se database hits kam ho jayenge (Foreign Key optimization)
+    spec_id = request.GET.get('specialization', '')
+    
     doctors = Doctor.objects.select_related('specialization').filter(is_active=True)
     
     if query:
@@ -20,8 +21,18 @@ def doctor_list(request):
             Q(specialization__name__icontains=query) |
             Q(phone__icontains=query)
         )
+        
+    if spec_id:
+        doctors = doctors.filter(specialization_id=spec_id)
+        
+    specializations = Specialization.objects.all()
     
-    context = {'doctors': doctors, 'query': query}
+    context = {
+        'doctors': doctors, 
+        'query': query,
+        'selected_specialization': int(spec_id) if spec_id.isdigit() else '',
+        'specializations': specializations,
+    }
     return render(request, 'doctors/doctor_list.html', context)
 
 @login_required
