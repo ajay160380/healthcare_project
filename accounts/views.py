@@ -61,6 +61,13 @@ def logout_view(request):
 
 @login_required
 def dashboard(request):
+    from django.db.models import F
+    from datetime import date
+    
+    # Fetch low-stock and expired counts
+    low_stock_count = Medicine.objects.filter(stock_quantity__lte=F('reorder_level'), is_active=True).count()
+    expired_count = Medicine.objects.filter(expiry_date__lt=date.today(), is_active=True).count()
+
     context = {
         'total_patients': Patient.objects.count(),
         'total_doctors': Doctor.objects.count(),
@@ -68,6 +75,8 @@ def dashboard(request):
         'total_medicines': Medicine.objects.count(),
         'recent_appointments': Appointment.objects.order_by('-created_at')[:5],
         'recent_patients': Patient.objects.order_by('-created_at')[:5],
+        'low_stock_count': low_stock_count,
+        'expired_count': expired_count,
     }
     return render(request, 'base/dashboard.html', context)
 

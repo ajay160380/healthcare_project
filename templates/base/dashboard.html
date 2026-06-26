@@ -76,6 +76,47 @@
 
 </div>
 
+{% if low_stock_count > 0 or expired_count > 0 %}
+<div class="row g-4 mb-4">
+    {% if low_stock_count > 0 %}
+    <div class="col-md-6">
+        <div class="alert alert-warning border-0 shadow-sm d-flex align-items-center justify-content-between p-4 mb-0" style="border-radius: 16px; background-color: rgba(251, 191, 36, 0.1);">
+            <div class="d-flex align-items-center gap-3">
+                <div class="d-flex align-items-center justify-content-center bg-warning text-dark rounded-circle" style="width: 48px; height: 48px;">
+                    <i class="fas fa-exclamation-triangle fs-5"></i>
+                </div>
+                <div>
+                    <h6 class="mb-1 fw-bold text-warning-emphasis">Low Stock Alert</h6>
+                    <p class="mb-0 text-muted small">There are <strong>{{ low_stock_count }}</strong> medicine items running low on stock.</p>
+                </div>
+            </div>
+            <a href="{% url 'pharmacy:medicine_list' %}?low_stock=1" class="btn btn-sm btn-warning text-dark px-3 py-2 fw-semibold">
+                View & Reorder
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if expired_count > 0 %}
+    <div class="col-md-6">
+        <div class="alert alert-danger border-0 shadow-sm d-flex align-items-center justify-content-between p-4 mb-0" style="border-radius: 16px; background-color: rgba(244, 63, 94, 0.1);">
+            <div class="d-flex align-items-center gap-3">
+                <div class="d-flex align-items-center justify-content-center bg-danger text-white rounded-circle" style="width: 48px; height: 48px;">
+                    <i class="fas fa-calendar-times fs-5"></i>
+                </div>
+                <div>
+                    <h6 class="mb-1 fw-bold text-danger-emphasis">Expired Inventory Alert</h6>
+                    <p class="mb-0 text-muted small">There are <strong>{{ expired_count }}</strong> expired medicine batches in inventory.</p>
+                </div>
+            </div>
+            <a href="{% url 'pharmacy:medicine_list' %}" class="btn btn-sm btn-danger text-white px-3 py-2 fw-semibold">
+                Manage Stock
+            </a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endif %}
 
 <div class="row g-4">
 
