@@ -2,7 +2,7 @@
 title: Healthcare Dashboard
 emoji: 🏥
 colorFrom: indigo
-colorTo: emerald
+colorTo: green
 sdk: docker
 pinned: false
 ---
