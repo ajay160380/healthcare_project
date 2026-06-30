@@ -1,3 +1,12 @@
+---
+title: Healthcare Dashboard
+emoji: 🏥
+colorFrom: indigo
+colorTo: emerald
+sdk: docker
+pinned: false
+---
+
 # 🏥 Advanced Healthcare Management Portal
 
 Welcome to the **Advanced Healthcare Management Portal**—a full-stack, enterprise-grade hospital administration and assistant platform built with **Django 6.0** and **Python 3.12**. This portal digitizes critical hospital workflows, implements a modern theme overhaul, integrates a smart AI Health Assistant, and features a local emergency hospital map finder.
