@@ -1,2 +1,3 @@
 - Update brand name
 - Update page title
+- Update tab title
