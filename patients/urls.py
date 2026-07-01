@@ -16,4 +16,7 @@ urlpatterns = [
 
     # Detail route (keep last to prevent greedy matching issues)
     path('<int:pk>/', views.patient_detail, name='patient_detail'),
+
+    # Export route
+    path('export/', views.export_patients_csv, name='export_patients_csv'),
 ]
