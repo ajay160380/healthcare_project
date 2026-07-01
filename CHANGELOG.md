@@ -2,3 +2,4 @@
 - Update page title
 - Update tab title
 - Add footer
+- Update icons
