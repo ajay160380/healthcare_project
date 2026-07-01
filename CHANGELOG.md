@@ -1,1 +1,2 @@
 - Update brand name
+- Update page title
