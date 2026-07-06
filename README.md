@@ -12,10 +12,18 @@ pinned: false
 Welcome to the **Advanced Healthcare Management Portal**—a full-stack, enterprise-grade hospital administration and assistant platform built with **Django 6.0** and **Python 3.12**. This portal digitizes critical hospital workflows, implements a modern theme overhaul, integrates a smart AI Health Assistant, and features a local emergency hospital map finder.
 
 ---
+## 🚀 Live Demo
 
-## 🚀 Live Demo & Deployment
-Experience the live application deployed on Hugging Face Spaces:
-👉 **[live demo](https://solocode12-healthcare.hf.space)**
+<p align="center">
+  <a href="https://solocode12-healthcare.hf.space">
+    <img src="https://img.shields.io/badge/🌐%20Visit-Live%20Website-orange?style=for-the-badge&logo=huggingface&logoColor=white" alt="Live Website">
+  </a>
+</p>
+
+<p align="center">
+  <b>✨ Explore the project instantly in your browser.</b><br>
+  No installation • No configuration • Just click and use.
+</p>
 
 ---
 
