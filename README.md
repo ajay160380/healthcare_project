@@ -20,7 +20,7 @@ Experience the live application deployed on Hugging Face Spaces:
 ---
 
 ## 🌟 Key Features
----
+
 ### 🎨 1. Premium Glassmorphic UI Overhaul
 - **Modern Theme:** Implemented a sophisticated Indigo/Emerald/Rose color palette with custom CSS tokens.
 - **Glassmorphic Cards:** Styled authentication pages (login, registration) with premium blur effects and hover states.
