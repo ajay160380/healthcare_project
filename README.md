@@ -16,15 +16,22 @@ Welcome to the **Advanced Healthcare Management Portal**—a full-stack, enterpr
 
 <p align="center">
   <a href="https://solocode12-healthcare.hf.space">
-    <img src="https://img.shields.io/badge/🌐%20Visit-Live%20Website-orange?style=for-the-badge&logo=huggingface&logoColor=white" alt="Live Website">
+    <img src="https://img.shields.io/badge/🤗%20Hugging%20Face-Primary%20Demo-orange?style=for-the-badge&logo=huggingface&logoColor=white" alt="Primary Demo">
+  </a>
+  &nbsp;&nbsp;
+<p align="center">
+
+  <a href="https://healthcare-project-egyw.onrender.com">
+    <img src="https://img.shields.io/badge/🚀%20Render-Secondary%20Demo-46E3B7?style=for-the-badge&logo=render&logoColor=white" alt="Secondary Demo">
   </a>
 </p>
 
 <p align="center">
   <b>✨ Explore the project instantly in your browser.</b><br>
+  <b>Primary:</b> Hugging Face Space &nbsp;|&nbsp;
+  <b>Secondary:</b> Render Deployment (Backup)<br><br>
   No installation • No configuration • Just click and use.
 </p>
-
 ---
 
 ## 🌟 Key Features
